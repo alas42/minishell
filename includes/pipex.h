@@ -6,7 +6,7 @@
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/26 18:51:35 by avogt             #+#    #+#             */
-/*   Updated: 2021/07/30 14:40:34 by avogt            ###   ########.fr       */
+/*   Updated: 2021/07/30 16:51:55 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,4 +49,5 @@ void		process_one(t_helper *helper, char **envp);
 void		not_found(char *path, int nb_process, int nb, t_helper *helper);
 void		ft_error_functions(int nb, t_helper *helper);
 void		ft_error_sysfunctions(int nb, t_helper *helper);
+
 #endif

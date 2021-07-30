@@ -6,7 +6,7 @@
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/09 18:02:58 by avogt             #+#    #+#             */
-/*   Updated: 2021/07/30 14:33:58 by avogt            ###   ########.fr       */
+/*   Updated: 2021/07/30 16:58:26 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	ft_lstadd(t_list **alst, t_list *new)
 	*alst = new;
 }
 
-int		ft_lstsize(t_list *lst)
+int	ft_lstsize(t_list *lst)
 {
 	t_list	*pos;
 	int		id_pos;

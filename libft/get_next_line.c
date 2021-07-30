@@ -6,7 +6,7 @@
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/06 18:12:40 by avogt             #+#    #+#             */
-/*   Updated: 2021/07/30 14:39:04 by avogt            ###   ########.fr       */
+/*   Updated: 2021/07/30 16:58:51 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static size_t	ft_lenl(const char *str)
 	return (i);
 }
 
-static void		ft_init_next(char **next, char *buff)
+static void	ft_init_next(char **next, char *buff)
 {
 	char	*t;
 
@@ -38,7 +38,7 @@ static void		ft_init_next(char **next, char *buff)
 	free(t);
 }
 
-static int		ft_read(int fd, char **next)
+static int	ft_read(int fd, char **next)
 {
 	int		ret;
 	char	tmp[BUFF_SIZE + 1];
@@ -60,7 +60,7 @@ static int		ft_read(int fd, char **next)
 	return (1);
 }
 
-static void		reduce_next(char **next)
+static void	reduce_next(char **next)
 {
 	char	*tmp;
 
@@ -71,7 +71,7 @@ static void		reduce_next(char **next)
 	ft_strdel(&tmp);
 }
 
-int				get_next_line(int fd, char **line)
+int	get_next_line(int fd, char **line)
 {
 	static char	*next = NULL;
 

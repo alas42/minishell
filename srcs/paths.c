@@ -1,29 +1,4 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   check.c                                            :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/06/26 21:37:27 by avogt             #+#    #+#             */
-/*   Updated: 2021/07/05 15:29:06 by avogt            ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-#include "../includes/pipex.h"
-
-int	ft_exists(char *s)
-{
-	int	result;
-
-	result = 0;
-	if (s == NULL)
-		return (result);
-	result = access(s, F_OK);
-	if (result == 0)
-		return (1);
-	return (0);
-}
+#include "../includes/minishell.h"
 
 int	add_path(char **arg, char *path, int len_path)
 {
@@ -43,11 +18,13 @@ int	add_path(char **arg, char *path, int len_path)
 	while (arg[0][c] != '\0')
 		new_str[i++] = arg[0][c++];
 	new_str[i] = '\0';
-	if (!ft_exists(new_str))
-	{
-		free(new_str);
-		return (0);
-	}
+/*
+** if (!ft_exists(new_str))
+** {
+**	free(new_str);
+**	return (0);
+** }
+*/
 	free(arg[0]);
 	arg[0] = new_str;
 	return (1);
@@ -76,6 +53,7 @@ int	find_pos_path(char **envp, char *to_find)
 	return (-1);
 }
 
+/*
 void	check_paths(t_helper *helper)
 {
 	int	i;
@@ -103,3 +81,4 @@ void	check_paths(t_helper *helper)
 	if (!ret_path[1])
 		not_found(helper->arg2[0], 1, 0, helper);
 }
+*/
