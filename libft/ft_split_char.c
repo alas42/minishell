@@ -1,16 +1,4 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   parsing.c                                          :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/06/26 18:46:38 by avogt             #+#    #+#             */
-/*   Updated: 2021/07/04 12:07:06 by avogt            ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-#include "../includes/pipex.h"
+#include "../includes/libft.h"
 
 static int	get_number_words(char *str, char split_char)
 {
@@ -79,7 +67,7 @@ static void	fill_with_char(char *str, char *to_fill, int n, char split_char)
 	}
 }
 
-char	**ft_parsed_cmd(char *str, char split_char)
+char	**ft_split_char(char *str, char split_char)
 {
 	int		nb[4];
 	char	**arg;
