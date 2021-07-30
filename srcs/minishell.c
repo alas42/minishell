@@ -1,11 +1,11 @@
 #include "../includes/minishell.h"
 
 //don't know what structure we will be using but there's a start I guess
-int	main(int argc, char **argv, char **envp)
+int	main(int ac __attribute__((unused)), char **av __attribute__((unused)), char **envp __attribute__((unused)))
 {
-	int		int_mode;
-	char	**cmds;
-	char	*line;
+	int			int_mode;
+	char		**cmds;
+	char		*line;
 
 	int_mode = isatty(STDIN_FILENO);
 	while (int_mode)
@@ -16,7 +16,7 @@ int	main(int argc, char **argv, char **envp)
 			line = readline("~$ ");
 			cmds = ft_split_char(line, ' ');
 			free(line);
+			ft_free_tab_ptr(cmds);
 		}
-		ft_free_tab_ptr(cmds);
 	}
 }

@@ -1,6 +1,7 @@
 NAME = minishell
 FILES = minishell.c \
-	free.c
+	free.c \
+	paths.c
 
 LIBFT = libft
 FOLDER_SOURCES = srcs
@@ -14,11 +15,11 @@ CC = gcc
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	make -s -C $(LIBFT)
-	@$(CC) $(SOURCES_FILES) -o $(NAME) -lreadline -L ./libft -lft
+	@make -s -C $(LIBFT)
+	@$(CC) $(CFLAGS) $(IFLAGS) $(SOURCES_FILES) -lreadline -lncurses -L ./libft -lft -o $(NAME)
 
 %.o: %.c
-	@$(CC) $(IFLAGS) -o $@ -c $<
+	@$(CC) $(CFLAGS) $(IFLAGS) -o $@ -c $<
 
 clean:
 	@make -s -C $(LIBFT) clean
