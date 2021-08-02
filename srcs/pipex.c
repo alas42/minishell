@@ -1,5 +1,3 @@
-#include "../includes/pipex.h"
-
 void	process_one(t_helper *helper, char **envp)
 {
 	int	ret_dup[2];
