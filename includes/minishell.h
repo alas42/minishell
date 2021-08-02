@@ -24,7 +24,9 @@ typedef struct s_cmd
     int     		process;
     int     		fd_outfile;
     int     		fd_infile;
+	int				builtin; //bool
 	struct s_cmd	*next;
+	struct s_cmd	*prec;
 }           		t_cmd;
 
 /*
@@ -35,6 +37,7 @@ typedef struct s_cmd
 typedef struct s_infos
 {
 	int				nb_cmd;
+	char			*line;
 	char			**paths;
 	int				pos_path;
 	struct s_cmd	*first;
@@ -47,7 +50,8 @@ typedef struct s_infos
 int		find_pos_path(char **envp, char *to_find);
 int		add_path(char **arg, char *path, int len_path);
 int		ft_exists(char *file_path);
-void	check_paths(char **paths, char **arg);
-
+void	init_cmds(t_infos *infos, char *str);
+void	free_infos(t_infos *infos);
+void	check_paths(t_infos *infos);
 void	ft_free_tab_ptr(char **ptr);
 #endif

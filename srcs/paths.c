@@ -65,20 +65,28 @@ int	find_pos_path(char **envp, char *to_find)
 	return (-1);
 }
 
-void	check_paths(char **paths, char **arg)
+//void functions are a no go, because there are errors that should be checked
+void	check_paths(t_infos *infos)
 {
-	int	i;
-	int	ret_path;
+	int		i;
+	int		ret_path;
+	t_cmd	*cmd;
 
-	i = 0;
-	ret_path = 0;
-	while (paths[i])
+	cmd = infos->first;
+	while (cmd)
 	{
-		if (ret_path != 1)
+		i = 0;
+		ret_path = 0;
+		while (infos->paths[i])
 		{
-			ret_path = add_path(arg, paths[i], ft_strlen(paths[i]));
-			break ;
+			if (ret_path != 1)
+			{
+				ret_path = add_path(cmd->arg, infos->paths[i],
+					ft_strlen(infos->paths[i]));
+				break ;
+			}
+			i++;
 		}
-		i++;
+		cmd = cmd->next;
 	}
 }
