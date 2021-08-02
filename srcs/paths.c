@@ -83,7 +83,6 @@ void	check_paths(t_infos *infos)
 			{
 				ret_path = add_path(cmd->arg, infos->paths[i],
 					ft_strlen(infos->paths[i]));
-				break ;
 			}
 			i++;
 		}

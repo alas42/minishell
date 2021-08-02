@@ -10,6 +10,7 @@ t_infos	*init_infos(char **envp)
 	infos->pos_path = find_pos_path(envp, "PATH");
 	infos->paths = ft_split_char(&envp[infos->pos_path][5], ':');
 	infos->nb_cmd = 0;
+	pipe(infos->pipe); // no error checking yet
 	infos->first = NULL;
 	return (infos);
 }
@@ -33,6 +34,12 @@ void	init_cmds(t_infos *infos, char *str)
 			tmp = tmp->next;
 		cmd->prec = tmp;
 	}
+	cmd->pipe_in = 0;
+	cmd->pipe_out = 0;
+	cmd->name_infile = NULL;
+	cmd->name_outfile = NULL;
+	cmd->builtin = 0;
+	cmd->process = 1;
 	cmd->next = NULL;
 	infos->first = cmd;
 }
@@ -41,10 +48,10 @@ void	init_cmds(t_infos *infos, char *str)
 **
 ** They speak about one global for exit or error status
 ** don't know what structure we will be using but there's a start I guess
-** 
+**
 ** Step 1:
 ** An elaborate pipex that can execute only one func if there is no pipe but more than two if needed
-** 
+**
 ** Step 1.1:
 ** Parsing without execptions to fill structs with correct infos
 **
@@ -54,9 +61,6 @@ void	init_cmds(t_infos *infos, char *str)
 ** Step 1.3:
 ** Add exceptions to parsing - check for builtins
 **
-** Step 1.4:
-** 
-**
 */
 int	main(int ac __attribute__((unused)), char **av __attribute__((unused)), char **envp __attribute__((unused)))
 {
@@ -64,22 +68,22 @@ int	main(int ac __attribute__((unused)), char **av __attribute__((unused)), char
 	t_infos	*infos;
 
 	int_mode = isatty(STDIN_FILENO);
-	infos = init_infos(envp);
 	while (int_mode)
 	{
 		int_mode = isatty(STDIN_FILENO);
 		if (int_mode == 1)
 		{
+			infos = init_infos(envp);
 			infos->line = readline("$ ");
-			//parsing into tokens before adding to history
+			//parsing into tokens before adding to history (it can be an interaction with terminal)
 			if (infos->line)
 				add_history(infos->line);
-			//it wont be like this of course, it takes only one command for now
-			init_cmds(infos, infos->line);
-			check_paths(infos);
+			//test of an algo for one or multiple comands with pipes (NO BUILTINS YET)
+			tests_exec_cmds(infos, envp);
 			free_infos(infos);
+			ft_free_tab_ptr(infos->paths);
+			free(infos);
 		}
 	}
-	ft_free_tab_ptr(infos->paths);
-	free(infos);
+	return (0);
 }
