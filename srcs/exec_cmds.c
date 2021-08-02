@@ -14,7 +14,7 @@
 **
 ** to be removed, checks the content of **args in a t_cmd
 **
-*/
+
 
 static void	check_content(char **cmd)
 {
@@ -24,10 +24,11 @@ static void	check_content(char **cmd)
 	while (cmd[i])
 		ft_putendl_fd(cmd[i++], 1);
 }
+*/
 
 /*
 **
-** returns the t_cmd node thank to the integer infos->nb_cmd
+** returns the t_cmd node thank to the index infos->index_cmd
 **
 */
 
@@ -38,7 +39,7 @@ t_cmd	*get_cmd(t_infos *infos)
 
 	i = 0;
 	cmd = infos->first;
-	while (i < infos->nb_cmd)
+	while (i < infos->index_cmd)
 	{
 		cmd = cmd->next;
 		i++;
@@ -60,45 +61,66 @@ int	exec_cmds(t_infos *infos, char **envp)
 	int		fork_ret;
 
 	cmd = get_cmd(infos);
-	if (cmd)
-		check_content(cmd->arg);
+	printf("%d %% 2 = %d\n", infos->index_cmd, infos->index_cmd % 2);
+	if (infos->index_cmd % 2)
+		pipe(infos->pipe_a);
+	else
+		pipe(infos->pipe_b);
 	if (cmd) // check if the cmd exists or at the end of list
 	{
 		fork_ret = fork();
 		if (fork_ret == 0) //no error checking yet
 		{
-			if (cmd->name_infile)
+			if (infos->index_cmd == 0 && infos->nb_pipe > 0)
+				dup2(infos->pipe_b[WRITE], STDOUT_FILENO);
+			else if (infos->index_cmd == infos->nb_pipe)
 			{
-				close(infos->pipe[0]);
-				cmd->fd_infile = open(cmd->name_infile, O_RDONLY, 0644);
-				dup2(cmd->fd_infile, STDIN_FILENO);
-			}
-			else if (cmd->pipe_in)
-			{
-				dup2(infos->pipe[0], STDIN_FILENO);
-			}
-			else
-				close(infos->pipe[0]);
-			if (cmd->name_outfile)
-			{
-				close(infos->pipe[1]);
-				cmd->fd_outfile = open(cmd->name_outfile, O_TRUNC | O_WRONLY | O_CREAT, 0644);
-				dup2(cmd->fd_outfile, STDOUT_FILENO);
-			}
-			else if (cmd->pipe_out)
-			{
-				dup2(infos->pipe[1], STDOUT_FILENO);
+				if (infos->index_cmd % 2)
+					dup2(infos->pipe_b[READ], STDIN_FILENO);
+				else
+					dup2(infos->pipe_a[READ], STDIN_FILENO);
 			}
 			else
-				close(infos->pipe[1]);
+			{
+				if (infos->index_cmd % 2)
+				{
+					dup2(infos->pipe_b[READ], STDIN_FILENO);
+					dup2(infos->pipe_a[WRITE], STDOUT_FILENO);
+				}
+				else
+				{
+					dup2(infos->pipe_a[READ], STDIN_FILENO);
+					dup2(infos->pipe_b[WRITE], STDOUT_FILENO);
+				}
+			}
 			execve(cmd->arg[0], cmd->arg, envp);
 		}
 		else
 		{
-			infos->nb_cmd = infos->nb_cmd + 1;
-			close(infos->pipe[1]);
-			exec_cmds(infos, envp);
-			close(infos->pipe[0]);
+			if (infos->index_cmd == 0)
+				close(infos->pipe_b[WRITE]);
+			else if (infos->index_cmd == infos->nb_pipe)
+			{
+				if (infos->index_cmd % 2)
+					close(infos->pipe_b[READ]);
+				else
+					close(infos->pipe_a[READ]);
+			}
+			else
+			{
+				if (infos->index_cmd % 2)
+				{
+					close(infos->pipe_b[READ]);
+					close(infos->pipe_a[WRITE]);
+				}
+				else
+				{
+					close(infos->pipe_a[READ]);
+					close(infos->pipe_b[WRITE]);
+				}
+			}
+			infos->index_cmd = infos->index_cmd + 1;
+			exec_cmds(infos, envp);// no error checking yet
 			wait(NULL);
 		}
 	}
@@ -142,8 +164,30 @@ static void	add_cmd(char **arg, t_infos *infos, int pipe_in, int pipe_out)
 		cmd->prec = tmp;
 		tmp->next = cmd;
 	}
+	infos->nb_cmd = infos->nb_cmd + 1;
 }
+/*
+static void	add_pipe(t_infos *infos)
+{
+	int	i;
+	t_pipes *tmp;
+	t_pipes *new;
 
+	i = 0;
+	new = (t_pipes *)malloc(sizeof(t_pipes));
+	new->next = NULL;
+	tmp = infos->first_pipe;
+	if (!tmp)
+		infos->first_pipe = NULL;
+	else
+	{
+		while (tmp->next)
+			tmp = tmp->next;
+		tmp->next = new;
+	}
+	pipe(new->pipe);
+}
+*/
 /*
 **
 ** To be removed
@@ -161,6 +205,7 @@ void	tests_exec_cmds(t_infos *infos, char **envp) //there will be plenty of bugs
 	cmd1 = ft_split_char("ls -l", ' ');
 	cmd2 = ft_split_char("grep a", ' ');
 	cmd3 = ft_split_char("wc -c", ' ');
+	infos->nb_pipe = 2;
 	add_cmd(cmd1, infos, 0, 1);
 	add_cmd(cmd2, infos, 1, 1);
 	add_cmd(cmd3, infos, 1, 0);

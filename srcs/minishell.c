@@ -10,7 +10,7 @@ t_infos	*init_infos(char **envp)
 	infos->pos_path = find_pos_path(envp, "PATH");
 	infos->paths = ft_split_char(&envp[infos->pos_path][5], ':');
 	infos->nb_cmd = 0;
-	pipe(infos->pipe); // no error checking yet
+	infos->index_cmd = 0;
 	infos->first = NULL;
 	return (infos);
 }

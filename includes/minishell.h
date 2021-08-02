@@ -17,6 +17,8 @@
 # include <term.h>
 # include "libft.h"
 
+enum e_file_end { READ, WRITE };
+
 typedef struct s_cmd
 {
     char    		**arg;
@@ -32,6 +34,12 @@ typedef struct s_cmd
 	struct s_cmd	*prec;
 }           		t_cmd;
 
+typedef struct s_pipes
+{
+	struct s_pipes	*next;
+	int				pipe[2];
+}					t_pipes;
+
 /*
 **
 ** Either a chained list or an allocated tab
@@ -39,8 +47,11 @@ typedef struct s_cmd
 */
 typedef struct s_infos
 {
-    int     		pipe[2];
+    int				pipe_a[2];
+	int				pipe_b[2];
+	int				nb_pipe;
 	int				nb_cmd;
+	int				index_cmd;
 	char			*line;
 	char			**paths;
 	int				pos_path;
