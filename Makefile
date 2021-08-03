@@ -3,7 +3,8 @@ NAME = minishell
 FILES = minishell.c \
 	free.c \
 	paths.c \
-	exec_cmds.c
+	exec_cmds.c \
+	utils_cmds.c
 
 BUILTINS_FILES = mini_env.c \
 	mini_cd.c \

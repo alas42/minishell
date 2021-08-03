@@ -34,12 +34,6 @@ typedef struct s_cmd
 	struct s_cmd	*prec;
 }           		t_cmd;
 
-typedef struct s_pipes
-{
-	struct s_pipes	*next;
-	int				pipe[2];
-}					t_pipes;
-
 /*
 **
 ** Either a chained list or an allocated tab
@@ -72,4 +66,9 @@ void	ft_free_tab_ptr(char **ptr);
 int		exec_cmds(t_infos *infos, char **envp);
 t_cmd	*get_cmd(t_infos *infos);
 void	tests_exec_cmds(t_infos *infos, char **envp);
+
+void	add_cmd(t_infos *infos, t_cmd *new);
+t_cmd	*creating_cmd(char **arg, int pipe_in, int pipe_out);
+int		open_fds(t_infos *infos, t_cmd *cmd);
+int		close_fds(t_infos *infos, t_cmd *cmd);
 #endif

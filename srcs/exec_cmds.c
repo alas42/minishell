@@ -28,32 +28,99 @@ static void	check_content(char **cmd)
 
 /*
 **
-** returns the t_cmd node thank to the index infos->index_cmd
-**
-*/
-
-t_cmd	*get_cmd(t_infos *infos)
-{
-	int		i;
-	t_cmd	*cmd;
-
-	i = 0;
-	cmd = infos->first;
-	while (i < infos->index_cmd)
-	{
-		cmd = cmd->next;
-		i++;
-	}
-	return (cmd);
-}
-
-/*
-**
 ** A Recursiv function that executes the commands :
 ** creating child processes &&
 ** setting the pipes and correct fds
 **
+** DIDNT DO THE >>  and << because I don't really understands (for now) how it is working
+**
 */
+
+int	open_fds(t_infos *infos, t_cmd *cmd)
+{
+	if (infos->index_cmd == 0)
+	{
+		if (cmd->name_infile != NULL)
+		{
+			cmd->fd_infile = open(cmd->name_infile, O_RDONLY, 0644);
+			dup2(cmd->fd_infile, STDIN_FILENO);
+		}
+		if (infos->nb_pipe > 0)
+			dup2(infos->pipe_b[WRITE], STDOUT_FILENO);
+		if (cmd->name_outfile != NULL)
+		{
+			cmd->fd_outfile = open(cmd->name_outfile, O_TRUNC | O_WRONLY | O_CREAT, 0644);
+			dup2(cmd->fd_outfile, STDOUT_FILENO);
+		}
+	}
+	else if (infos->index_cmd == infos->nb_pipe)
+	{
+		if (infos->index_cmd % 2)
+			dup2(infos->pipe_b[READ], STDIN_FILENO);
+		else
+			dup2(infos->pipe_a[READ], STDIN_FILENO);
+		if (cmd->name_outfile != NULL)
+		{
+			cmd->fd_outfile = open(cmd->name_outfile, O_TRUNC | O_WRONLY | O_CREAT, 0644);
+			dup2(cmd->fd_outfile, STDOUT_FILENO);
+		}
+	}
+	else
+	{
+		if (infos->index_cmd % 2)
+		{
+			dup2(infos->pipe_b[READ], STDIN_FILENO);
+			dup2(infos->pipe_a[WRITE], STDOUT_FILENO);
+		}
+		else
+		{
+			dup2(infos->pipe_a[READ], STDIN_FILENO);
+			dup2(infos->pipe_b[WRITE], STDOUT_FILENO);
+		}
+	}
+	return (1);
+}
+
+int	close_fds(t_infos *infos, t_cmd *cmd)
+{
+	if (infos->index_cmd == 0)
+	{
+		if (cmd->name_infile != NULL)
+		{
+			close(cmd->fd_infile);
+			dup(STDIN_FILENO);
+		}
+		if (infos->nb_pipe > 0)
+			close(infos->pipe_b[WRITE]);
+		if (cmd->name_outfile != NULL)
+		{
+			close(cmd->fd_outfile);
+		}
+	}
+	else if (infos->index_cmd == infos->nb_pipe)
+	{
+		if (infos->index_cmd % 2)
+			close(infos->pipe_b[READ]);
+		else
+			close(infos->pipe_a[READ]);
+		if (cmd->name_outfile != NULL)
+			close(cmd->fd_outfile);
+	}
+	else
+	{
+		if (infos->index_cmd % 2)
+		{
+			close(infos->pipe_b[READ]);
+			close(infos->pipe_a[WRITE]);
+		}
+		else
+		{
+			close(infos->pipe_a[READ]);
+			close(infos->pipe_b[WRITE]);
+		}
+	}
+	return (1);
+}
 
 int	exec_cmds(t_infos *infos, char **envp)
 {
@@ -61,64 +128,23 @@ int	exec_cmds(t_infos *infos, char **envp)
 	int		fork_ret;
 
 	cmd = get_cmd(infos);
-	printf("%d %% 2 = %d\n", infos->index_cmd, infos->index_cmd % 2);
-	if (infos->index_cmd % 2)
-		pipe(infos->pipe_a);
-	else
-		pipe(infos->pipe_b);
 	if (cmd) // check if the cmd exists or at the end of list
 	{
+		if (infos->index_cmd % 2)
+			pipe(infos->pipe_a);
+		else if (infos->nb_pipe != 0)
+			pipe(infos->pipe_b);
+		if (!open_fds(infos, cmd)) // No error checking yet
+			return (0);
 		fork_ret = fork();
 		if (fork_ret == 0) //no error checking yet
 		{
-			if (infos->index_cmd == 0 && infos->nb_pipe > 0)
-				dup2(infos->pipe_b[WRITE], STDOUT_FILENO);
-			else if (infos->index_cmd == infos->nb_pipe)
-			{
-				if (infos->index_cmd % 2)
-					dup2(infos->pipe_b[READ], STDIN_FILENO);
-				else
-					dup2(infos->pipe_a[READ], STDIN_FILENO);
-			}
-			else
-			{
-				if (infos->index_cmd % 2)
-				{
-					dup2(infos->pipe_b[READ], STDIN_FILENO);
-					dup2(infos->pipe_a[WRITE], STDOUT_FILENO);
-				}
-				else
-				{
-					dup2(infos->pipe_a[READ], STDIN_FILENO);
-					dup2(infos->pipe_b[WRITE], STDOUT_FILENO);
-				}
-			}
 			execve(cmd->arg[0], cmd->arg, envp);
 		}
 		else
 		{
-			if (infos->index_cmd == 0)
-				close(infos->pipe_b[WRITE]);
-			else if (infos->index_cmd == infos->nb_pipe)
-			{
-				if (infos->index_cmd % 2)
-					close(infos->pipe_b[READ]);
-				else
-					close(infos->pipe_a[READ]);
-			}
-			else
-			{
-				if (infos->index_cmd % 2)
-				{
-					close(infos->pipe_b[READ]);
-					close(infos->pipe_a[WRITE]);
-				}
-				else
-				{
-					close(infos->pipe_a[READ]);
-					close(infos->pipe_b[WRITE]);
-				}
-			}
+			if (!close_fds(infos, cmd))
+				return (0);
 			infos->index_cmd = infos->index_cmd + 1;
 			exec_cmds(infos, envp);// no error checking yet
 			wait(NULL);
@@ -131,84 +157,32 @@ int	exec_cmds(t_infos *infos, char **envp)
 **
 ** To be removed
 ** Because there is no parsing yet
-** Creating nodes and adding them to the list
-**
-*/
-
-static void	add_cmd(char **arg, t_infos *infos, int pipe_in, int pipe_out)
-{
-	t_cmd *cmd;
-	t_cmd *tmp;
-
-	tmp = infos->first;
-	cmd = (t_cmd *)malloc(sizeof(t_cmd));
-	if (!cmd)
-		return ;
-	cmd->arg = arg;
-	cmd->pipe_in = pipe_in;
-	cmd->pipe_out = pipe_out;
-	cmd->name_infile = NULL;
-	cmd->name_outfile = NULL;
-	cmd->builtin = 0;
-	cmd->process = 1;
-	cmd->next = NULL;
-	if (tmp == NULL)
-	{
-		cmd->prec = NULL;
-		infos->first = cmd;
-	}
-	else
-	{
-		while (tmp->next)
-			tmp = tmp->next;
-		cmd->prec = tmp;
-		tmp->next = cmd;
-	}
-	infos->nb_cmd = infos->nb_cmd + 1;
-}
-/*
-static void	add_pipe(t_infos *infos)
-{
-	int	i;
-	t_pipes *tmp;
-	t_pipes *new;
-
-	i = 0;
-	new = (t_pipes *)malloc(sizeof(t_pipes));
-	new->next = NULL;
-	tmp = infos->first_pipe;
-	if (!tmp)
-		infos->first_pipe = NULL;
-	else
-	{
-		while (tmp->next)
-			tmp = tmp->next;
-		tmp->next = new;
-	}
-	pipe(new->pipe);
-}
-*/
-/*
-**
-** To be removed
-** Because there is no parsing yet
 ** Creating commands
 **
 */
 
 void	tests_exec_cmds(t_infos *infos, char **envp) //there will be plenty of bugs with the fds
 {
-	char **cmd1;
+	/*char **cmd1;
 	char **cmd2;
-	char **cmd3;
+	char **cmd3;*/
+	t_cmd *cmd;
+	char **cmd4;
 
-	cmd1 = ft_split_char("ls -l", ' ');
+	/*cmd1 = ft_split_char("ls -l", ' ');
 	cmd2 = ft_split_char("grep a", ' ');
-	cmd3 = ft_split_char("wc -c", ' ');
-	infos->nb_pipe = 2;
-	add_cmd(cmd1, infos, 0, 1);
-	add_cmd(cmd2, infos, 1, 1);
-	add_cmd(cmd3, infos, 1, 0);
+	cmd3 = ft_split_char("wc -c", ' ');*/
+	infos->nb_pipe = 0;
+	cmd4 = ft_split_char("wc -c", ' ');
+	cmd = creating_cmd(cmd4, 0, 0);
+	cmd->name_infile = ft_strdup("infile_test");
+	cmd->name_outfile = ft_strdup("outfile_test");
+	/*add_cmd(infos, creating_cmd(cmd1,  0, 1));
+	add_cmd(infos, creating_cmd(cmd2, 1, 1));
+	add_cmd(infos, creating_cmd(cmd3, 1, 0));*/
+	add_cmd(infos, cmd);
 	check_paths(infos);
 	exec_cmds(infos, envp);
+	free(cmd->name_infile);
+	free(cmd->name_outfile);
 }
