@@ -4,7 +4,8 @@ FILES = minishell.c \
 	free.c \
 	paths.c \
 	exec_cmds.c \
-	utils_cmds.c
+	utils_cmds.c \
+	utils_env.c
 
 BUILTINS_FILES = mini_env.c \
 	mini_cd.c \

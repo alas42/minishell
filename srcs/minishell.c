@@ -1,5 +1,11 @@
 #include "../includes/minishell.h"
 
+/*
+**
+** We shouldn't forget that envp can be NULL
+**
+*/
+
 t_infos	*init_infos(char **envp)
 {
 	t_infos	*infos;
@@ -7,11 +13,14 @@ t_infos	*init_infos(char **envp)
 	infos = (t_infos *)malloc(sizeof(t_infos));
 	if (!infos)
 		return (NULL);
-	infos->pos_path = find_pos_path(envp, "PATH");
-	infos->paths = ft_split_char(&envp[infos->pos_path][5], ':');
+	infos->first_env = NULL;
+	get_env_list(infos, envp);
+	infos->pos_path = find_pos_key(infos, "PATH");
+	infos->paths = ft_split_char(get_pair(infos, infos->pos_path), ':');
 	infos->nb_cmd = 0;
+	infos->nb_pipe = 0;
 	infos->index_cmd = 0;
-	infos->first = NULL;
+	infos->first_cmd = NULL;
 	return (infos);
 }
 
@@ -21,7 +30,7 @@ void	init_cmds(t_infos *infos, char *str)
 	t_cmd *cmd;
 	t_cmd *tmp;
 
-	tmp = infos->first;
+	tmp = infos->first_cmd;
 	cmd = (t_cmd *)malloc(sizeof(t_cmd));
 	if (!cmd)
 		return ;
@@ -41,7 +50,7 @@ void	init_cmds(t_infos *infos, char *str)
 	cmd->builtin = 0;
 	cmd->process = 1;
 	cmd->next = NULL;
-	infos->first = cmd;
+	infos->first_cmd = cmd;
 }
 
 /*
@@ -62,7 +71,8 @@ void	init_cmds(t_infos *infos, char *str)
 ** Add exceptions to parsing - check for builtins
 **
 */
-int	main(int ac __attribute__((unused)), char **av __attribute__((unused)), char **envp __attribute__((unused)))
+
+int	main(int ac __attribute__((unused)), char **av __attribute__((unused)), char **envp)
 {
 	int		int_mode;
 	t_infos	*infos;
@@ -79,7 +89,10 @@ int	main(int ac __attribute__((unused)), char **av __attribute__((unused)), char
 			if (infos->line)
 				add_history(infos->line);
 			//test of an algo for one or multiple comands with pipes (NO BUILTINS YET)
-			tests_exec_cmds(infos, envp);
+			//tests_exec_cmds(infos, envp);
+			//test_pwd();
+			//test_cd();
+			test_export(infos);
 			free_infos(infos);
 			ft_free_tab_ptr(infos->paths);
 			free(infos);

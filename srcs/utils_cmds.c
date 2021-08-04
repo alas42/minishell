@@ -10,12 +10,12 @@ void	add_cmd(t_infos *infos, t_cmd *new)
 {
 	t_cmd *tmp;
 
-	tmp = infos->first;
+	tmp = infos->first_cmd;
 	new->next = NULL;
 	if (tmp == NULL)
 	{
 		new->prec = NULL;
-		infos->first = new;
+		infos->first_cmd = new;
 	}
 	else
 	{
@@ -48,9 +48,10 @@ t_cmd	*creating_cmd(char **arg, int pipe_in, int pipe_out)
 
 /*
 **
-** returns the t_cmd node thank to the index infos->index_cmd
+** Returns the t_cmd node thank to the index infos->index_cmd
 **
 ** Maybe I will change it to a integer as second param
+**
 */
 
 t_cmd	*get_cmd(t_infos *infos)
@@ -59,7 +60,7 @@ t_cmd	*get_cmd(t_infos *infos)
 	t_cmd	*cmd;
 
 	i = 0;
-	cmd = infos->first;
+	cmd = infos->first_cmd;
 	while (i < infos->index_cmd)
 	{
 		cmd = cmd->next;

@@ -34,11 +34,13 @@ typedef struct s_cmd
 	struct s_cmd	*prec;
 }           		t_cmd;
 
-/*
-**
-** Either a chained list or an allocated tab
-**
-*/
+typedef struct s_env
+{
+	char			*pair;
+	int				order;
+	struct s_env	*next;
+}					t_env;
+
 typedef struct s_infos
 {
     int				pipe_a[2];
@@ -49,14 +51,11 @@ typedef struct s_infos
 	char			*line;
 	char			**paths;
 	int				pos_path;
-	struct s_cmd	*first;
+	struct s_cmd	*first_cmd;
+	struct s_env	*first_env;
 }					t_infos;
 
-/*
-** find_pos_path - search the envp variable 
-** returns the index of path variable 
-**/
-int		find_pos_path(char **envp, char *to_find);
+int		find_pos_key(t_infos *infos, char *to_find);
 int		add_path(char **arg, char *path, int len_path);
 int		ft_exists(char *file_path);
 void	init_cmds(t_infos *infos, char *str);
@@ -71,4 +70,16 @@ void	add_cmd(t_infos *infos, t_cmd *new);
 t_cmd	*creating_cmd(char **arg, int pipe_in, int pipe_out);
 int		open_fds(t_infos *infos, t_cmd *cmd);
 int		close_fds(t_infos *infos, t_cmd *cmd);
+
+void	test_pwd(void);
+char	*mini_pwd(void);
+
+int		mini_cd(char *path);
+void	test_cd(void);
+
+void	test_export(t_infos *infos);
+char	**get_env(char **envp);
+void	get_env_list(t_infos *infos, char **envp);
+char	*get_pair(t_infos *infos, int index);
+
 #endif

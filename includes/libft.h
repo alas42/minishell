@@ -28,6 +28,7 @@ void	ft_putendl_fd(char const *s, int fd);
 char	*ft_strchr(const char *s, int c);
 int		ft_strcmp(const char *s1, const char *s2);
 void	ft_strdel(char **as);
+char 	*ft_strcat(char *dest, char *src);
 char	*ft_strdup(const char *s1);
 char	*ft_strjoin(char const *s1, char const *s2);
 char	*ft_strsub(char const *s, unsigned int start, size_t len);

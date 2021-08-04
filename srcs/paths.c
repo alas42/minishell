@@ -39,40 +39,55 @@ int	add_path(char **arg, char *path, int len_path)
 	return (1);
 }
 
-int	find_pos_path(char **envp, char *to_find)
+/*
+**
+** Find the index of env value 'to_find' in the environment list
+**
+*/
+
+int	find_pos_key(t_infos *infos, char *to_find)
 {
 	int	i;
-	int	j;
+	int j;
 	int	len_to_find;
+	t_env *env;
 
-	j = 0;
-	i = 0;
+	env = infos->first_env;
 	len_to_find = 0;
-	while (envp[i])
+	j = 0;
+	while (env)
 	{
-		j = 0;
+		i = 0;
 		len_to_find = ft_strlen(to_find);
-		while (j < len_to_find)
+		while (i < len_to_find)
 		{
-			if (envp[i][j] != to_find[j])
+			if (env->pair[i] != to_find[i])
 				break ;
-			j++;
-			if (j == 4)
-				return (i);
+			i++;
+			if (i == ft_strlen(to_find))
+				return (j);
 		}
-		i++;
+		j++;
+		env = env->next;
 	}
 	return (-1);
 }
 
-//void functions are a no go, because there are errors that should be checked
+/*
+**
+** (void functions are a no go, because there are errors that should be checked)
+** This function add the execution path to every command in the chained list
+** If it doesn't find, the path stays the same, it will try to execute it in the directory
+**
+*/
+
 void	check_paths(t_infos *infos)
 {
 	int		i;
 	int		ret_path;
 	t_cmd	*cmd;
 
-	cmd = infos->first;
+	cmd = infos->first_cmd;
 	while (cmd)
 	{
 		i = 0;
