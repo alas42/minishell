@@ -92,8 +92,10 @@ int	main(int ac __attribute__((unused)), char **av __attribute__((unused)), char
 			//test of an algo for one or multiple comands with pipes (NO BUILTINS YET)
 			//tests_exec_cmds(infos, envp);
 			//test_pwd();
-			//test_cd();
-			test_export(infos);
+			test_cd(infos);
+			test_echo();
+			//test_export(infos);
+			//test_unset(infos);
 			free_infos(infos);
 			free(infos);
 		}

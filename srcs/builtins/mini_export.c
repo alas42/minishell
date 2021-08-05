@@ -1,6 +1,6 @@
 #include "../../includes/minishell.h"
 
-static char *create_pair_key_value(char *key, char *value)
+char	*create_pair_key_value(char *key, char *value)
 {
 	char	*key_value_str;
 	size_t	length;
@@ -17,7 +17,12 @@ static char *create_pair_key_value(char *key, char *value)
 
 /*
 **
-** Env builtin print it exactly like this
+** Export without arg - print in ascii order the tab of ptrs with TWO change
+** 1. It displays with double quotes around the value ... it means we have to cut the string in two and add quotes around the second string obtained before printing
+** 2. It displays the lists with 'export ' before every line
+**
+** That's why I thought about a chained list with an integer containing positions,
+** It can be very good if the char * in every nodes points to according char * in the tab
 **
 */
 
@@ -33,6 +38,13 @@ static void	print_export(t_infos *infos)
 		env = env->next;
 	}
 }
+
+/*
+**
+** NOT TO FORGET : SET CORRECT RETURN STATUS CODE
+** USING : tab of pointers and not list
+**
+*/
 
 int	mini_export(t_infos *infos, char *key, char *value)
 {
@@ -64,7 +76,9 @@ void	test_export(t_infos *infos)
 	key2 = "testare_key";
 	value = "value2_key";
 	value2 = "oazkdozak";
+	ft_putendl_fd("\n\n", STDOUT_FILENO);
 	mini_export(infos, key, value);
 	mini_export(infos, key2, value2);
 	print_env_tab(infos);
+	ft_putendl_fd("\n\n", STDOUT_FILENO);
 }

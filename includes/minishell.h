@@ -91,8 +91,8 @@ int		close_fds(t_infos *infos, t_cmd *cmd);
 void	test_pwd(void);
 char	*mini_pwd(void);
 
-int		mini_cd(char *path);
-void	test_cd(void);
+int		mini_cd(t_infos *infos, char *path);
+void	test_cd(t_infos *infos);
 
 int		mini_export(t_infos *infos, char *key, char *value);
 void	test_export(t_infos *infos);
@@ -109,5 +109,13 @@ void	test_env(t_infos *infos);
 char	**get_env_tab(char **envp);
 void	print_env_tab(t_infos *infos);
 char	**add_env_tab(char **envs, char *key_value_str);
+char	**remove_env_tab(t_infos *infos, char *key);
+int		change_line_env_tab(t_infos *infos, char *key,  char *value);
+char	*create_pair_key_value(char *key, char *value);
 
+int		mini_unset(t_infos *infos, char *key);
+void	test_unset(t_infos *infos);
+
+int		mini_echo(char **arg);
+void	test_echo(void);
 #endif

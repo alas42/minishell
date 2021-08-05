@@ -35,7 +35,6 @@ static char	*realloc_path_dir(char *path_dir, size_t *length_path)
 	return (path_dir);
 }
 
-
 char	*mini_pwd(void)
 {
 	char	*path_dir;
