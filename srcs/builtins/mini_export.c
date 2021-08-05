@@ -1,9 +1,23 @@
 #include "../../includes/minishell.h"
 
+static char *create_pair_key_value(char *key, char *value)
+{
+	char	*key_value_str;
+	size_t	length;
+
+	length = ft_strlen(key) + ft_strlen(value) + 4;
+	key_value_str = (char *)malloc(sizeof(char) * (length));
+	key_value_str[0] = '\0';
+	key_value_str = ft_strcat(key_value_str, key);
+	key_value_str = ft_strcat(key_value_str, "=");
+	key_value_str = ft_strcat(key_value_str, value);
+	key_value_str = ft_strcat(key_value_str, "\0");
+	return (key_value_str);
+}
+
 /*
 **
-** Print the content of env in alphabetical order
-** That is if export is used without an assignation key=value
+** Env builtin print it exactly like this
 **
 */
 
@@ -14,48 +28,43 @@ static void	print_export(t_infos *infos)
 	env = infos->first_env;
 	while (env)
 	{
+		ft_putstr_fd("export ", STDOUT_FILENO);
 		ft_putendl_fd(env->pair, STDOUT_FILENO);
 		env = env->next;
 	}
 }
 
-static int	mini_export(t_infos *infos, char *key, char *value)
+int	mini_export(t_infos *infos, char *key, char *value)
 {
-	int		i;
 	int		ret_find_path;
 	char	*key_value_str;
-	t_env	*env;
 
 	if (key == NULL && value == NULL)
 		print_export(infos);
-	i = 0;
-	ret_find_path = 0;
-	env = infos->first_env;
-	ret_find_path = find_pos_key(infos, value);
+	key_value_str = create_pair_key_value(key, value);
+	ret_find_path = find_pos_key(infos, key);
 	if (ret_find_path > -1)
 	{
-		while (i++ < ret_find_path)
-			env = env->next;
-		free(env->pair);
-		key_value_str = (char *)malloc(sizeof(char) * (ft_strlen(key) + ft_strlen(value) + 4));
-		key_value_str[0] = '\0';
-		key_value_str = ft_strcat(key_value_str, key);
-		key_value_str = ft_strcat(key_value_str, "=\"");
-		key_value_str = ft_strcat(key_value_str, value);
-		key_value_str = ft_strcat(key_value_str, "\"\0");
-		env->pair = key_value_str;
-		return (1);
+		free(infos->envs[ret_find_path]);
+		infos->envs[ret_find_path] = key_value_str;
 	}
-	print_export(infos);
-	return (0);
+	else
+		infos->envs = add_env_tab(infos->envs, key_value_str);
+	return (1);
 }
 
 void	test_export(t_infos *infos)
 {
 	char	*key;
 	char	*value;
+	char	*key2;
+	char	*value2;
 
 	key = "test_key";
-	value = "value_key";
+	key2 = "testare_key";
+	value = "value2_key";
+	value2 = "oazkdozak";
 	mini_export(infos, key, value);
+	mini_export(infos, key2, value2);
+	print_env_tab(infos);
 }

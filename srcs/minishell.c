@@ -14,7 +14,8 @@ t_infos	*init_infos(char **envp)
 	if (!infos)
 		return (NULL);
 	infos->first_env = NULL;
-	get_env_list(infos, envp);
+	infos->envs = get_env_tab(envp);
+	get_env_list(infos, infos->envs);
 	infos->pos_path = find_pos_key(infos, "PATH");
 	infos->paths = ft_split_char(get_pair(infos, infos->pos_path), ':');
 	infos->nb_cmd = 0;
@@ -94,7 +95,6 @@ int	main(int ac __attribute__((unused)), char **av __attribute__((unused)), char
 			//test_cd();
 			test_export(infos);
 			free_infos(infos);
-			ft_free_tab_ptr(infos->paths);
 			free(infos);
 		}
 	}

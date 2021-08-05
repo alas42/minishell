@@ -5,12 +5,12 @@ FILES = minishell.c \
 	paths.c \
 	exec_cmds.c \
 	utils_cmds.c \
-	utils_env.c
+	utils_env.c \
+	utils_list_env.c
 
 BUILTINS_FILES = mini_env.c \
 	mini_cd.c \
 	mini_echo.c \
-	mini_env.c \
 	mini_exit.c \
 	mini_export.c \
 	mini_pwd.c \

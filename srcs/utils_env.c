@@ -1,56 +1,63 @@
 #include "../includes/minishell.h"
 
-char	*get_pair(t_infos *infos, int index)
+char	**add_env_tab(char **envs, char *key_value_str)
 {
-	t_env	*env;
 	int		i;
+	int		j;
+	char	**new_tab;
 
 	i = 0;
-	env = infos->first_env;
-	while (i++ < index)
-		env = env->next;
-	return (env->pair);
-}
-
-void	add_env(t_infos *infos, t_env *new)
-{
-	t_env *tmp;
-
-	tmp = infos->first_env;
-	new->next = NULL;
-	if (tmp == NULL)
+	while (envs[i])
 	{
-		infos->first_env = new;
+		i++;
 	}
-	else
-	{
-		while (tmp->next)
-			tmp = tmp->next;
-		tmp->next = new;
-	}
-}
-
-t_env	*creating_env(char *str)
-{
-	t_env *env;
-
-	env = (t_env *)malloc(sizeof(t_env));
-	if (!env)
+	new_tab = (char **)malloc(sizeof(char *) * (i + 2));
+	if (!new_tab)
 		return (NULL);
-	env->pair = ft_strdup(str);
-	env->order = 0;
-	env->next = NULL;
-	return (env);
+	j = 0;
+	while (j < i - 1)
+	{
+		new_tab[j] = ft_strdup(envs[j]);
+		j++;
+	}
+	new_tab[j++] = key_value_str;
+	new_tab[j++] = ft_strdup(envs[i - 1]);
+	new_tab[j] = NULL;
+	ft_free_tab_ptr(envs);
+	return (new_tab);
 }
 
-void	get_env_list(t_infos *infos, char **envp)
+char	**get_env_tab(char **envp)
 {
+	char	**envs;
 	int		i;
 
 	i = 0;
 	while (envp[i])
 	{
-		add_env(infos, creating_env(envp[i]));
+		i++;
+	}
+	envs = (char **)malloc(sizeof(char *) *(i + 1));
+	if (!envs)
+		return (NULL);
+	i = 0;
+	while (envp[i])
+	{
+		envs[i] = ft_strdup(envp[i]);
+		i++;
+	}
+	envs[i] = NULL;
+	return (envs);
+}
+
+void	print_env_tab(t_infos *infos)
+{
+	int	i;
+
+	i = 0;
+	while (infos->envs[i])
+	{
+		ft_putendl_fd(infos->envs[i], STDOUT_FILENO);
 		i++;
 	}
 }

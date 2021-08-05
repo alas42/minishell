@@ -68,3 +68,22 @@ t_cmd	*get_cmd(t_infos *infos)
 	}
 	return (cmd);
 }
+
+void	free_cmd_list(t_infos *infos)
+{
+	t_cmd	*cmd;
+	t_cmd	*tmp;
+
+	cmd = infos->first_cmd;
+	while (cmd)
+	{
+		tmp = cmd;
+		if (cmd->name_infile)
+			free(cmd->name_infile);
+		if (cmd->name_outfile)
+			free(cmd->name_outfile);
+		ft_free_tab_ptr(cmd->arg);
+		cmd = cmd->next;
+		free(tmp);
+	}
+}

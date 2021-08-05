@@ -41,6 +41,19 @@ typedef struct s_env
 	struct s_env	*next;
 }					t_env;
 
+/*
+**
+** Chained list and tab of pointers to char for the same env
+** Why ?
+** We have to pass a tab of pointers in execve.
+** But we have to print them in two different ways in env and export builtins
+**
+** Env -> In alphabetical order BUT without double quotes around the value
+** Export -> In normal order from envp but the last before NULL will be the terminal
+** When adding a key=value, add it just before the line from terminal
+**
+*/
+
 typedef struct s_infos
 {
     int				pipe_a[2];
@@ -53,13 +66,17 @@ typedef struct s_infos
 	int				pos_path;
 	struct s_cmd	*first_cmd;
 	struct s_env	*first_env;
+	char			**envs;
 }					t_infos;
 
 int		find_pos_key(t_infos *infos, char *to_find);
 int		add_path(char **arg, char *path, int len_path);
 int		ft_exists(char *file_path);
+
 void	init_cmds(t_infos *infos, char *str);
 void	free_infos(t_infos *infos);
+void	free_cmd_list(t_infos *infos);
+
 void	check_paths(t_infos *infos);
 void	ft_free_tab_ptr(char **ptr);
 int		exec_cmds(t_infos *infos, char **envp);
@@ -77,9 +94,20 @@ char	*mini_pwd(void);
 int		mini_cd(char *path);
 void	test_cd(void);
 
+int		mini_export(t_infos *infos, char *key, char *value);
 void	test_export(t_infos *infos);
-char	**get_env(char **envp);
+
+void	add_env(t_infos *infos, t_env *new);
+t_env	*creating_env(char *str);
 void	get_env_list(t_infos *infos, char **envp);
 char	*get_pair(t_infos *infos, int index);
+void	free_env_list(t_infos *infos);
+
+int		mini_env(t_infos *infos);
+void	test_env(t_infos *infos);
+
+char	**get_env_tab(char **envp);
+void	print_env_tab(t_infos *infos);
+char	**add_env_tab(char **envs, char *key_value_str);
 
 #endif

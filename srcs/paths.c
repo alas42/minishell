@@ -50,25 +50,22 @@ int	find_pos_key(t_infos *infos, char *to_find)
 	int	i;
 	int j;
 	int	len_to_find;
-	t_env *env;
 
-	env = infos->first_env;
 	len_to_find = 0;
-	j = 0;
-	while (env)
+	i = 0;
+	while (infos->envs[i])
 	{
-		i = 0;
+		j = 0;
 		len_to_find = ft_strlen(to_find);
-		while (i < len_to_find)
+		while (j < len_to_find)
 		{
-			if (env->pair[i] != to_find[i])
+			if (infos->envs[i][j] != to_find[j])
 				break ;
-			i++;
-			if (i == ft_strlen(to_find))
-				return (j);
+			j++;
+			if (j == ft_strlen(to_find))
+				return (i);
 		}
-		j++;
-		env = env->next;
+		i++;
 	}
 	return (-1);
 }
