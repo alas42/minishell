@@ -12,39 +12,47 @@
 **
 */
 
-int	mini_echo(char **arg)
+void	is_new_line(char **arg, int *i, int *new_line)
 {
-	int i;
-	int j;
-	int	new_line;
+	int	j;
 
-	new_line = 1;
-	i = 0;
-	j = 0;
-	if (arg[1] && arg[1][j] == '-')
+	while (arg[*i])
 	{
-		i = 2;
-		j++;
-		while (arg[1][j])
+		j = 0;
+		if (arg[*i][j] == '-')
+			j++;
+		else
+			return ;
+		while (arg[*i][j])
 		{
-			if (arg[1][j] == 'n')
-				new_line = 0;
+			if (arg[*i][j] == 'n')
+				*new_line = 0;
 			else
 			{
-				new_line = 1;
-				i--;
-				break ;
+				if (*i == 1)
+					*new_line = 1;
+				return ;
 			}
 			j++;
 		}
+		*i = *i + 1;
 	}
+}
+
+int	mini_echo(char **arg)
+{
+	int i;
+	int	new_line;
+
+	new_line = 1;
+	i = 1;
+	is_new_line(arg, &i, &new_line);
 	while (arg[i])
 	{
 		ft_putstr_fd(arg[i], STDOUT_FILENO);
 		i++;
 		if (arg[i])
 			ft_putchar_fd(' ', STDOUT_FILENO);
-
 	}
 	if (new_line)
 		ft_putchar_fd('\n', STDOUT_FILENO);
@@ -53,12 +61,18 @@ int	mini_echo(char **arg)
 
 void	test_echo(void)
 {
-	char *arg[5];
+	char *arg[7];
+	//char *arg2[2];
 
 	arg[0] = "echo";
-	arg[1] = "-n";
+	arg[1] = "-nnnnnnnn";
 	arg[2] = "-nnnnnnnnn";
-	arg[3] = "-aaaaa";
-	arg[4] = NULL;
+	arg[3] = "-nnnnnnnaaaaa";
+	arg[4] = "-nnnnnnnnnnnn";
+	arg[5] = "abc";
+	arg[6] = NULL;
+	/*arg2[0] = "echo";
+	arg2[1] = NULL;*/
 	mini_echo(arg);
+	//mini_echo(arg2);
 }

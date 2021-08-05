@@ -118,4 +118,5 @@ void	test_unset(t_infos *infos);
 
 int		mini_echo(char **arg);
 void	test_echo(void);
+
 #endif
