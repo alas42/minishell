@@ -12,6 +12,7 @@ t_infos	*init_infos(char **envp)
 	infos->nb_cmd = 0;
 	pipe(infos->pipe); // no error checking yet
 	infos->first = NULL;
+	infos->tokens = NULL;
 	return (infos);
 }
 
@@ -76,10 +77,11 @@ int	main(int ac __attribute__((unused)), char **av __attribute__((unused)), char
 			infos = init_infos(envp);
 			infos->line = readline("$ ");
 			//parsing into tokens before adding to history (it can be an interaction with terminal)
+			start_parsing(infos);
 			if (infos->line)
 				add_history(infos->line);
 			//test of an algo for one or multiple comands with pipes (NO BUILTINS YET)
-			tests_exec_cmds(infos, envp);
+			// tests_exec_cmds(infos, envp);
 			free_infos(infos);
 			ft_free_tab_ptr(infos->paths);
 			free(infos);
