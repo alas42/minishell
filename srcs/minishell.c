@@ -1,5 +1,11 @@
 #include "../includes/minishell.h"
 
+/*
+**
+** We shouldn't forget that envp can be NULL
+**
+*/
+
 t_infos	*init_infos(char **envp)
 {
 	t_infos	*infos;
@@ -7,11 +13,15 @@ t_infos	*init_infos(char **envp)
 	infos = (t_infos *)malloc(sizeof(t_infos));
 	if (!infos)
 		return (NULL);
-	infos->pos_path = find_pos_path(envp, "PATH");
-	infos->paths = ft_split_char(&envp[infos->pos_path][5], ':');
+	infos->first_env = NULL;
+	infos->envs = get_env_tab(envp);
+	get_env_list(infos, infos->envs);
+	infos->pos_path = find_pos_key(infos, "PATH");
+	infos->paths = ft_split_char(get_pair(infos, infos->pos_path), ':');
 	infos->nb_cmd = 0;
-	pipe(infos->pipe); // no error checking yet
-	infos->first = NULL;
+	infos->nb_pipe = 0;
+	infos->index_cmd = 0;
+	infos->first_cmd = NULL;
 	return (infos);
 }
 
@@ -21,7 +31,7 @@ void	init_cmds(t_infos *infos, char *str)
 	t_cmd *cmd;
 	t_cmd *tmp;
 
-	tmp = infos->first;
+	tmp = infos->first_cmd;
 	cmd = (t_cmd *)malloc(sizeof(t_cmd));
 	if (!cmd)
 		return ;
@@ -41,7 +51,7 @@ void	init_cmds(t_infos *infos, char *str)
 	cmd->builtin = 0;
 	cmd->process = 1;
 	cmd->next = NULL;
-	infos->first = cmd;
+	infos->first_cmd = cmd;
 }
 
 /*
@@ -62,7 +72,8 @@ void	init_cmds(t_infos *infos, char *str)
 ** Add exceptions to parsing - check for builtins
 **
 */
-int	main(int ac __attribute__((unused)), char **av __attribute__((unused)), char **envp __attribute__((unused)))
+
+int	main(int ac __attribute__((unused)), char **av __attribute__((unused)), char **envp)
 {
 	int		int_mode;
 	t_infos	*infos;
@@ -70,7 +81,6 @@ int	main(int ac __attribute__((unused)), char **av __attribute__((unused)), char
 	int_mode = isatty(STDIN_FILENO);
 	while (int_mode)
 	{
-		int_mode = isatty(STDIN_FILENO);
 		if (int_mode == 1)
 		{
 			infos = init_infos(envp);
@@ -79,11 +89,16 @@ int	main(int ac __attribute__((unused)), char **av __attribute__((unused)), char
 			if (infos->line)
 				add_history(infos->line);
 			//test of an algo for one or multiple comands with pipes (NO BUILTINS YET)
-			tests_exec_cmds(infos, envp);
-			free_infos(infos);
-			ft_free_tab_ptr(infos->paths);
-			free(infos);
+			tests_exec_cmds(infos, infos->envs);
+			//test_pwd();
+			//test_cd(infos);
+			//test_echo();
+			//test_export(infos);
+			//test_unset(infos);
 		}
+		int_mode = isatty(STDIN_FILENO);
 	}
+	free_infos(infos);
+	free(infos);
 	return (0);
 }

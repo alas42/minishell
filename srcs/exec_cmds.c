@@ -14,7 +14,7 @@
 **
 ** to be removed, checks the content of **args in a t_cmd
 **
-*/
+
 
 static void	check_content(char **cmd)
 {
@@ -24,27 +24,7 @@ static void	check_content(char **cmd)
 	while (cmd[i])
 		ft_putendl_fd(cmd[i++], 1);
 }
-
-/*
-**
-** returns the t_cmd node thank to the integer infos->nb_cmd
-**
 */
-
-t_cmd	*get_cmd(t_infos *infos)
-{
-	int		i;
-	t_cmd	*cmd;
-
-	i = 0;
-	cmd = infos->first;
-	while (i < infos->nb_cmd)
-	{
-		cmd = cmd->next;
-		i++;
-	}
-	return (cmd);
-}
 
 /*
 **
@@ -52,7 +32,107 @@ t_cmd	*get_cmd(t_infos *infos)
 ** creating child processes &&
 ** setting the pipes and correct fds
 **
+** DIDNT DO THE >>  and << because I don't really understands (for now) how it is working
+**
 */
+
+int	child_fds(t_infos *infos, t_cmd *cmd)
+{
+	if (infos->index_cmd == 0)
+	{
+		close(infos->pipe_b[READ]);
+		if (cmd->name_infile != NULL)
+		{
+			cmd->fd_infile = open(cmd->name_infile, O_RDONLY, 0644);
+			dup2(cmd->fd_infile, STDIN_FILENO);
+		}
+		if (cmd->pipe_out)
+		{
+			dup2(infos->pipe_b[WRITE], STDOUT_FILENO);
+		}
+		else if (cmd->name_outfile != NULL)
+		{
+			cmd->fd_outfile = open(cmd->name_outfile, O_TRUNC | O_WRONLY | O_CREAT, 0644);
+			dup2(cmd->fd_outfile, STDOUT_FILENO);
+		}
+	}
+	else if (infos->index_cmd == infos->nb_pipe)
+	{
+		if (infos->index_cmd % 2)
+		{
+			dup2(infos->pipe_b[READ], STDIN_FILENO);
+			close(infos->pipe_b[WRITE]);
+		}
+		else
+		{
+			dup2(infos->pipe_a[READ], STDIN_FILENO);
+			close(infos->pipe_a[WRITE]);
+		}
+		if (cmd->name_outfile != NULL)
+		{
+			cmd->fd_outfile = open(cmd->name_outfile, O_TRUNC | O_WRONLY | O_CREAT, 0644);
+			dup2(cmd->fd_outfile, STDOUT_FILENO);
+		}
+	}
+	else
+	{
+		if (infos->index_cmd % 2)
+		{
+			dup2(infos->pipe_b[READ], STDIN_FILENO);
+			dup2(infos->pipe_a[WRITE], STDOUT_FILENO);
+		}
+		else
+		{
+			dup2(infos->pipe_a[READ], STDIN_FILENO);
+			dup2(infos->pipe_b[WRITE], STDOUT_FILENO);
+		}
+	}
+	return (1);
+}
+
+int	parent_fds(t_infos *infos, t_cmd *cmd)
+{
+	int	ret_close;
+
+	ret_close = 0;
+	if (infos->index_cmd == 0)
+	{
+		ret_close = close(infos->pipe_b[WRITE]);
+		if (cmd->name_infile != NULL)
+			ret_close = close(cmd->fd_infile);
+		if (cmd->name_outfile != NULL)
+			ret_close = close(cmd->fd_outfile);
+	}
+	else if (infos->index_cmd == infos->nb_pipe)
+	{
+		if (infos->index_cmd % 2)
+		{
+			ret_close = close(infos->pipe_b[READ]);
+			ret_close = close(infos->pipe_b[WRITE]);
+		}
+		else
+		{
+			ret_close = close(infos->pipe_a[READ]);
+			ret_close = close(infos->pipe_a[WRITE]);
+		}
+		if (cmd->name_outfile != NULL)
+			ret_close = close(cmd->fd_outfile);
+	}
+	else
+	{
+		if (infos->index_cmd % 2)
+		{
+			ret_close = close(infos->pipe_b[READ]);
+			ret_close = close(infos->pipe_a[WRITE]);
+		}
+		else
+		{
+			ret_close = close(infos->pipe_a[READ]);
+			ret_close = close(infos->pipe_b[WRITE]);
+		}
+	}
+	return (ret_close);
+}
 
 int	exec_cmds(t_infos *infos, char **envp)
 {
@@ -60,45 +140,25 @@ int	exec_cmds(t_infos *infos, char **envp)
 	int		fork_ret;
 
 	cmd = get_cmd(infos);
-	if (cmd)
-		check_content(cmd->arg);
 	if (cmd) // check if the cmd exists or at the end of list
 	{
+		if (infos->index_cmd % 2)
+			pipe(infos->pipe_a);
+		else
+			pipe(infos->pipe_b);
 		fork_ret = fork();
 		if (fork_ret == 0) //no error checking yet
 		{
-			if (cmd->name_infile)
-			{
-				close(infos->pipe[0]);
-				cmd->fd_infile = open(cmd->name_infile, O_RDONLY, 0644);
-				dup2(cmd->fd_infile, STDIN_FILENO);
-			}
-			else if (cmd->pipe_in)
-			{
-				dup2(infos->pipe[0], STDIN_FILENO);
-			}
-			else
-				close(infos->pipe[0]);
-			if (cmd->name_outfile)
-			{
-				close(infos->pipe[1]);
-				cmd->fd_outfile = open(cmd->name_outfile, O_TRUNC | O_WRONLY | O_CREAT, 0644);
-				dup2(cmd->fd_outfile, STDOUT_FILENO);
-			}
-			else if (cmd->pipe_out)
-			{
-				dup2(infos->pipe[1], STDOUT_FILENO);
-			}
-			else
-				close(infos->pipe[1]);
+			if (!child_fds(infos, cmd)) // No error checking yet
+				ft_putendl_fd("close error in child", STDERR_FILENO);
 			execve(cmd->arg[0], cmd->arg, envp);
 		}
 		else
 		{
-			infos->nb_cmd = infos->nb_cmd + 1;
-			close(infos->pipe[1]);
-			exec_cmds(infos, envp);
-			close(infos->pipe[0]);
+			if (parent_fds(infos, cmd))
+				ft_putendl_fd("close error in parent", STDERR_FILENO);
+			infos->index_cmd = infos->index_cmd + 1;
+			exec_cmds(infos, envp);// no error checking yet
 			wait(NULL);
 		}
 	}
@@ -109,47 +169,13 @@ int	exec_cmds(t_infos *infos, char **envp)
 **
 ** To be removed
 ** Because there is no parsing yet
-** Creating nodes and adding them to the list
-**
-*/
-
-static void	add_cmd(char **arg, t_infos *infos, int pipe_in, int pipe_out)
-{
-	t_cmd *cmd;
-	t_cmd *tmp;
-
-	tmp = infos->first;
-	cmd = (t_cmd *)malloc(sizeof(t_cmd));
-	if (!cmd)
-		return ;
-	cmd->arg = arg;
-	cmd->pipe_in = pipe_in;
-	cmd->pipe_out = pipe_out;
-	cmd->name_infile = NULL;
-	cmd->name_outfile = NULL;
-	cmd->builtin = 0;
-	cmd->process = 1;
-	cmd->next = NULL;
-	if (tmp == NULL)
-	{
-		cmd->prec = NULL;
-		infos->first = cmd;
-	}
-	else
-	{
-		while (tmp->next)
-			tmp = tmp->next;
-		cmd->prec = tmp;
-		tmp->next = cmd;
-	}
-}
-
-/*
-**
-** To be removed
-** Because there is no parsing yet
 ** Creating commands
 **
+** BUG 1: the last fd when not stdout, change the fd from terminal, thus in main isatty() will return 0 and exits
+** RESOLVED : saved the stdin and out and restore them after all function were executed.
+** 
+** BUG 2: the last fd when stdout, don't close itslef, because then again, it will close the fd from terminal
+** DONT KNOW WHAT TO DO
 */
 
 void	tests_exec_cmds(t_infos *infos, char **envp) //there will be plenty of bugs with the fds
@@ -157,13 +183,29 @@ void	tests_exec_cmds(t_infos *infos, char **envp) //there will be plenty of bugs
 	char **cmd1;
 	char **cmd2;
 	char **cmd3;
+	char **cmd4;
+	t_cmd *cmd01;
+	t_cmd *cmd02;
+	t_cmd *cmd03;
+	t_cmd *cmd04;
+	int		stdout_save, stdin_save;
 
-	cmd1 = ft_split_char("ls -l", ' ');
+	cmd1 = ft_split_char("ls -R", ' ');
 	cmd2 = ft_split_char("grep a", ' ');
-	cmd3 = ft_split_char("wc -c", ' ');
-	add_cmd(cmd1, infos, 0, 1);
-	add_cmd(cmd2, infos, 1, 1);
-	add_cmd(cmd3, infos, 1, 0);
+	cmd3 = ft_split_char("grep r", ' ');
+	cmd4 = ft_split_char("wc", ' ');
+	cmd01 = creating_cmd(cmd1, 0, 1);
+	cmd02 = creating_cmd(cmd2, 1, 1);
+	cmd03 = creating_cmd(cmd3, 1, 1);
+	cmd04 = creating_cmd(cmd4, 1, 0);
+	add_cmd(infos, cmd01);
+	add_cmd(infos, cmd02);
+	add_cmd(infos, cmd03);
+	add_cmd(infos, cmd04);
 	check_paths(infos);
+	stdout_save = dup(STDOUT_FILENO);
+	stdin_save = dup(STDIN_FILENO);
 	exec_cmds(infos, envp);
+	dup2(stdin_save, STDIN_FILENO);
+	dup2(stdout_save, STDOUT_FILENO);
 }
