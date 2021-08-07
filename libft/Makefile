@@ -15,7 +15,8 @@ FILES = ft_putchar.c \
 	ft_strjoin.c \
 	ft_strsub.c \
 	ft_strlen.c \
-	get_next_line.c
+	get_next_line.c \
+	ft_strcat.c
 
 OBJS = $(FILES:.c=.o)
 FLAGS = -Wall -Werror -Wextra

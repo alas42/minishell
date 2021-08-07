@@ -9,11 +9,14 @@ FILES = minishell.c \
 	parsing_init.c \
 	parsing_utils.c \
 	print_temp.c \
+	exec_cmds2.c \
+	utils_cmds.c \
+	utils_env.c \
+	utils_list_env.c
 
 BUILTINS_FILES = mini_env.c \
 	mini_cd.c \
 	mini_echo.c \
-	mini_env.c \
 	mini_exit.c \
 	mini_export.c \
 	mini_pwd.c \
@@ -36,18 +39,15 @@ CC = gcc
 all: $(NAME)
 	@printf "Makefile starts\n"
 $(NAME): $(OBJS)
-	@make -s -C $(LIBFT)
 	@$(CC) $(CFLAGS) $(IFLAGS) $(SOURCES_FILES) -lreadline -lncurses -L ./libft -lft -o $(NAME)
 
 %.o: %.c
 	@$(CC) $(CFLAGS) $(IFLAGS) -o $@ -c $<
 
 clean:
-	@make -s -C $(LIBFT) clean
 	@rm -f $(OBJS)
 
 fclean: clean
-	@make -s -C $(LIBFT) fclean
 	@rm -f $(NAME)
 
 re: fclean all
