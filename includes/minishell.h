@@ -85,8 +85,9 @@ void	tests_exec_cmds(t_infos *infos, char **envp);
 
 void	add_cmd(t_infos *infos, t_cmd *new);
 t_cmd	*creating_cmd(char **arg, int pipe_in, int pipe_out);
-int		open_fds(t_infos *infos, t_cmd *cmd);
-int		close_fds(t_infos *infos, t_cmd *cmd);
+
+int		child_fds(t_infos *infos, t_cmd *cmd);
+int		parent_fds(t_infos *infos, t_cmd *cmd);
 
 void	test_pwd(void);
 char	*mini_pwd(void);
@@ -119,4 +120,11 @@ void	test_unset(t_infos *infos);
 int		mini_echo(char **arg);
 void	test_echo(void);
 
+/*
+**
+**	Tests function not recursive
+**
+*/
+void	tests_exec_cmds2(t_infos *infos, char **envp);
+int		exec_cmds2(t_infos *infos, char **envp);
 #endif

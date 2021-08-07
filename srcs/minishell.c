@@ -81,7 +81,6 @@ int	main(int ac __attribute__((unused)), char **av __attribute__((unused)), char
 	int_mode = isatty(STDIN_FILENO);
 	while (int_mode)
 	{
-		int_mode = isatty(STDIN_FILENO);
 		if (int_mode == 1)
 		{
 			infos = init_infos(envp);
@@ -90,15 +89,16 @@ int	main(int ac __attribute__((unused)), char **av __attribute__((unused)), char
 			if (infos->line)
 				add_history(infos->line);
 			//test of an algo for one or multiple comands with pipes (NO BUILTINS YET)
-			//tests_exec_cmds(infos, envp);
+			tests_exec_cmds(infos, infos->envs);
 			//test_pwd();
 			//test_cd(infos);
-			test_echo();
+			//test_echo();
 			//test_export(infos);
 			//test_unset(infos);
-			free_infos(infos);
-			free(infos);
 		}
+		int_mode = isatty(STDIN_FILENO);
 	}
+	free_infos(infos);
+	free(infos);
 	return (0);
 }
