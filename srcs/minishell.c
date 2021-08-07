@@ -19,6 +19,7 @@ t_infos	*init_infos(char **envp)
 	infos->pos_path = find_pos_key(infos, "PATH");
 	infos->paths = ft_split_char(get_pair(infos, infos->pos_path), ':');
 	infos->nb_cmd = 0;
+	infos->tokens = NULL;
 	infos->nb_pipe = 0;
 	infos->index_cmd = 0;
 	infos->first_cmd = NULL;
@@ -86,6 +87,7 @@ int	main(int ac __attribute__((unused)), char **av __attribute__((unused)), char
 			infos = init_infos(envp);
 			infos->line = readline("$ ");
 			//parsing into tokens before adding to history (it can be an interaction with terminal)
+			start_parsing(infos);
 			if (infos->line)
 				add_history(infos->line);
 			//test of an algo for one or multiple comands with pipes (NO BUILTINS YET)

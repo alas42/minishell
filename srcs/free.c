@@ -21,3 +21,25 @@ void	free_infos(t_infos *infos)
 	free_env_list(infos);
 	free_cmd_list(infos);
 }
+
+void	free_tokens(t_infos *info)
+{
+	t_token *temp;
+
+	if (info->tokens == NULL)
+		return ;
+	while (info->tokens->next != NULL)
+	{
+		temp = ft_lstlast(info->tokens);
+		free(temp->type);
+		free(temp->content);
+		temp->prev->next = NULL;
+		free(temp);
+	}
+	if (info->tokens != NULL)
+	{
+		free(info->tokens->content);
+		free(info->tokens->type);
+		free(info->tokens);
+	}
+}

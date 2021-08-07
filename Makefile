@@ -4,6 +4,11 @@ FILES = minishell.c \
 	free.c \
 	paths.c \
 	exec_cmds.c \
+	parsing.c \
+	lexer.c \
+	parsing_init.c \
+	parsing_utils.c \
+	print_temp.c \
 	exec_cmds2.c \
 	utils_cmds.c \
 	utils_env.c \
@@ -32,7 +37,7 @@ CFLAGS = -Wall -Werror -Wextra
 CC = gcc
 
 all: $(NAME)
-
+	@printf "Makefile starts\n"
 $(NAME): $(OBJS)
 	@$(CC) $(CFLAGS) $(IFLAGS) $(SOURCES_FILES) -lreadline -lncurses -L ./libft -lft -o $(NAME)
 

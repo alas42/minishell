@@ -7,3 +7,28 @@ Should we add an isntruction to dl the libray readline ?
 Infos about the project :
 
 Download library readline to make this working
+
+
+
+/*
+ input_red             <
+ doub_input            <<
+ output_red            >
+ doub_outfile_red      >>
+ single_quote          ' 
+ double_quote          "
+ pipe                  |
+ dollar                $
+ question              ?
+ */
+
+//some test cases
+echo "hello world" 'this' | wc -l ; ls -l | << grep 'a' >> outfile
+awk –f x.awk | sort –u < infile > outfile
+
+
+//questions
+If i have double pipe somwhere || or |& should we show an error?
+since we dont have to handle those
+
+
