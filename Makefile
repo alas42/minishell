@@ -13,28 +13,25 @@ BWhite="\[\033[1;37m\]"       # White
 
 # DIRECTORIES
 BUILD   = ./build
-DIRS    = ./build/builtins ./build/exec
+DIRS    = ./build/builtins ./build/parsing
 
 
 SRC_DIR = ./srcs/
 
 # FILES
-NAME    = minishell
-LIBFT   = ./libft/libft.a
+NAME	= minishell
+LIBFT	= ./libft/libft.a
 
-MAIN    = minishell.c \
+MAIN	= minishell.c \
 	free.c \
 	paths.c \
-	parsing.c \
-	lexer.c \
-	parsing_init.c \
-	parsing_utils.c \
-	print_temp.c \
 	utils_cmds.c \
 	utils_env.c \
-	utils_list_env.c
+	utils_list_env.c \
+	exec_cmds.c \
+	exec_cmds2.c
 
-BUILT             = mini_env.c \
+BUILT	 = mini_env.c \
 	mini_cd.c \
 	mini_echo.c \
 	mini_exit.c \
@@ -42,11 +39,17 @@ BUILT             = mini_env.c \
 	mini_pwd.c \
 	mini_unset.c
 
-EXEC    = exec_cmds.c
+PARSING		= parsing.c \
+	lexer.c \
+	parsing_init.c \
+	parsing_utils.c \
+	print_temp.c \
+#EXEC    = exec_cmds.c
 
 SRC             = $(MAIN) \
                   $(addprefix builtins/, $(BUILT)) \
-                  $(addprefix exec/, $(EXEC))
+                  $(addprefix parsing/, $(PARSING))
+                #  $(addprefix exec/, $(EXEC))
 
 
 SRCS    = $(addprefix $(SRC_DIR), $(SRC))

@@ -91,7 +91,7 @@ int	main(int ac __attribute__((unused)), char **av __attribute__((unused)), char
 			if (infos->line)
 				add_history(infos->line);
 			//test of an algo for one or multiple comands with pipes (NO BUILTINS YET)
-			tests_exec_cmds(infos, infos->envs);
+			//tests_exec_cmds(infos, infos->envs);
 			//test_pwd();
 			//test_cd(infos);
 			//test_echo();
