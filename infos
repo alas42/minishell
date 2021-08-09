@@ -1,14 +1,6 @@
-Questions :
-
-Are the libft checked ? Mine wasn't at norm v3, so I wrote a few functions quickly
-Should we add an isntruction to dl the libray readline ?
-
-
 Infos about the project :
 
 Download library readline to make this working
-
-
 
 /*
  input_red             <
@@ -22,29 +14,18 @@ Download library readline to make this working
  question              ?
  */
 
-//some test cases
-echo "hello world" 'this' | wc -l ; ls -l | << grep 'a' >> outfile
+//some test cases ==>> if it's correctly setted in the t_cmd structures, it works
+echo "hello world" 'this' | wc -l ; ls -l | << grep 'a' >> outfile 					==>> we don't do ';'
 awk –f x.awk | sort –u < infile > outfile
 
-
-//questions
-If i have double pipe somwhere || or |& should we show an error?
-since we dont have to 
-//paths.c
-int		find_pos_key(t_infos *infos, char *to_find);
-int		add_path(char **arg, char *path, int len_path);
-int		ft_exists(char *file_path);
-void	check_paths(t_infos *infos);
-handle those
-
-char **envs or t_env ?
-
 Chained list and tab of pointers to char for the same env
-Why ?
-We have to pass a tab of pointers in execve.
-But we have to print them in two different ways in env and export builtins
+{
+	Why char **envs and t_env ?
+	
+	We have to pass a tab of pointers in execve.
+	But we have to print them in two different ways in env and export builtins
 
-Env -> In alphabetical order BUT without double quotes around the value
-Export -> In normal order from envp but the last before NULL will be the terminal
-When adding a key=value, add it just before the line from terminal
-
+	Env -> In alphabetical order BUT without double quotes around the value
+	Export -> In normal order from envp but the last before NULL will be the terminal
+	When adding a key=value, add it just before the line from terminal
+}

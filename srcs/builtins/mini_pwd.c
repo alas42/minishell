@@ -61,7 +61,7 @@ char	*mini_pwd(void)
 
 void	test_pwd(void)
 {
-	char *ret_mini_pwd;
+	char	*ret_mini_pwd;
 
 	ret_mini_pwd = mini_pwd();
 	if (ret_mini_pwd)

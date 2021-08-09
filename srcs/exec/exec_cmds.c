@@ -28,7 +28,8 @@ static int	is_builtin(char **arg)
 ** creating child processes &&
 ** setting the pipes and correct fds
 **
-** DIDNT DO THE >>  and << because I don't really understands (for now) how it is working
+** DIDNT DO THE >>  and << because I don't really understands
+**(for now) how it is working
 **
 */
 
@@ -74,28 +75,27 @@ static void	parent_process(t_infos *infos, t_cmd *cmd, char **envp)
 int	exec_cmds(t_infos *infos, char **envp)
 {
 	t_cmd	*cmd;
-	int		fork_ret;
+	int		process_id;
 
 	cmd = get_cmd(infos);
-	if (cmd)
+	if (!cmd)
+		return (1);
+	if (piping(infos))
 	{
-		if (piping(infos))
-		{
-			ft_putendl_fd("error in pipe() function", STDERR_FILENO);
-		}
-		fork_ret = fork();
-		if (fork_ret == 0)
-		{
-			child_process(infos, cmd, envp);
-		}
-		else if (fork_ret == -1)
-		{
-			ft_putendl_fd("error in fork() function", STDERR_FILENO);
-		}
-		else
-		{
-			parent_process(infos, cmd, envp);
-		}
+		ft_putendl_fd("error in pipe() function", STDERR_FILENO);
+	}
+	process_id = fork();
+	if (process_id == 0)
+	{
+		child_process(infos, cmd, envp);
+	}
+	else if (process_id == -1)
+	{
+		ft_putendl_fd("error in fork() function", STDERR_FILENO);
+	}
+	else
+	{
+		parent_process(infos, cmd, envp);
 	}
 	return (1);
 }
@@ -110,15 +110,16 @@ int	exec_cmds(t_infos *infos, char **envp)
 
 void	tests_exec_cmds(t_infos *infos, char **envp)
 {
-	char **cmd1;
-	char **cmd2;
-	char **cmd3;
-	char **cmd4;
-	t_cmd *cmd01;
-	t_cmd *cmd02;
-	t_cmd *cmd03;
-	t_cmd *cmd04;
-	int		stdout_save, stdin_save;
+	char	**cmd1;
+	char	**cmd2;
+	char	**cmd3;
+	char	**cmd4;
+	t_cmd	*cmd01;
+	t_cmd	*cmd02;
+	t_cmd	*cmd03;
+	t_cmd	*cmd04;
+	int		stdout_save;
+	int		stdin_save;
 
 	cmd1 = ft_split_char("ls -l", ' ');
 	cmd2 = ft_split_char("grep a", ' ');

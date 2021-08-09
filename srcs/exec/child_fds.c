@@ -17,7 +17,8 @@ static int	first_cmd(t_infos *infos, t_cmd *cmd)
 		ret_dup = dup2(infos->pipe_b[WRITE], STDOUT_FILENO);
 	else if (cmd->name_outfile != NULL)
 	{
-		cmd->fd_outfile = open(cmd->name_outfile, O_TRUNC | O_WRONLY | O_CREAT, 0644);
+		cmd->fd_outfile = open(cmd->name_outfile,
+				O_TRUNC | O_WRONLY | O_CREAT, 0644);
 		ret_dup = dup2(cmd->fd_outfile, STDOUT_FILENO);
 	}
 	if (ret_close > -1 && ret_dup > -1)
@@ -64,7 +65,8 @@ static int	last_cmd(t_infos *infos, t_cmd *cmd)
 	}
 	if (cmd->name_outfile != NULL)
 	{
-		cmd->fd_outfile = open(cmd->name_outfile, O_TRUNC | O_WRONLY | O_CREAT, 0644);
+		cmd->fd_outfile = open(cmd->name_outfile,
+				O_TRUNC | O_WRONLY | O_CREAT, 0644);
 		ret_dup = dup2(cmd->fd_outfile, STDOUT_FILENO);
 	}
 	if (ret_dup > -1 && ret_close > -1)

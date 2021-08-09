@@ -6,7 +6,7 @@
 **
 */
 
-int		mini_unset(t_infos *infos, char *key)
+int	mini_unset(t_infos *infos, char *key)
 {
 	infos->envs = remove_env_tab(infos, key);
 	return (1);
