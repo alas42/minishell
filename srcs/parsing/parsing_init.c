@@ -1,4 +1,4 @@
-#include "../includes/minishell.h"
+#include "../../includes/minishell.h"
 
 //fill the info->tokens->type by cmp character to defined token type
 void    get_token_type(t_token *new, t_infos *info, int i)
