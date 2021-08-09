@@ -29,7 +29,13 @@ awk –f x.awk | sort –u < infile > outfile
 
 //questions
 If i have double pipe somwhere || or |& should we show an error?
-since we dont have to handle those
+since we dont have to 
+//paths.c
+int		find_pos_key(t_infos *infos, char *to_find);
+int		add_path(char **arg, char *path, int len_path);
+int		ft_exists(char *file_path);
+void	check_paths(t_infos *infos);
+handle those
 
 char **envs or t_env ?
 

@@ -18,6 +18,7 @@
 # include "libft.h"
 
 enum e_file_end { READ, WRITE };
+enum e_builtin { B_EXIT, B_ECHO, B_PWD, B_EXPORT, B_ENV, B_CD, B_UNSET }; //B_ because ECHO is already defined somewhere
 
 typedef struct s_cmd
 {

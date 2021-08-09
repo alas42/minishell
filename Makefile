@@ -20,7 +20,9 @@ BUILTINS_FILES = mini_env.c \
 	mini_pwd.c \
 	mini_unset.c
 
-EXEC_FILES = exec_cmds.c
+EXEC_FILES = exec_cmds.c \
+	child_fds.c \
+	parent_fds.c
 
 BUILTINS_FOLDER = builtins
 EXEC_FOLDER = exec
