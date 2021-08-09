@@ -1,4 +1,4 @@
-#include "../includes/minishell.h"
+#include "../../includes/minishell.h"
 
 /*
 **
@@ -181,31 +181,31 @@ int	exec_cmds(t_infos *infos, char **envp)
 void	tests_exec_cmds(t_infos *infos, char **envp) //there will be plenty of bugs with the fds
 {
 	char **cmd1;
-	char **cmd2;
+	/*char **cmd2;
 	char **cmd3;
-	char **cmd4;
+	char **cmd4;*/
 	t_cmd *cmd01;
-	t_cmd *cmd02;
+	/*t_cmd *cmd02;
 	t_cmd *cmd03;
-	t_cmd *cmd04;
+	t_cmd *cmd04;*/
 	int		stdout_save, stdin_save;
 
-	cmd1 = ft_split_char("ls -R", ' ');
-	cmd2 = ft_split_char("grep a", ' ');
+	cmd1 = ft_split_char("minishell", ' ');
+	/*cmd2 = ft_split_char("grep a", ' ');
 	cmd3 = ft_split_char("grep r", ' ');
-	cmd4 = ft_split_char("wc", ' ');
-	cmd01 = creating_cmd(cmd1, 0, 1);
-	cmd02 = creating_cmd(cmd2, 1, 1);
+	cmd4 = ft_split_char("wc", ' ');*/
+	cmd01 = creating_cmd(cmd1, 0, 0);
+	/*cmd02 = creating_cmd(cmd2, 1, 1);
 	cmd03 = creating_cmd(cmd3, 1, 1);
-	cmd04 = creating_cmd(cmd4, 1, 0);
+	cmd04 = creating_cmd(cmd4, 1, 0);*/
 	add_cmd(infos, cmd01);
-	add_cmd(infos, cmd02);
+	/*add_cmd(infos, cmd02);
 	add_cmd(infos, cmd03);
-	add_cmd(infos, cmd04);
+	add_cmd(infos, cmd04);*/
 	check_paths(infos);
 	stdout_save = dup(STDOUT_FILENO);
 	stdin_save = dup(STDIN_FILENO);
-	exec_cmds(infos, envp);
+	exec_cmds(infos, envp);exec_cmds(infos, envp);
 	dup2(stdin_save, STDIN_FILENO);
 	dup2(stdout_save, STDOUT_FILENO);
 }

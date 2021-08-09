@@ -3,13 +3,11 @@ NAME = minishell
 FILES = minishell.c \
 	free.c \
 	paths.c \
-	exec_cmds.c \
 	parsing.c \
 	lexer.c \
 	parsing_init.c \
 	parsing_utils.c \
 	print_temp.c \
-	exec_cmds2.c \
 	utils_cmds.c \
 	utils_env.c \
 	utils_list_env.c
@@ -22,11 +20,15 @@ BUILTINS_FILES = mini_env.c \
 	mini_pwd.c \
 	mini_unset.c
 
+EXEC_FILES = exec_cmds.c
+
 BUILTINS_FOLDER = builtins
+EXEC_FOLDER = exec
 FOLDER_SOURCES = srcs
 
 SOURCES_FILES = $(addprefix $(FOLDER_SOURCES)/,$(FILES)) \
-	$(addprefix $(FOLDER_SOURCES)/,$(addprefix $(BUILTINS_FOLDER)/,$(BUILTINS_FILES)))
+	$(addprefix $(FOLDER_SOURCES)/,$(addprefix $(BUILTINS_FOLDER)/,$(BUILTINS_FILES))) \
+	$(addprefix $(FOLDER_SOURCES)/, $(addprefix $(EXEC_FOLDER)/, $(EXEC_FILES)))
 
 OBJS = $(SOURCES_FILES:.c=.o)
 

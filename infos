@@ -31,4 +31,14 @@ awk –f x.awk | sort –u < infile > outfile
 If i have double pipe somwhere || or |& should we show an error?
 since we dont have to handle those
 
+char **envs or t_env ?
+
+Chained list and tab of pointers to char for the same env
+Why ?
+We have to pass a tab of pointers in execve.
+But we have to print them in two different ways in env and export builtins
+
+Env -> In alphabetical order BUT without double quotes around the value
+Export -> In normal order from envp but the last before NULL will be the terminal
+When adding a key=value, add it just before the line from terminal
 

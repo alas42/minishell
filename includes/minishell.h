@@ -34,7 +34,6 @@ typedef struct s_cmd
 	struct s_cmd	*prec;
 }           		t_cmd;
 
-
 typedef struct s_token
 {
 	int				pos;
@@ -50,19 +49,6 @@ typedef struct s_env
 	int				order;
 	struct s_env	*next;
 }					t_env;
-
-/*
-**
-** Chained list and tab of pointers to char for the same env
-** Why ?
-** We have to pass a tab of pointers in execve.
-** But we have to print them in two different ways in env and export builtins
-**
-** Env -> In alphabetical order BUT without double quotes around the value
-** Export -> In normal order from envp but the last before NULL will be the terminal
-** When adding a key=value, add it just before the line from terminal
-**
-*/
 
 typedef struct s_infos
 {
@@ -80,22 +66,12 @@ typedef struct s_infos
 	char			**envs;
 }					t_infos;
 
-
-int		find_pos_key(t_infos *infos, char *to_find);
-int		add_path(char **arg, char *path, int len_path);
-int		ft_exists(char *file_path);
-
-void	init_cmds(t_infos *infos, char *str);
-void	check_paths(t_infos *infos);
-void	ft_free_tab_ptr(char **ptr);
-int		exec_cmds(t_infos *infos, char **envp);
-t_cmd	*get_cmd(t_infos *infos);
-void	tests_exec_cmds(t_infos *infos, char **envp);
-
 //free.c
 void	free_infos(t_infos *infos);
 void	free_tokens(t_infos *info);
 void	free_cmd_list(t_infos *infos);
+void	ft_free_tab_ptr(char **ptr);
+void	free_env_list(t_infos *infos);
 
 //parsing.c
 void    start_parsing(t_infos *info);
@@ -118,53 +94,57 @@ int			ft_strncmp(const char *s1, const char *s2, size_t n);
 int			ft_isspace_isdigit(char c, char d);
 char    	*char_to_str(char c);
 
-
 //print_temp.c Temp Function to be removed later
 void    	print_info(t_infos *info);
 void		print_token_list(t_token *token);
 
+//utils for t_cmds
 void	add_cmd(t_infos *infos, t_cmd *new);
 t_cmd	*creating_cmd(char **arg, int pipe_in, int pipe_out);
+void	init_cmds(t_infos *infos, char *str);
+void	tests_exec_cmds(t_infos *infos, char **envp);
+void	init_cmds(t_infos *infos, char *str);
+t_cmd	*get_cmd(t_infos *infos);
 
+//exec_cmds.c
 int		child_fds(t_infos *infos, t_cmd *cmd);
 int		parent_fds(t_infos *infos, t_cmd *cmd);
+int		exec_cmds(t_infos *infos, char **envp);
 
-void	test_pwd(void);
-char	*mini_pwd(void);
+//utils for environment variables (tab)
+char	**get_env_tab(char **envp);
+void	print_env_tab(t_infos *infos);
+char	**add_env_tab(char **envs, char *key_value_str);
+int		change_line_env_tab(t_infos *infos, char *key,  char *value);
+char	**remove_env_tab(t_infos *infos, char *key);
+char	*create_pair_key_value(char *key, char *value);
 
-int		mini_cd(t_infos *infos, char *path);
-void	test_cd(t_infos *infos);
-
-int		mini_export(t_infos *infos, char *key, char *value);
-void	test_export(t_infos *infos);
-
+//utils for environment variables (t_env)
 void	add_env(t_infos *infos, t_env *new);
 t_env	*creating_env(char *str);
 void	get_env_list(t_infos *infos, char **envp);
 char	*get_pair(t_infos *infos, int index);
-void	free_env_list(t_infos *infos);
 
-int		mini_env(t_infos *infos);
-void	test_env(t_infos *infos);
+//paths.c
+int		find_pos_key(t_infos *infos, char *to_find);
+int		add_path(char **arg, char *path, int len_path);
+int		ft_exists(char *file_path);
+void	check_paths(t_infos *infos);
 
-char	**get_env_tab(char **envp);
-void	print_env_tab(t_infos *infos);
-char	**add_env_tab(char **envs, char *key_value_str);
-char	**remove_env_tab(t_infos *infos, char *key);
-int		change_line_env_tab(t_infos *infos, char *key,  char *value);
-char	*create_pair_key_value(char *key, char *value);
-
+//builtins functions
 int		mini_unset(t_infos *infos, char *key);
-void	test_unset(t_infos *infos);
-
+int		mini_export(t_infos *infos, char *key, char *value);
+int		mini_cd(t_infos *infos, char *path);
 int		mini_echo(char **arg);
-void	test_echo(void);
+int		mini_env(t_infos *infos);
+char	*mini_pwd(void);
 
-/*
-**
-**	Tests function not recursive
-**
-*/
-void	tests_exec_cmds2(t_infos *infos, char **envp);
-int		exec_cmds2(t_infos *infos, char **envp);
+//functions to test the builtins (to be removed)
+void	test_unset(t_infos *infos);
+void	test_env(t_infos *infos);
+void	test_echo(void);
+void	test_pwd(void);
+void	test_cd(t_infos *infos);
+void	test_export(t_infos *infos);
+
 #endif
