@@ -2,8 +2,7 @@
 
 /*
 **
-** NOT TO FORGET :SET CORRECT RETURN STATUS CODE
-**
+** NOT TO FORGET : SET CORRECT RETURN STATUS CODE
 **
 */
 
@@ -15,7 +14,7 @@ int	mini_cd(t_infos *infos, t_cmd *cmd)
 	int		ret;
 	int		ret_change_line[2];
 
-	old_path = mini_pwd();
+	old_path = getenv("PWD");
 	if (cmd->arg[1] == NULL)
 		path = getenv("HOME");
 	else
@@ -25,7 +24,7 @@ int	mini_cd(t_infos *infos, t_cmd *cmd)
 	else
 	{
 		ret = 1;
-		current_path = mini_pwd();
+		current_path = getenv("PWD");
 		ret_change_line[0] = change_line_env_tab(infos, "OLDPWD", old_path);
 		ret_change_line[1] = change_line_env_tab(infos, "PWD", current_path);
 		if (!ret_change_line[0] || !ret_change_line[1])

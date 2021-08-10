@@ -35,7 +35,7 @@ static char	*realloc_path_dir(char *path_dir, size_t *length_path)
 	return (path_dir);
 }
 
-char	*mini_pwd(void)
+int	mini_pwd(t_infos *infos __attribute__((unused)), t_cmd *cmd __attribute__((unused)))
 {
 	char	*path_dir;
 	size_t	length_path;
@@ -45,20 +45,22 @@ char	*mini_pwd(void)
 	length_path = 1024;
 	path_dir = (char *)malloc(sizeof(char) * length_path);
 	if (!path_dir)
-		return (NULL);
+		return (0);
 	ret = getcwd(path_dir, length_path);
 	while (errno == ERANGE)
 	{
 		path_dir = realloc_path_dir(path_dir, &length_path);
 		if (!path_dir)
-			return (NULL);
+			return (0);
 		ret = getcwd(path_dir, length_path);
 		if (ret)
 			break ;
 	}
-	return (free_and_return(path_dir, ret));
+	ft_putendl_fd(free_and_return(path_dir, ret), STDOUT_FILENO);
+	return (1);
 }
 
+/*
 void	test_pwd(void)
 {
 	char	*ret_mini_pwd;
@@ -72,3 +74,4 @@ void	test_pwd(void)
 	if (!ret_mini_pwd)
 		ft_putendl_fd("pwd error", STDERR_FILENO);
 }
+*/

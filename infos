@@ -1,3 +1,23 @@
+ALGO OF minishell
+
+INIT OF structures
+WHILE (NOT_EXIT)
+|	READ_THE_LINE
+|	IF IT IS AN INTERACTION	
+|	|	INTERACT HISTORY ?
+|	|	INTERACT PROCESS ?
+|	ELSE
+|	|	PARSING AND 'LEXERING'	-->FILLING STRUCTURES
+|	|	ADD_TO_HISTORY
+|	|	IF ONLY 1 COMMAND AND IT IS A BUILTIN
+|	|	|	CALL THE FUNCTION
+|	|	ELSE
+|	|	|	CALL EXEC_CMDS
+|	|	FI
+|	FI
+EOW
+FREE
+
 Infos about the project :
 
 Download library readline to make this working

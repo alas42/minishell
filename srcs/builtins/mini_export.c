@@ -51,7 +51,7 @@ int	mini_export(t_infos *infos, t_cmd *cmd)
 		return (1);
 	}
 	key_value_tab = ft_split_char(cmd->arg[1], '='); //FALSE it cannot be done this way, the value themselves can contain the char '='
-	ret_find_path = find_pos_key(infos, tab[0]);
+	ret_find_path = find_pos_key(infos, key_value_tab[0]);
 	if (ret_find_path > -1)
 	{
 		free(infos->envs[ret_find_path]);
