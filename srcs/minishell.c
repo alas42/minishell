@@ -56,18 +56,25 @@ int	main(int ac __attribute__((unused)),
 	int		int_mode;
 	t_infos	*infos;
 
+	infos = init_infos(envp);
 	int_mode = isatty(STDIN_FILENO);
 	while (int_mode)
 	{
 		if (int_mode == 1)
 		{
-			infos = init_infos(envp);
 			infos->line = readline("$ ");
+			//check if interaction
+
 			start_parsing(infos);
 			if (infos->line)
-				add_history(infos->line);
-			tests_exec_cmds(infos, infos->envs);
+				add_history(infos->line);/*
+			if (infos->nb_cmd > 1 || choose_builtin(infos, infos->first_cmd) == -1)
+			{
+				//it's either multiples commands OR only one that is not a builtin
+				exec_cmds(infos, infos->envs);
+			}*/
 		}
+		free(infos->line);
 		int_mode = isatty(STDIN_FILENO);
 	}
 	free_infos(infos);

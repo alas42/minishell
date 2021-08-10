@@ -1,27 +1,15 @@
 #include "../../includes/minishell.h"
 
-char	*create_pair_key_value(char *key, char *value)
-{
-	char	*key_value_str;
-	size_t	length;
-
-	length = ft_strlen(key) + ft_strlen(value) + 4;
-	key_value_str = (char *)malloc(sizeof(char) * (length));
-	key_value_str[0] = '\0';
-	key_value_str = ft_strcat(key_value_str, key);
-	key_value_str = ft_strcat(key_value_str, "=");
-	key_value_str = ft_strcat(key_value_str, value);
-	key_value_str = ft_strcat(key_value_str, "\0");
-	return (key_value_str);
-}
-
 /*
 **
-** Export without arg - print in ascii order the tab of ptrs with TWO change
-** 1. It displays with double quotes around the value ... it means we have
-** to cut the string in two and add quotes around the second string obtained
-** before printing
-** 2. It displays the lists with 'export ' before every line
+** Export without arg - print in ascii order the tab of ptrs with some changes
+** 1. It displays export
+** 2. It displays a whitespace
+** 3. It displays the key
+** 4. It displays a double quote
+** 5. It displays all the values
+** 6. It displays a double quote
+** 7. It displays '\n'
 **
 ** That's why I thought about a chained list with an integer
 ** containing positions.
@@ -33,10 +21,12 @@ char	*create_pair_key_value(char *key, char *value)
 static void	print_export(t_infos *infos)
 {
 	t_env	*env;
+	//char	**key_value_tab;
 
 	env = infos->first_env;
 	while (env)
 	{
+		//key_value_tab = get;
 		ft_putstr_fd("export ", STDOUT_FILENO);
 		ft_putendl_fd(env->pair, STDOUT_FILENO);
 		env = env->next;
@@ -50,25 +40,30 @@ static void	print_export(t_infos *infos)
 **
 */
 
-int	mini_export(t_infos *infos, char *key, char *value)
+int	mini_export(t_infos *infos, t_cmd *cmd)
 {
 	int		ret_find_path;
-	char	*key_value_str;
+	char	**key_value_tab;
 
-	if (key == NULL && value == NULL)
+	if (!cmd->arg[1])
+	{
 		print_export(infos);
-	key_value_str = create_pair_key_value(key, value);
-	ret_find_path = find_pos_key(infos, key);
+		return (1);
+	}
+	key_value_tab = ft_split_char(cmd->arg[1], '='); //FALSE it cannot be done this way, the value themselves can contain the char '='
+	ret_find_path = find_pos_key(infos, key_value_tab[0]);
 	if (ret_find_path > -1)
 	{
 		free(infos->envs[ret_find_path]);
-		infos->envs[ret_find_path] = key_value_str;
+		infos->envs[ret_find_path] = ft_strdup(cmd->arg[1]);
 	}
 	else
-		infos->envs = add_env_tab(infos->envs, key_value_str);
+		infos->envs = add_env_tab(infos->envs, cmd->arg[1]);
+	ft_free_tab_ptr(key_value_tab);
 	return (1);
 }
 
+/*
 void	test_export(t_infos *infos)
 {
 	char	*key;
@@ -85,4 +80,4 @@ void	test_export(t_infos *infos)
 	mini_export(infos, key2, value2);
 	print_env_tab(infos);
 	ft_putendl_fd("\n\n", STDOUT_FILENO);
-}
+}*/

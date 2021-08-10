@@ -1,10 +1,18 @@
 #include "../../includes/minishell.h"
 
-static int	is_builtin(char **arg)
+int	choose_builtin(t_infos *infos, t_cmd *cmd)
 {
 	int		i;
-	char	*builtins_str[6];
+	char	*builtins_str[7];
+	int		(*builtins[7])(t_infos *infos, t_cmd *cmd);
 
+	builtins[B_UNSET] = mini_unset;
+	builtins[B_ECHO] = mini_echo;
+	builtins[B_PWD] = mini_pwd;
+	builtins[B_EXPORT] = mini_export;
+	builtins[B_CD] = mini_cd;
+	builtins[B_EXIT] = mini_exit;
+	builtins[B_ENV] = mini_env;
 	builtins_str[B_UNSET] = "unset";
 	builtins_str[B_ECHO] = "echo";
 	builtins_str[B_CD] = "cd";
@@ -12,12 +20,11 @@ static int	is_builtin(char **arg)
 	builtins_str[B_EXIT] = "exit";
 	builtins_str[B_EXPORT] = "export";
 	builtins_str[B_PWD] = "pwd";
-	i = 0;
-	while (i <= B_UNSET)
+	i = -1;
+	while (++i <= B_UNSET)
 	{
-		if (!strcmp(builtins_str[i], arg[0]))
-			return (i);
-		i++;
+		if (!ft_strcmp(builtins_str[i], cmd->arg[0]))
+			return ((*builtins[i])(infos, cmd));
 	}
 	return (-1);
 }
@@ -53,7 +60,7 @@ static void	child_process(t_infos *infos, t_cmd *cmd, char **envp)
 	{
 		ft_putendl_fd("close or dup2 error in child", STDERR_FILENO);
 	}
-	if (is_builtin(cmd->arg) > -1)
+	if (cmd->builtin && choose_builtin(infos, cmd) > -1)
 	{
 		ft_putendl_fd("NOT AN ERROR : the cmd is a builtin", STDERR_FILENO);
 	}

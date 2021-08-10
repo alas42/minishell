@@ -26,6 +26,7 @@ typedef struct s_cmd
     int     		process;
     int     		fd_outfile;
     int     		fd_infile;
+	int				here_doc_in; //bool
 	int				builtin; //bool
 	int				pipe_in; //bool
 	int				pipe_out; //bool
@@ -106,10 +107,11 @@ void	init_cmds(t_infos *infos, char *str);
 void	tests_exec_cmds(t_infos *infos, char **envp);
 t_cmd	*get_cmd(t_infos *infos);
 
-//exec_cmds.c
+//[----------------exec_cmds.c----------------]
 int		child_fds(t_infos *infos, t_cmd *cmd);
 int		parent_fds(t_infos *infos, t_cmd *cmd);
 int		exec_cmds(t_infos *infos, char **envp);
+//[----------------end of exec_cmds.c----------------]
 
 //utils for environment variables (tab)
 char	**get_env_tab(char **envp);
@@ -125,19 +127,33 @@ t_env	*creating_env(char *str);
 void	get_env_list(t_infos *infos, char **envp);
 char	*get_pair(t_infos *infos, int index);
 
-//paths.c
+//[----------------paths.c----------------]
+/*
+** Returns the index from the environment variable to_find in the tab
+*/
 int		find_pos_key(t_infos *infos, char *to_find);
 int		add_path(char **arg, char *path, int len_path);
+
+/*
+** Checks if the paths given corresponds to an existing file
+*/
 int		ft_exists(char *file_path);
 void	check_paths(t_infos *infos);
+//[----------------end of paths.c----------------]
+
+/*
+** Finds the correct builtins function and lauchs it
+*/
+int		choose_builtin(t_infos *infos, t_cmd *cmd);
 
 //builtins functions
-int		mini_unset(t_infos *infos, char *key);
-int		mini_export(t_infos *infos, char *key, char *value);
-int		mini_cd(t_infos *infos, char *path);
-int		mini_echo(char **arg);
-int		mini_env(t_infos *infos);
-char	*mini_pwd(void);
+int		mini_unset(t_infos *infos, t_cmd *cmd);
+int		mini_export(t_infos *infos, t_cmd *cmd);
+int		mini_cd(t_infos *infos, t_cmd *cmd);
+int		mini_echo(t_infos *infos __attribute__((unused)), t_cmd *cmd);
+int		mini_env(t_infos *infos, t_cmd *cmd __attribute__((unused)));
+int		mini_exit(t_infos *infos, t_cmd *cmd __attribute__((unused)));
+int		mini_pwd(t_infos *infos __attribute__((unused)), t_cmd *cmd __attribute__((unused)));
 
 //functions to test the builtins (to be removed)
 void	test_unset(t_infos *infos);

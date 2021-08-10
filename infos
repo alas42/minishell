@@ -1,3 +1,23 @@
+ALGO OF minishell
+
+INIT OF structures
+WHILE (NOT_EXIT)
+|	READ_THE_LINE
+|	IF IT IS AN INTERACTION	
+|	|	INTERACT HISTORY ?
+|	|	INTERACT PROCESS ?
+|	ELSE
+|	|	PARSING AND 'LEXERING'	-->FILLING STRUCTURES
+|	|	ADD_TO_HISTORY
+|	|	IF ONLY 1 COMMAND AND IT IS A BUILTIN
+|	|	|	CALL THE FUNCTION
+|	|	ELSE
+|	|	|	CALL EXEC_CMDS
+|	|	FI
+|	FI
+EOW
+FREE
+
 Infos about the project :
 
 Download library readline to make this working
@@ -29,3 +49,10 @@ Chained list and tab of pointers to char for the same env
 	Export -> In normal order from envp but the last before NULL will be the terminal
 	When adding a key=value, add it just before the line from terminal
 }
+
+OBSERVATIONS:
+
+1. When we press only on enter in the minishell, it segfaults
+2. the third arg (char **)envp can be NULL or be UNSET
+-> We should fill him with basic env variable if it is NULL
+-> before using or checking a env variable, we should ALWAYS check if the tab is not NULL
