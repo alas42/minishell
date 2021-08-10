@@ -1,4 +1,4 @@
-#include "../includes/minishell.h"
+#include "../../includes/minishell.h"
 
 //checks for space d = 's' digit = 'd' both = 'b'
 int	ft_isspace_isdigit(char c, char d)
@@ -46,17 +46,17 @@ int	ft_strncmp(const char *s1, const char *s2, size_t n)
 	return (x);
 }
 
-char    *char_to_str(char c)
+char	*char_to_str(char c)
 {
-    char *str;
+	char *str;
 
-    str = (char *)malloc(sizeof(char) * 2);
-    if (str == NULL)
-    {
-        printf("malloc error in char to str\n");
-        return (NULL);
-    }
-    str[0] = c;
-    str[1] = '\0';
-    return (str);
+	str = (char *)malloc(sizeof(char) * 2);
+	if (str == NULL)
+	{
+		printf("malloc error in char to str\n");
+		return (NULL);
+	}
+	str[0] = c;
+	str[1] = '\0';
+	return (str);
 }

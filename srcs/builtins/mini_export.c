@@ -18,11 +18,15 @@ char	*create_pair_key_value(char *key, char *value)
 /*
 **
 ** Export without arg - print in ascii order the tab of ptrs with TWO change
-** 1. It displays with double quotes around the value ... it means we have to cut the string in two and add quotes around the second string obtained before printing
+** 1. It displays with double quotes around the value ... it means we have
+** to cut the string in two and add quotes around the second string obtained
+** before printing
 ** 2. It displays the lists with 'export ' before every line
 **
-** That's why I thought about a chained list with an integer containing positions,
-** It can be very good if the char * in every nodes points to according char * in the tab
+** That's why I thought about a chained list with an integer
+** containing positions.
+** It can be very good if the char * in every nodes points to
+** according char * in the tab
 **
 */
 

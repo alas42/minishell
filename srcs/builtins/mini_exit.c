@@ -9,7 +9,7 @@
 ** 
 */
 
-int		mini_exit(t_infos *infos)
+int	mini_exit(t_infos *infos)
 {
 	free_infos(infos);
 	free(infos);

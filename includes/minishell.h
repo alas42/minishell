@@ -18,6 +18,7 @@
 # include "libft.h"
 
 enum e_file_end { READ, WRITE };
+enum e_builtin { B_EXIT, B_ECHO, B_PWD, B_EXPORT, B_ENV, B_CD, B_UNSET }; //B_ because ECHO is already defined somewhere as 00000010
 
 typedef struct s_cmd
 {
@@ -103,7 +104,6 @@ void	add_cmd(t_infos *infos, t_cmd *new);
 t_cmd	*creating_cmd(char **arg, int pipe_in, int pipe_out);
 void	init_cmds(t_infos *infos, char *str);
 void	tests_exec_cmds(t_infos *infos, char **envp);
-void	init_cmds(t_infos *infos, char *str);
 t_cmd	*get_cmd(t_infos *infos);
 
 //exec_cmds.c

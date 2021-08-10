@@ -8,7 +8,8 @@
 **
 **
 ** I don't know how it will be parsed
-** For, now arg[0] will contain echo and arg[1 to n] will contains args or the option -n
+** For, now arg[0] will contain echo and arg[1 to n]
+** will contains args or the option -n
 **
 */
 
@@ -41,7 +42,7 @@ void	is_new_line(char **arg, int *i, int *new_line)
 
 int	mini_echo(char **arg)
 {
-	int i;
+	int	i;
 	int	new_line;
 
 	new_line = 1;
@@ -61,8 +62,7 @@ int	mini_echo(char **arg)
 
 void	test_echo(void)
 {
-	char *arg[7];
-	//char *arg2[2];
+	char	*arg[7];
 
 	arg[0] = "echo";
 	arg[1] = "-nnnnnnnn";
@@ -71,8 +71,5 @@ void	test_echo(void)
 	arg[4] = "-nnnnnnnnnnnn";
 	arg[5] = "abc";
 	arg[6] = NULL;
-	/*arg2[0] = "echo";
-	arg2[1] = NULL;*/
 	mini_echo(arg);
-	//mini_echo(arg2);
 }

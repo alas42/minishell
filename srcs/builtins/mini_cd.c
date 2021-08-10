@@ -6,12 +6,13 @@
 **
 ** NOT TO FORGET :SET CORRECT RETURN STATUS CODE
 **
-** Should we do ~ and - when subjects says ONLY relatives and absolutes paths without any mentions to options and arguments ?
+** Should we do ~ and - when subjects says ONLY relatives and absolutes
+** paths without any mentions to options and arguments ?
 ** IF not, isn't it too easy ... right ?
 **
 */
 
-int		mini_cd(t_infos *infos, char *path)
+int	mini_cd(t_infos *infos, char *path)
 {
 	char	*old_path;
 	char	*current_path;
@@ -27,8 +28,8 @@ int		mini_cd(t_infos *infos, char *path)
 	{
 		ret = 1;
 		current_path = mini_pwd();
-		ret_change_line[0] = change_line_env_tab(infos, "OLDPWD", old_path); //check for errors
-		ret_change_line[1] = change_line_env_tab(infos, "PWD", current_path); //check for errors
+		ret_change_line[0] = change_line_env_tab(infos, "OLDPWD", old_path);
+		ret_change_line[1] = change_line_env_tab(infos, "PWD", current_path);
 		if (!ret_change_line[0] || !ret_change_line[1])
 			ret = 0;
 		free(current_path);
@@ -50,7 +51,7 @@ void	test_cd(t_infos *infos)
 	char	*path[6];
 
 	i = 0;
-	path[0] = "srcs"; 
+	path[0] = "srcs";
 	path[1] = "../..";
 	path[2] = "./minishell/includes";
 	path[3] = "/";
