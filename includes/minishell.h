@@ -26,6 +26,7 @@ typedef struct s_cmd
     int     		process;
     int     		fd_outfile;
     int     		fd_infile;
+	int				here_doc_in; //bool
 	int				builtin; //bool
 	int				pipe_in; //bool
 	int				pipe_out; //bool
@@ -117,7 +118,6 @@ void	print_env_tab(t_infos *infos);
 char	**add_env_tab(char **envs, char *key_value_str);
 int		change_line_env_tab(t_infos *infos, char *key,  char *value);
 char	**remove_env_tab(t_infos *infos, char *key);
-char	*create_pair_key_value(char *key, char *value);
 
 //utils for environment variables (t_env)
 void	add_env(t_infos *infos, t_env *new);
@@ -133,9 +133,9 @@ void	check_paths(t_infos *infos);
 
 //builtins functions
 int		mini_unset(t_infos *infos, char *key);
-int		mini_export(t_infos *infos, char *key, char *value);
-int		mini_cd(t_infos *infos, char *path);
-int		mini_echo(char **arg);
+int		mini_export(t_infos *infos, t_cmd *cmd);
+int		mini_cd(t_infos *infos, t_cmd *cmd);
+int		mini_echo(t_infos *infos __attribute__((unused)), t_cmd *cmd);
 int		mini_env(t_infos *infos);
 char	*mini_pwd(void);
 

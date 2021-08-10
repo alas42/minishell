@@ -45,7 +45,7 @@ char	**add_env_tab(char **envs, char *key_value_str)
 		new_tab[j] = ft_strdup(envs[j]);
 		j++;
 	}
-	new_tab[j++] = key_value_str;
+	new_tab[j++] = ft_strdup(key_value_str);
 	new_tab[j++] = ft_strdup(envs[i - 1]);
 	new_tab[j] = NULL;
 	ft_free_tab_ptr(envs);

@@ -1,27 +1,25 @@
 #include "../../includes/minishell.h"
 
 /*
-** QUESTIONS :
-** what happens when getenv returns null (if no env variable ?)
 **
 ** NOT TO FORGET :SET CORRECT RETURN STATUS CODE
 **
-** Should we do ~ and - when subjects says ONLY relatives and absolutes
-** paths without any mentions to options and arguments ?
-** IF not, isn't it too easy ... right ?
 **
 */
 
-int	mini_cd(t_infos *infos, char *path)
+int	mini_cd(t_infos *infos, t_cmd *cmd)
 {
 	char	*old_path;
 	char	*current_path;
+	char	*path;
 	int		ret;
 	int		ret_change_line[2];
 
 	old_path = mini_pwd();
-	if (path == NULL)
+	if (cmd->arg[1] == NULL)
 		path = getenv("HOME");
+	else
+		path = cmd->arg[1];
 	if (chdir(path))
 		ret = 0;
 	else
@@ -43,7 +41,7 @@ int	mini_cd(t_infos *infos, char *path)
 ** Tests all paths contained in *path[] one after another
 ** And calls to mini_pwd to print where the terminal is
 **
-*/
+
 void	test_cd(t_infos *infos)
 {
 	int		ret_mini_cd;
@@ -59,7 +57,7 @@ void	test_cd(t_infos *infos)
 	path[5] = NULL;
 	while (path[i])
 	{
-		ret_mini_cd = mini_cd(infos, path[i]);
+		ret_mini_cd = mini_cd(infos, );
 		test_pwd();
 		if (!ret_mini_cd)
 			ft_putendl_fd("cd error", STDERR_FILENO);
@@ -67,3 +65,4 @@ void	test_cd(t_infos *infos)
 	}
 	print_env_tab(infos);
 }
+*/
