@@ -2,17 +2,8 @@ NAME = minishell
 
 FILES = minishell.c \
 	free.c \
-	paths.c \
-	exec_cmds.c \
-	parsing.c \
-	lexer.c \
-	parsing_init.c \
-	parsing_utils.c \
-	print_temp.c \
-	exec_cmds2.c \
-	utils_cmds.c \
-	utils_env.c \
-	utils_list_env.c
+	error.c \
+	print_temp.c
 
 BUILTINS_FILES = mini_env.c \
 	mini_cd.c \
@@ -22,11 +13,31 @@ BUILTINS_FILES = mini_env.c \
 	mini_pwd.c \
 	mini_unset.c
 
+EXEC_FILES = exec_cmds.c \
+	child_fds.c \
+	parent_fds.c
+
+PARSING_FILES = parsing_init.c \
+	parsing_utils.c \
+	parsing.c \
+	lexer.c
+
+UTILS_FILES = utils_cmds.c \
+	utils_env.c \
+	utils_list_env.c \
+	utils_paths.c
+
+PARSING_FOLDER = parsing
+UTILS_FOLDER = utils
 BUILTINS_FOLDER = builtins
+EXEC_FOLDER = exec
 FOLDER_SOURCES = srcs
 
 SOURCES_FILES = $(addprefix $(FOLDER_SOURCES)/,$(FILES)) \
-	$(addprefix $(FOLDER_SOURCES)/,$(addprefix $(BUILTINS_FOLDER)/,$(BUILTINS_FILES)))
+	$(addprefix $(FOLDER_SOURCES)/,$(addprefix $(BUILTINS_FOLDER)/,$(BUILTINS_FILES))) \
+	$(addprefix $(FOLDER_SOURCES)/, $(addprefix $(EXEC_FOLDER)/, $(EXEC_FILES))) \
+	$(addprefix $(FOLDER_SOURCES)/, $(addprefix $(UTILS_FOLDER)/, $(UTILS_FILES))) \
+	$(addprefix $(FOLDER_SOURCES)/, $(addprefix $(PARSING_FOLDER)/, $(PARSING_FILES)))
 
 OBJS = $(SOURCES_FILES:.c=.o)
 

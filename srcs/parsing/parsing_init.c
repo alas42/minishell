@@ -92,5 +92,3 @@ void    add_to_struct(t_infos *info)
         i++;
     }
 }
-
-
