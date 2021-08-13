@@ -24,7 +24,7 @@ void	free_infos(t_infos *infos)
 
 void	free_tokens(t_infos *info)
 {
-	t_token *temp;
+	t_token	*temp;
 
 	if (info->tokens == NULL)
 		return ;

@@ -9,13 +9,15 @@
 **
 */
 
-int	mini_env(t_infos *infos)
+int	mini_env(t_infos *infos, t_cmd *cmd __attribute__((unused)))
 {
 	print_env_tab(infos);
 	return (1);
 }
 
+/*
 void	test_env(t_infos *infos)
 {
 	mini_env(infos);
 }
+*/

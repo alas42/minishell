@@ -6,10 +6,6 @@
 ** But It doesn't have to be NULL like many other
 ** Only Echo and Export treats their arguments
 **
-**
-** I don't know how it will be parsed
-** For, now arg[0] will contain echo and arg[1 to n] will contains args or the option -n
-**
 */
 
 void	is_new_line(char **arg, int *i, int *new_line)
@@ -39,30 +35,29 @@ void	is_new_line(char **arg, int *i, int *new_line)
 	}
 }
 
-int	mini_echo(char **arg)
+int	mini_echo(t_infos *infos __attribute__((unused)), t_cmd *cmd)
 {
-	int i;
+	int	i;
 	int	new_line;
 
 	new_line = 1;
 	i = 1;
-	is_new_line(arg, &i, &new_line);
-	while (arg[i])
+	is_new_line(cmd->arg, &i, &new_line);
+	while (cmd->arg[i])
 	{
-		ft_putstr_fd(arg[i], STDOUT_FILENO);
+		ft_putstr_fd(cmd->arg[i], STDOUT_FILENO);
 		i++;
-		if (arg[i])
+		if (cmd->arg[i])
 			ft_putchar_fd(' ', STDOUT_FILENO);
 	}
 	if (new_line)
 		ft_putchar_fd('\n', STDOUT_FILENO);
 	return (1);
 }
-
+/*
 void	test_echo(void)
 {
-	char *arg[7];
-	//char *arg2[2];
+	char	*arg[7];
 
 	arg[0] = "echo";
 	arg[1] = "-nnnnnnnn";
@@ -71,8 +66,5 @@ void	test_echo(void)
 	arg[4] = "-nnnnnnnnnnnn";
 	arg[5] = "abc";
 	arg[6] = NULL;
-	/*arg2[0] = "echo";
-	arg2[1] = NULL;*/
 	mini_echo(arg);
-	//mini_echo(arg2);
-}
+}*/

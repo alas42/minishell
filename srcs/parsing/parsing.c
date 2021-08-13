@@ -1,6 +1,6 @@
 #include "../includes/minishell.h"
 
-void    upfate_tokens(t_infos *info)
+void    update_tokens(t_infos *info)
 {
     t_token *temp;
 
@@ -17,6 +17,6 @@ void    start_parsing(t_infos *info)
 {
     add_to_struct(info);
     merge_same(info);
-    upfate_tokens(info);
+    update_tokens(info);
     free_tokens(info);
 }

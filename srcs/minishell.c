@@ -26,78 +26,55 @@ t_infos	*init_infos(char **envp)
 	return (infos);
 }
 
-//add error checking at return
-void	init_cmds(t_infos *infos, char *str)
-{
-	t_cmd *cmd;
-	t_cmd *tmp;
-
-	tmp = infos->first_cmd;
-	cmd = (t_cmd *)malloc(sizeof(t_cmd));
-	if (!cmd)
-		return ;
-	cmd->arg = ft_split_char(str, ' ');
-	if (tmp == NULL)
-		cmd->prec = NULL;
-	else
-	{
-		while (tmp->next)
-			tmp = tmp->next;
-		cmd->prec = tmp;
-	}
-	cmd->pipe_in = 0;
-	cmd->pipe_out = 0;
-	cmd->name_infile = NULL;
-	cmd->name_outfile = NULL;
-	cmd->builtin = 0;
-	cmd->process = 1;
-	cmd->next = NULL;
-	infos->first_cmd = cmd;
-}
-
 /*
 **
 ** They speak about one global for exit or error status
 ** don't know what structure we will be using but there's a start I guess
 **
-** Step 1:
-** An elaborate pipex that can execute only one func if there is no pipe but more than two if needed
+** Step 1: DONE
+** An elaborate pipex that can execute only one func if there is no pipe
+** but more than two if needed
 **
 ** Step 1.1:
 ** Parsing without execptions to fill structs with correct infos
 **
-** Step 1.2:
+** Step 1.2: DONE
 ** Recursive or looping method that executes cmds with correct pipes
 **
 ** Step 1.3:
 ** Add exceptions to parsing - check for builtins
 **
+** Step 1.4:
+** Check if it is an interaction with the terminal
+** or a normal line
+**
 */
 
-int	main(int ac __attribute__((unused)), char **av __attribute__((unused)), char **envp)
+int	main(int ac __attribute__((unused)),
+	char **av __attribute__((unused)), char **envp)
 {
 	int		int_mode;
 	t_infos	*infos;
 
+	infos = init_infos(envp);
 	int_mode = isatty(STDIN_FILENO);
 	while (int_mode)
 	{
 		if (int_mode == 1)
 		{
-			infos = init_infos(envp);
 			infos->line = readline("$ ");
-			//parsing into tokens before adding to history (it can be an interaction with terminal)
+			//check if interaction
+
 			start_parsing(infos);
 			if (infos->line)
-				add_history(infos->line);
-			//test of an algo for one or multiple comands with pipes (NO BUILTINS YET)
-			//tests_exec_cmds(infos, infos->envs);
-			//test_pwd();
-			//test_cd(infos);
-			//test_echo();
-			//test_export(infos);
-			//test_unset(infos);
+				add_history(infos->line);/*
+			if (infos->nb_cmd > 1 || choose_builtin(infos, infos->first_cmd) == -1)
+			{
+				//it's either multiples commands OR only one that is not a builtin
+				exec_cmds(infos, infos->envs);
+			}*/
 		}
+		free(infos->line);
 		int_mode = isatty(STDIN_FILENO);
 	}
 	free_infos(infos);
