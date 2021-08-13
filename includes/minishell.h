@@ -14,6 +14,7 @@
 # include <errno.h>
 # include <dirent.h>
 # include <curses.h>
+# include <signal.h>
 # include <term.h>
 # include "libft.h"
 
@@ -162,5 +163,11 @@ void	test_echo(void);
 void	test_pwd(void);
 void	test_cd(t_infos *infos);
 void	test_export(t_infos *infos);
+
+/*
+** SIGNALS
+*/
+void	sigint_handler(int status);
+void	sigquit_handler(int signal);
 
 #endif

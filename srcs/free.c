@@ -15,11 +15,16 @@ void	ft_free_tab_ptr(char **ptr)
 
 void	free_infos(t_infos *infos)
 {
-	free(infos->line);
-	ft_free_tab_ptr(infos->paths);
-	ft_free_tab_ptr(infos->envs);
-	free_env_list(infos);
-	free_cmd_list(infos);
+	if (infos->line)
+		free(infos->line);
+	if (infos->paths)
+		ft_free_tab_ptr(infos->paths);
+	if (infos->envs)
+		ft_free_tab_ptr(infos->envs);
+	if (infos->first_env)
+		free_env_list(infos);
+	if (infos->first_cmd)
+		free_cmd_list(infos);
 }
 
 void	free_tokens(t_infos *info)

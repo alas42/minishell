@@ -27,17 +27,22 @@ UTILS_FILES = utils_cmds.c \
 	utils_list_env.c \
 	utils_paths.c
 
+SIGNALS_FILES = sigint.c \
+	sigquit.c
+
 PARSING_FOLDER = parsing
 UTILS_FOLDER = utils
 BUILTINS_FOLDER = builtins
 EXEC_FOLDER = exec
 FOLDER_SOURCES = srcs
+SIGNALS_SOURCES = signals
 
 SOURCES_FILES = $(addprefix $(FOLDER_SOURCES)/,$(FILES)) \
 	$(addprefix $(FOLDER_SOURCES)/,$(addprefix $(BUILTINS_FOLDER)/,$(BUILTINS_FILES))) \
 	$(addprefix $(FOLDER_SOURCES)/, $(addprefix $(EXEC_FOLDER)/, $(EXEC_FILES))) \
 	$(addprefix $(FOLDER_SOURCES)/, $(addprefix $(UTILS_FOLDER)/, $(UTILS_FILES))) \
-	$(addprefix $(FOLDER_SOURCES)/, $(addprefix $(PARSING_FOLDER)/, $(PARSING_FILES)))
+	$(addprefix $(FOLDER_SOURCES)/, $(addprefix $(PARSING_FOLDER)/, $(PARSING_FILES))) \
+	$(addprefix $(FOLDER_SOURCES)/, $(addprefix $(SIGNALS_SOURCES)/, $(SIGNALS_FILES)))
 
 OBJS = $(SOURCES_FILES:.c=.o)
 
