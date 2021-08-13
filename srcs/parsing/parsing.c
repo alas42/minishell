@@ -1,14 +1,22 @@
-#include "../../includes/minishell.h"
+#include "../includes/minishell.h"
 
-void	unname_function(t_infos *info)
+void    update_tokens(t_infos *info)
 {
-	print_token_list(info->tokens);
+    t_token *temp;
+
+    //print_token_list(info->tokens);
+    temp = info->tokens;
+    while (temp)
+    {
+        printf("token type [%s], token [%s]\n", temp->type, temp->content);
+        temp = temp->next;
+    }
 }
 
-void	start_parsing(t_infos *info)
+void    start_parsing(t_infos *info)
 {
-	add_to_struct(info);
-	merge_same(info);
-	unname_function(info);
-	free_tokens(info);
+    add_to_struct(info);
+    merge_same(info);
+    update_tokens(info);
+    free_tokens(info);
 }
