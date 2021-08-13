@@ -57,18 +57,23 @@ int	main(int ac __attribute__((unused)),
 	t_infos	*infos;
 
 	infos = init_infos(envp);
+	signal(SIGINT, sigint_handler); //CTRL + C
+	signal(SIGQUIT, sigquit_handler); // CTRL + BACKSLASH
 	int_mode = isatty(STDIN_FILENO);
 	while (int_mode)
 	{
 		if (int_mode == 1)
 		{
 			infos->line = readline("$ ");
-			//check if interaction
-
+			if (!infos->line)
+			{ //CTRL + D
+				ft_putendl_fd("exit", STDOUT_FILENO);
+				break ;
+			}
 			start_parsing(infos);
 			if (infos->line)
-				add_history(infos->line);/*
-			if (infos->nb_cmd > 1 || choose_builtin(infos, infos->first_cmd) == -1)
+				add_history(infos->line);
+			/*if (infos->nb_cmd > 1 || choose_builtin(infos, infos->first_cmd) == -1)
 			{
 				//it's either multiples commands OR only one that is not a builtin
 				exec_cmds(infos, infos->envs);
@@ -77,6 +82,7 @@ int	main(int ac __attribute__((unused)),
 		free(infos->line);
 		int_mode = isatty(STDIN_FILENO);
 	}
+	rl_clear_history();
 	free_infos(infos);
 	free(infos);
 	return (0);
