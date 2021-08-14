@@ -23,6 +23,7 @@ t_infos	*init_infos(char **envp)
 	infos->nb_pipe = 0;
 	infos->index_cmd = 0;
 	infos->first_cmd = NULL;
+	print_export(infos);
 	return (infos);
 }
 
@@ -70,7 +71,8 @@ int	main(int ac __attribute__((unused)),
 				ft_putendl_fd("exit", STDOUT_FILENO);
 				break ;
 			}
-			start_parsing(infos);
+			test_cd(infos);
+			//start_parsing(infos);
 			if (infos->line)
 				add_history(infos->line);
 			/*if (infos->nb_cmd > 1 || choose_builtin(infos, infos->first_cmd) == -1)
@@ -85,5 +87,5 @@ int	main(int ac __attribute__((unused)),
 	rl_clear_history();
 	free_infos(infos);
 	free(infos);
-	return (0);
+	return (0); // should be exit code
 }

@@ -8,7 +8,8 @@
 
 int	mini_unset(t_infos *infos, t_cmd *cmd)
 {
-	infos->envs = remove_env_tab(infos, cmd->arg[1]);
+	if (infos->envs)
+		infos->envs = remove_env_tab(infos, cmd->arg[1]);
 	return (1);
 }
 

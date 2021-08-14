@@ -2,8 +2,7 @@ NAME = minishell
 
 FILES = minishell.c \
 	free.c \
-	error.c \
-	print_temp.c
+	error.c
 
 BUILTINS_FILES = mini_env.c \
 	mini_cd.c \

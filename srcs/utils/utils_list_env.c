@@ -7,6 +7,8 @@ char	*get_pair(t_infos *infos, int index)
 
 	i = 0;
 	env = infos->first_env;
+	if (!env)
+		return (NULL);
 	while (i++ < index)
 		env = env->next;
 	return (env->pair);
@@ -48,6 +50,8 @@ void	get_env_list(t_infos *infos, char **envp)
 	int		i;
 
 	i = 0;
+	if (!envp)
+		return ;
 	while (envp[i])
 	{
 		add_env(infos, creating_env(envp[i]));

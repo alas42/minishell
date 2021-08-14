@@ -1,10 +1,62 @@
 #include "../../includes/minishell.h"
 
+char	*get_key(t_infos *infos, int index)
+{
+	int		i;
+	char	*key;
+
+	i = 0;
+	if (!infos->envs || !infos->envs[index])
+		return (NULL);
+	while (infos->envs[index][i] != '\0' && infos->envs[index][i] != '=')
+		i++;
+	key = (char *)malloc(sizeof(char) * (i + 1));
+	if (!key)
+		return (NULL);
+	i = 0;
+	while (infos->envs[index][i] != '\0' && infos->envs[index][i] != '=')
+	{
+		key[i] = infos->envs[index][i];
+		i++;
+	}
+	key[i] = '\0';
+	return (key);
+}
+
+/*
+** Returns the value in a char * corresponding to the key in infos->envs
+*/
+char	*get_value(t_infos *infos, char *key)
+{
+	int		index;
+	int		i;
+	int		counter;
+	char	*value;
+	size_t	len_value;
+
+	index = find_pos_key(infos, key);
+	if (index == -1)
+		return (NULL);
+	len_value = ft_strlen(infos->envs[index]) - (ft_strlen(key) + 1);
+	counter = ft_strlen(key) + 1;
+	if (len_value > 0)
+	{
+		value = (char *)malloc(sizeof(char) * (len_value + 1));
+		if (!value)
+			return (NULL);
+		i = 0;
+		while (infos->envs[index][counter] != '\0')
+			value[i++] = infos->envs[index][counter++];
+		value[i] = '\0';
+		return (value);
+	}
+	else
+		return(NULL);
+}
+
 /*
 **
-** Create a string "key=value" and replace them if key is already in **env
-** Returns 0 if failed to find the key
-** Returns 1 on success
+** Create and returns a new string "key=value"
 **
 */
 char	*create_pair_key_value(char *key, char *value)
@@ -24,6 +76,9 @@ char	*create_pair_key_value(char *key, char *value)
 	return (key_value_str);
 }
 
+/*
+** Calls create_pair_key_value and change the correct line to the new one
+*/
 int	change_line_env_tab(t_infos *infos, char *key,  char *value)
 {
 	char	*key_value_str;
@@ -43,6 +98,10 @@ int	change_line_env_tab(t_infos *infos, char *key,  char *value)
 	return (0);
 }
 
+/*
+** Add a key_value pair to the envs tab
+** Returns a copy from envs tab with an additional line
+*/
 char	**add_env_tab(char **envs, char *key_value_str)
 {
 	int		i;
@@ -70,6 +129,11 @@ char	**add_env_tab(char **envs, char *key_value_str)
 	return (new_tab);
 }
 
+/*
+** Remove an entry from envs tab
+** - Returns a copy from initial tab without the line wanted to be removed
+** - Returns the original tab as is if the key isn't found
+*/
 char	**remove_env_tab(t_infos *infos, char *key)
 {
 	int		i;
@@ -84,30 +148,38 @@ char	**remove_env_tab(t_infos *infos, char *key)
 	if (!new_tab)
 		return (NULL);
 	pos_key = find_pos_key(infos, key);
-	j = 0;
-	while (j < i)
+	if (pos_key == -1)
+	{
+		ft_free_tab_ptr(new_tab);
+		return (infos->envs);
+	}
+	j = -1;
+	while (++j < i)
 	{
 		if (j < pos_key)
 			new_tab[j] = ft_strdup(infos->envs[j]);
 		else if (j > pos_key)
 			new_tab[j - 1] = ft_strdup(infos->envs[j]);
-		j++;
 	}
 	new_tab[i] = NULL;
 	ft_free_tab_ptr(infos->envs);
 	return (new_tab);
 }
 
+/*
+** Makes a copy from **envp to infos->envs
+** Returns NULL if **envp is NULL
+*/
 char	**get_env_tab(char **envp)
 {
 	char	**envs;
 	int		i;
 
 	i = 0;
+	if (!envp)
+		return (NULL);
 	while (envp[i])
-	{
 		i++;
-	}
 	envs = (char **)malloc(sizeof(char *) *(i + 1));
 	if (!envs)
 		return (NULL);
@@ -121,14 +193,20 @@ char	**get_env_tab(char **envp)
 	return (envs);
 }
 
+/*
+** Print the content of envs tab from infos if not NULL
+*/
 void	print_env_tab(t_infos *infos)
 {
 	int	i;
 
 	i = 0;
+	if (!infos->envs)
+		return ;
 	while (infos->envs[i])
 	{
 		ft_putendl_fd(infos->envs[i], STDOUT_FILENO);
 		i++;
 	}
+	ft_putendl_fd("\n", STDOUT_FILENO);
 }

@@ -20,6 +20,7 @@
 
 enum e_file_end { READ, WRITE };
 enum e_builtin { B_EXIT, B_ECHO, B_PWD, B_EXPORT, B_ENV, B_CD, B_UNSET }; //B_ because ECHO is already defined somewhere as 00000010
+enum e_error { E_MALLOC, E_FORK, E_PIPE, E_DUP, E_DUP2, E_EXECVE, E_CLOSE, E_OPEN };
 
 typedef struct s_cmd
 {
@@ -121,6 +122,8 @@ char	**add_env_tab(char **envs, char *key_value_str);
 int		change_line_env_tab(t_infos *infos, char *key,  char *value);
 char	**remove_env_tab(t_infos *infos, char *key);
 char	*create_pair_key_value(char *key, char *value);
+char	*get_value(t_infos *infos, char *key);
+char	*get_key(t_infos *infos, int index);
 
 //utils for environment variables (t_env)
 void	add_env(t_infos *infos, t_env *new);
@@ -150,6 +153,7 @@ int		choose_builtin(t_infos *infos, t_cmd *cmd);
 //builtins functions
 int		mini_unset(t_infos *infos, t_cmd *cmd);
 int		mini_export(t_infos *infos, t_cmd *cmd);
+void	print_export(t_infos *infos);
 int		mini_cd(t_infos *infos, t_cmd *cmd);
 int		mini_echo(t_infos *infos __attribute__((unused)), t_cmd *cmd);
 int		mini_env(t_infos *infos, t_cmd *cmd __attribute__((unused)));
@@ -169,5 +173,10 @@ void	test_export(t_infos *infos);
 */
 void	sigint_handler(int status);
 void	sigquit_handler(int signal);
+
+/*
+** Error
+*/
+void	print_error(int state, t_infos *infos);
 
 #endif
