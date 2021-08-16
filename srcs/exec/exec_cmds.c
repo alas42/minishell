@@ -54,17 +54,22 @@ static void	piping(t_infos *infos)
 
 static void	child_process(t_infos *infos, t_cmd *cmd, char **envp)
 {
+	int	ret;
+
+	ret = 0;
 	if (child_fds(infos, cmd))
 	{
 		ft_putendl_fd("close or dup2 error in child", STDERR_FILENO);
 	}
 	if (cmd->builtin)
 	{
-		 if (choose_builtin(infos, cmd) != -1)
-			ft_putendl_fd("NOT AN ERROR : the cmd is a builtin", STDERR_FILENO);
+		ret = choose_builtin(infos, cmd);
 	}
-	execve(cmd->arg[0], cmd->arg, envp);
-	print_error(E_EXECVE, infos);
+	else if (!cmd->builtin || ret == -1)
+	{
+		execve(cmd->arg[0], cmd->arg, envp);
+		print_error(E_EXECVE, infos);
+	}
 }
 
 static void	parent_process(t_infos *infos, t_cmd *cmd, char **envp)

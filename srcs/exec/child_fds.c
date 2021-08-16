@@ -16,9 +16,10 @@ static int	first_cmd(t_infos *infos, t_cmd *cmd)
 	{
 		cmd->fd_outfile = open(cmd->name_outfile,
 				O_TRUNC | O_WRONLY | O_CREAT, 0644);
-		ret[1] = dup2(cmd->fd_outfile, STDOUT_FILENO);
+		if (cmd->fd_outfile > -1)
+			ret[1] = dup2(cmd->fd_outfile, STDOUT_FILENO);
 	}
-	if (ret[0] > -1 && ret[1] > -1)
+	if (ret[0] > -1 && ret[1] > -1 && cmd->fd_outfile > -1)
 		return (0);
 	return (1);
 }
@@ -72,7 +73,6 @@ int	child_fds(t_infos *infos, t_cmd *cmd)
 {
 	int	ret;
 
-	ret = 0;
 	if (infos->index_cmd == 0)
 		ret = first_cmd(infos, cmd);
 	else if (infos->index_cmd == infos->nb_pipe)

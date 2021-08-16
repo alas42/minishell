@@ -87,5 +87,4 @@ void	print_env_tab(t_infos *infos)
 		ft_putendl_fd(infos->envs[i], STDOUT_FILENO);
 		i++;
 	}
-	ft_putendl_fd("\n", STDOUT_FILENO);
 }

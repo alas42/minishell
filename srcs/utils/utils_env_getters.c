@@ -50,8 +50,7 @@ char	*get_value(t_infos *infos, char *key)
 		value[i] = '\0';
 		return (value);
 	}
-	else
-		return (NULL);
+	return (NULL);
 }
 
 char	*get_line(t_infos *infos, int index)
@@ -83,12 +82,9 @@ char	**get_env_tab(char **envp)
 	envs = (char **)malloc(sizeof(char *) *(i + 1));
 	if (!envs)
 		return (NULL);
-	i = 0;
-	while (envp[i])
-	{
+	i = -1;
+	while (envp[++i])
 		envs[i] = ft_strdup(envp[i]);
-		i++;
-	}
 	envs[i] = NULL;
 	return (envs);
 }

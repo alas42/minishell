@@ -4,7 +4,6 @@ static int	first_cmd(t_infos *infos, t_cmd *cmd)
 {
 	int	ret_close;
 
-	ret_close = 0;
 	ret_close = close(infos->pipe_b[WRITE]);
 	if (cmd->name_infile != NULL)
 		ret_close = close(cmd->fd_infile);
@@ -17,7 +16,6 @@ static int	other_cmd(t_infos *infos)
 {
 	int	ret_close;
 
-	ret_close = 0;
 	if (infos->index_cmd % 2)
 	{
 		ret_close = close(infos->pipe_b[READ]);
@@ -35,7 +33,6 @@ static int	last_cmd(t_infos *infos, t_cmd *cmd)
 {
 	int	ret_close;
 
-	ret_close = 0;
 	if (infos->index_cmd % 2)
 	{
 		ret_close = close(infos->pipe_b[READ]);
@@ -55,7 +52,6 @@ int	parent_fds(t_infos *infos, t_cmd *cmd)
 {
 	int	ret_close;
 
-	ret_close = 0;
 	if (infos->index_cmd == 0)
 		ret_close = first_cmd(infos, cmd);
 	else if (infos->index_cmd == infos->nb_pipe)
