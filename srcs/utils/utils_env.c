@@ -2,9 +2,7 @@
 
 /*
 **
-** Create a string "key=value" and replace them if key is already in **env
-** Returns 0 if failed to find the key
-** Returns 1 on success
+** Create and returns a new string "key=value"
 **
 */
 char	*create_pair_key_value(char *key, char *value)
@@ -24,7 +22,10 @@ char	*create_pair_key_value(char *key, char *value)
 	return (key_value_str);
 }
 
-int	change_line_env_tab(t_infos *infos, char *key,  char *value)
+/*
+** Calls create_pair_key_value and change the correct line to the new one
+*/
+int	change_line_env_tab(t_infos *infos, char *key, char *value)
 {
 	char	*key_value_str;
 	int		ret_find_path;
@@ -43,6 +44,10 @@ int	change_line_env_tab(t_infos *infos, char *key,  char *value)
 	return (0);
 }
 
+/*
+** Add a key_value pair to the envs tab
+** Returns a copy from envs tab with an additional line
+*/
 char	**add_env_tab(char **envs, char *key_value_str)
 {
 	int		i;
@@ -70,65 +75,20 @@ char	**add_env_tab(char **envs, char *key_value_str)
 	return (new_tab);
 }
 
-char	**remove_env_tab(t_infos *infos, char *key)
-{
-	int		i;
-	int		j;
-	char	**new_tab;
-	int		pos_key;
-
-	i = 0;
-	while (infos->envs[i])
-		i++;
-	new_tab = (char **)malloc(sizeof(char *) * i);
-	if (!new_tab)
-		return (NULL);
-	pos_key = find_pos_key(infos, key);
-	j = 0;
-	while (j < i)
-	{
-		if (j < pos_key)
-			new_tab[j] = ft_strdup(infos->envs[j]);
-		else if (j > pos_key)
-			new_tab[j - 1] = ft_strdup(infos->envs[j]);
-		j++;
-	}
-	new_tab[i] = NULL;
-	ft_free_tab_ptr(infos->envs);
-	return (new_tab);
-}
-
-char	**get_env_tab(char **envp)
-{
-	char	**envs;
-	int		i;
-
-	i = 0;
-	while (envp[i])
-	{
-		i++;
-	}
-	envs = (char **)malloc(sizeof(char *) *(i + 1));
-	if (!envs)
-		return (NULL);
-	i = 0;
-	while (envp[i])
-	{
-		envs[i] = ft_strdup(envp[i]);
-		i++;
-	}
-	envs[i] = NULL;
-	return (envs);
-}
-
+/*
+** Print the content of envs tab from infos if not NULL
+*/
 void	print_env_tab(t_infos *infos)
 {
 	int	i;
 
 	i = 0;
+	if (!infos->envs)
+		return ;
 	while (infos->envs[i])
 	{
 		ft_putendl_fd(infos->envs[i], STDOUT_FILENO);
 		i++;
 	}
+	ft_putendl_fd("\n", STDOUT_FILENO);
 }

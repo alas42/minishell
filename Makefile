@@ -2,8 +2,7 @@ NAME = minishell
 
 FILES = minishell.c \
 	free.c \
-	error.c \
-	print_temp.c
+	error.c
 
 BUILTINS_FILES = mini_env.c \
 	mini_cd.c \
@@ -24,8 +23,8 @@ PARSING_FILES = parsing_init.c \
 
 UTILS_FILES = utils_cmds.c \
 	utils_env.c \
-	utils_list_env.c \
-	utils_paths.c
+	utils_paths.c \
+	utils_env_getters.c
 
 SIGNALS_FILES = sigint.c \
 	sigquit.c

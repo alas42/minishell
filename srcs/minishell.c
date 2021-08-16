@@ -15,9 +15,8 @@ t_infos	*init_infos(char **envp)
 		return (NULL);
 	infos->first_env = NULL;
 	infos->envs = get_env_tab(envp);
-	get_env_list(infos, infos->envs);
 	infos->pos_path = find_pos_key(infos, "PATH");
-	infos->paths = ft_split_char(get_pair(infos, infos->pos_path), ':');
+	infos->paths = ft_split_char(get_line(infos, infos->pos_path), ':');
 	infos->nb_cmd = 0;
 	infos->tokens = NULL;
 	infos->nb_pipe = 0;
@@ -70,7 +69,7 @@ int	main(int ac __attribute__((unused)),
 				ft_putendl_fd("exit", STDOUT_FILENO);
 				break ;
 			}
-			start_parsing(infos);
+			//start_parsing(infos);
 			if (infos->line)
 				add_history(infos->line);
 			/*if (infos->nb_cmd > 1 || choose_builtin(infos, infos->first_cmd) == -1)
@@ -85,5 +84,5 @@ int	main(int ac __attribute__((unused)),
 	rl_clear_history();
 	free_infos(infos);
 	free(infos);
-	return (0);
+	return (0); // should be exit code
 }

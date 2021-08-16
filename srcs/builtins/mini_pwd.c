@@ -35,7 +35,7 @@ static char	*realloc_path_dir(char *path_dir, size_t *length_path)
 	return (path_dir);
 }
 
-int	mini_pwd(t_infos *infos __attribute__((unused)), t_cmd *cmd __attribute__((unused)))
+int	mini_pwd(t_infos *infos, t_cmd *cmd)
 {
 	char	*path_dir;
 	size_t	length_path;
@@ -58,6 +58,8 @@ int	mini_pwd(t_infos *infos __attribute__((unused)), t_cmd *cmd __attribute__((u
 	}
 	ft_putendl_fd(free_and_return(path_dir, ret), STDOUT_FILENO);
 	return (1);
+	(void)infos;
+	(void)cmd;
 }
 
 /*

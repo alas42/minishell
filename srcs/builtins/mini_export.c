@@ -3,40 +3,100 @@
 /*
 **
 ** Export without arg - print in ascii order the tab of ptrs with some changes
-** 1. It displays export
-** 2. It displays a whitespace
-** 3. It displays the key
-** 4. It displays a double quote
-** 5. It displays all the values
-** 6. It displays a double quote
-** 7. It displays '\n'
-**
-** That's why I thought about a chained list with an integer
-** containing positions.
-** It can be very good if the char * in every nodes points to
-** according char * in the tab
+** 1. It displays the word "export" followed by a whitespace
+** 2. It displays the key
+** 3. It displays a opening double quote
+** 4. It displays all the values of the key
+** 5. It displays the closing double quote
+** 6. It displays '\n'
 **
 */
-
-static void	print_export(t_infos *infos)
+static int	print_line(t_infos *infos, int index)
 {
-	t_env	*env;
-	//char	**key_value_tab;
+	char	*key;
+	char	*value;
+	char	*final_str;
 
-	env = infos->first_env;
-	while (env)
+	key = get_key(infos, index);
+	value = get_value(infos, key);
+	if (!key || !value)
+		return (0);
+	final_str = (char *)malloc(sizeof(char)
+			* (ft_strlen(key) + ft_strlen(value) + 11));
+	if (!final_str)
+		return (0);
+	final_str[0] = '\0';
+	final_str = ft_strcat(final_str, "export ");
+	final_str = ft_strcat(final_str, key);
+	final_str = ft_strcat(final_str, "=");
+	final_str = ft_strcat(final_str, "\"");
+	final_str = ft_strcat(final_str, value);
+	final_str = ft_strcat(final_str, "\"");
+	ft_putendl_fd(final_str, STDOUT_FILENO);
+	free(key);
+	free(value);
+	free(final_str);
+	return (1);
+}
+
+static int	print_asci_order(t_infos *infos, int num, int *order)
+{
+	int	i;
+	int	tmp;
+
+	i = 0;
+	while (i < num)
 	{
-		//key_value_tab = get;
-		ft_putstr_fd("export ", STDOUT_FILENO);
-		ft_putendl_fd(env->pair, STDOUT_FILENO);
-		env = env->next;
+		tmp = 0;
+		while (tmp < num)
+		{
+			if (order[tmp] == i)
+			{
+				order[tmp] = -1;
+				print_line(infos, tmp);
+				i = -1;
+				break ;
+			}
+			tmp++;
+		}
+		i++;
 	}
+	free(order);
+	return (1);
+}
+
+void	print_export(t_infos *infos)
+{
+	int	number_env;
+	int	counter[2];
+	int	*order;
+
+	counter[0] = 0;
+	while (infos->envs[counter[0]])
+		counter[0]++;
+	number_env = counter[0];
+	order = (int *)malloc(sizeof(int) * number_env);
+	if (!order)
+		print_error(E_MALLOC, infos);
+	counter[0] = 0;
+	while (counter[0] < number_env)
+		order[counter[0]++] = 0;
+	counter[0] = -1;
+	while (++counter[0] < number_env)
+	{
+		counter[1] = -1;
+		while (++counter[1] < number_env)
+			if (counter[0] != counter[1])
+				if (ft_strcmp(infos->envs[counter[0]],
+						infos->envs[counter[1]]) > 0)
+					order[counter[0]] = order[counter[0]] + 1;
+	}
+	print_asci_order(infos, number_env, order);
 }
 
 /*
 **
 ** NOT TO FORGET : SET CORRECT RETURN STATUS CODE
-** USING : tab of pointers and not list
 **
 */
 
@@ -47,10 +107,12 @@ int	mini_export(t_infos *infos, t_cmd *cmd)
 
 	if (!cmd->arg[1])
 	{
+		if (!infos->envs)
+			return (1);
 		print_export(infos);
 		return (1);
 	}
-	key_value_tab = ft_split_char(cmd->arg[1], '='); //FALSE it cannot be done this way, the value themselves can contain the char '='
+	key_value_tab = ft_split_char(cmd->arg[1], '=');
 	ret_find_path = find_pos_key(infos, key_value_tab[0]);
 	if (ret_find_path > -1)
 	{
