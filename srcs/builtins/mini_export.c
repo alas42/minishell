@@ -43,19 +43,41 @@ static int	print_asci_order(t_infos *infos, int num)
 {
 	int	i;
 	int tmp;
-	int	index;
+	int	*order;
 
-	index = 0;
+	i = 0;
+	order = (int *)malloc(sizeof(int) * num);
+	if (!order)
+		return (-1);
+	while (i < num)
+		order[i++] = 0;
+	i = -1;
+	while (++i < num)
+	{
+		tmp = -1;
+		while  (++tmp < num)
+			if (i != tmp)
+				if (ft_strcmp(infos->envs[i], infos->envs[tmp]) > 0)
+					order[i] = order[i] + 1;
+	}
 	i = 0;
 	while (i < num)
 	{
 		tmp = 0;
-		while  (tmp < num)
+		while (tmp < num)
 		{
+			if (order[tmp] == i)
+			{
+				order[tmp] = -1;
+				print_line(infos, tmp);
+				i = -1;
+				break ;
+			}
 			tmp++;
 		}
 		i++;
 	}
+	free(order);
 	return (1);
 }
 
