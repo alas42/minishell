@@ -18,7 +18,14 @@
 # include <term.h>
 # include "libft.h"
 
-enum e_file_end { READ, WRITE };
+int	g_return_code;
+
+enum e_file_end
+{
+	READ,
+	WRITE
+};
+
 enum e_builtin
 {
 	B_EXIT,

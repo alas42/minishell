@@ -22,6 +22,7 @@ t_infos	*init_infos(char **envp)
 	infos->nb_pipe = 0;
 	infos->index_cmd = 0;
 	infos->first_cmd = NULL;
+	g_return_code = 0;
 	return (infos);
 }
 
@@ -49,15 +50,16 @@ t_infos	*init_infos(char **envp)
 **
 */
 
-int	main(int ac __attribute__((unused)),
-	char **av __attribute__((unused)), char **envp)
+int	main(int ac, char **av, char **envp)
 {
 	int		int_mode;
 	t_infos	*infos;
 
+	(void)ac;
+	(void)av;
 	infos = init_infos(envp);
-	signal(SIGINT, sigint_handler); //CTRL + C
-	signal(SIGQUIT, sigquit_handler); // CTRL + BACKSLASH
+	signal(SIGINT, sigint_handler);
+	signal(SIGQUIT, sigquit_handler);
 	int_mode = isatty(STDIN_FILENO);
 	while (int_mode)
 	{
@@ -65,7 +67,7 @@ int	main(int ac __attribute__((unused)),
 		{
 			infos->line = readline("$ ");
 			if (!infos->line)
-			{ //CTRL + D
+			{
 				ft_putendl_fd("exit", STDOUT_FILENO);
 				break ;
 			}
@@ -83,6 +85,5 @@ int	main(int ac __attribute__((unused)),
 	}
 	rl_clear_history();
 	free_infos(infos);
-	free(infos);
-	return (0); // should be exit code
+	return (0);
 }

@@ -55,21 +55,18 @@ char	**add_env_tab(char **envs, char *key_value_str)
 	char	**new_tab;
 
 	i = 0;
-	while (envs[i])
-	{
-		i++;
-	}
+	if (envs)
+		while (envs[i])
+			i++;
 	new_tab = (char **)malloc(sizeof(char *) * (i + 2));
 	if (!new_tab)
 		return (NULL);
-	j = 0;
-	while (j < i - 1)
-	{
+	j = -1;
+	while (++j < i - 1)
 		new_tab[j] = ft_strdup(envs[j]);
-		j++;
-	}
 	new_tab[j++] = ft_strdup(key_value_str);
-	new_tab[j++] = ft_strdup(envs[i - 1]);
+	if (i != 0)
+		new_tab[j++] = ft_strdup(envs[i - 1]);
 	new_tab[j] = NULL;
 	ft_free_tab_ptr(envs);
 	return (new_tab);

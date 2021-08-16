@@ -9,16 +9,10 @@
 ** 
 */
 
-int	mini_exit(t_infos *infos, t_cmd *cmd __attribute__((unused)))
+int	mini_exit(t_infos *infos, t_cmd *cmd)
 {
+	(void)cmd;
 	free_infos(infos);
-	free(infos);
+	rl_clear_history();
 	exit(0);
 }
-
-/*
-void	test_exit(t_infos *infos)
-{
-	mini_exit(infos);
-}
-*/

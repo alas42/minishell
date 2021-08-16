@@ -6,7 +6,7 @@ char	*get_key(t_infos *infos, int index)
 	char	*key;
 
 	i = 0;
-	if (!infos->envs || !infos->envs[index])
+	if (!infos->envs || index < 0 || !infos->envs[index])
 		return (NULL);
 	while (infos->envs[index][i] != '\0' && infos->envs[index][i] != '=')
 		i++;
@@ -35,7 +35,7 @@ char	*get_value(t_infos *infos, char *key)
 	size_t	len_value;
 
 	index = find_pos_key(infos, key);
-	if (index == -1)
+	if (index < 0 || !infos->envs)
 		return (NULL);
 	len_value = ft_strlen(infos->envs[index]) - (ft_strlen(key) + 1);
 	counter = ft_strlen(key) + 1;
@@ -58,7 +58,7 @@ char	*get_line(t_infos *infos, int index)
 {
 	char	*line;
 
-	if (!infos->envs)
+	if (!infos->envs || index < 0)
 		return (NULL);
 	line = ft_strdup(infos->envs[index]);
 	if (!line)
