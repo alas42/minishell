@@ -21,8 +21,8 @@ static int	print_line(t_infos *infos, int index)
 	value = get_value(infos, key);
 	if (!key || !value)
 		return (0);
-	final_str = (char *)malloc(sizeof(char) *
-			(ft_strlen(key) + ft_strlen(value) + 11));
+	final_str = (char *)malloc(sizeof(char)
+			* (ft_strlen(key) + ft_strlen(value) + 11));
 	if (!final_str)
 		return (0);
 	final_str[0] = '\0';
@@ -39,27 +39,11 @@ static int	print_line(t_infos *infos, int index)
 	return (1);
 }
 
-static int	print_asci_order(t_infos *infos, int num)
+static int	print_asci_order(t_infos *infos, int num, int *order)
 {
 	int	i;
-	int tmp;
-	int	*order;
+	int	tmp;
 
-	i = 0;
-	order = (int *)malloc(sizeof(int) * num);
-	if (!order)
-		return (-1);
-	while (i < num)
-		order[i++] = 0;
-	i = -1;
-	while (++i < num)
-	{
-		tmp = -1;
-		while  (++tmp < num)
-			if (i != tmp)
-				if (ft_strcmp(infos->envs[i], infos->envs[tmp]) > 0)
-					order[i] = order[i] + 1;
-	}
 	i = 0;
 	while (i < num)
 	{
@@ -84,21 +68,35 @@ static int	print_asci_order(t_infos *infos, int num)
 void	print_export(t_infos *infos)
 {
 	int	number_env;
-	int	i;
+	int	counter[2];
+	int	*order;
 
-	i = 0;
-	if (!infos->envs)
-		return ;
-	while (infos->envs[i])
-		i++;
-	number_env = i;
-	print_asci_order(infos, number_env);
+	counter[0] = 0;
+	while (infos->envs[counter[0]])
+		counter[0]++;
+	number_env = counter[0];
+	order = (int *)malloc(sizeof(int) * number_env);
+	if (!order)
+		print_error(E_MALLOC, infos);
+	counter[0] = 0;
+	while (counter[0] < number_env)
+		order[counter[0]++] = 0;
+	counter[0] = -1;
+	while (++counter[0] < number_env)
+	{
+		counter[1] = -1;
+		while (++counter[1] < number_env)
+			if (counter[0] != counter[1])
+				if (ft_strcmp(infos->envs[counter[0]],
+						infos->envs[counter[1]]) > 0)
+					order[counter[0]] = order[counter[0]] + 1;
+	}
+	print_asci_order(infos, number_env, order);
 }
 
 /*
 **
 ** NOT TO FORGET : SET CORRECT RETURN STATUS CODE
-** USING : tab of pointers and not list
 **
 */
 
@@ -109,10 +107,12 @@ int	mini_export(t_infos *infos, t_cmd *cmd)
 
 	if (!cmd->arg[1])
 	{
+		if (!infos->envs)
+			return (1);
 		print_export(infos);
 		return (1);
 	}
-	key_value_tab = ft_split_char(cmd->arg[1], '='); // we're only interested in the first (the key)
+	key_value_tab = ft_split_char(cmd->arg[1], '=');
 	ret_find_path = find_pos_key(infos, key_value_tab[0]);
 	if (ret_find_path > -1)
 	{

@@ -6,7 +6,7 @@
 */
 int	ft_exists(char *file_path)
 {
-	struct stat file_info;
+	struct stat	file_info;
 	int			ret;
 
 	ret = stat(file_path, &file_info);
@@ -57,7 +57,7 @@ int	add_path(char **arg, char *path, int len_path)
 int	find_pos_key(t_infos *infos, char *to_find)
 {
 	int	i;
-	int j;
+	int	j;
 	int	len_to_find;
 
 	len_to_find = 0;
@@ -83,9 +83,10 @@ int	find_pos_key(t_infos *infos, char *to_find)
 
 /*
 **
-** (void functions are a no go, because there are errors that should be checked)
+** (void functions are a no go, because there are errors that should be checked
 ** This function add the execution path to every command in the chained list
-** If it doesn't find, the path stays the same, it will try to execute it in the directory
+** If it doesn't find, the path stays the same,
+** it will try to execute it in the directory
 **
 */
 
@@ -105,7 +106,7 @@ void	check_paths(t_infos *infos)
 			if (ret_path != 1)
 			{
 				ret_path = add_path(cmd->arg, infos->paths[i],
-					ft_strlen(infos->paths[i]));
+						ft_strlen(infos->paths[i]));
 			}
 			i++;
 		}

@@ -83,7 +83,7 @@ int	mini_cd(t_infos *infos, t_cmd *cmd)
 **
 ** Tests all paths contained in *path[] one after another
 ** And calls to mini_pwd to print where the terminal is
-*/
+
 
 void	test_cd(t_infos *infos)
 {
@@ -123,4 +123,4 @@ void	test_cd(t_infos *infos)
 		ft_putendl_fd("cd error", STDERR_FILENO);
 	print_env_tab(infos);
 }
-
+*/

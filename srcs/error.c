@@ -21,4 +21,5 @@ void	print_error(int state, t_infos *infos)
 	free_infos(infos);
 	free(infos);
 	rl_clear_history();
+	exit(0);
 }

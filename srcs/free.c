@@ -21,8 +21,6 @@ void	free_infos(t_infos *infos)
 		ft_free_tab_ptr(infos->paths);
 	if (infos->envs)
 		ft_free_tab_ptr(infos->envs);
-	if (infos->first_env)
-		free_env_list(infos);
 	if (infos->first_cmd)
 		free_cmd_list(infos);
 }

@@ -15,15 +15,13 @@ t_infos	*init_infos(char **envp)
 		return (NULL);
 	infos->first_env = NULL;
 	infos->envs = get_env_tab(envp);
-	get_env_list(infos, infos->envs);
 	infos->pos_path = find_pos_key(infos, "PATH");
-	infos->paths = ft_split_char(get_pair(infos, infos->pos_path), ':');
+	infos->paths = ft_split_char(get_line(infos, infos->pos_path), ':');
 	infos->nb_cmd = 0;
 	infos->tokens = NULL;
 	infos->nb_pipe = 0;
 	infos->index_cmd = 0;
 	infos->first_cmd = NULL;
-	print_export(infos);
 	return (infos);
 }
 
@@ -71,7 +69,6 @@ int	main(int ac __attribute__((unused)),
 				ft_putendl_fd("exit", STDOUT_FILENO);
 				break ;
 			}
-			test_cd(infos);
 			//start_parsing(infos);
 			if (infos->line)
 				add_history(infos->line);
