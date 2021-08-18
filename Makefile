@@ -2,8 +2,7 @@ NAME = minishell
 
 FILES = minishell.c \
 	free.c \
-	error.c \
-	print_temp.c
+	error.c 
 
 BUILTINS_FILES = mini_env.c \
 	mini_cd.c \
@@ -20,7 +19,9 @@ EXEC_FILES = exec_cmds.c \
 PARSING_FILES = parsing_init.c \
 	parsing_utils.c \
 	parsing.c \
-	lexer.c
+	lexer.c \
+	print_temp.c \
+	token_handler.c
 
 UTILS_FILES = utils_cmds.c \
 	utils_env.c \

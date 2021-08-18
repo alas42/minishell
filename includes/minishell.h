@@ -95,6 +95,15 @@ void   		add_to_struct(t_infos *info);
 int			ft_strncmp(const char *s1, const char *s2, size_t n);
 int			ft_isspace_isdigit(char c, char d);
 char    	*char_to_str(char c);
+char		*remove_space_digit(char *line, char c);
+int			ft_isallspace(char *line);
+
+//token_handler.c
+void    handle_output_red(t_infos *info);
+void	handle_input_red(t_infos *info);
+void    expand_dollar(t_infos *info);
+
+
 
 //print_temp.c Temp Function to be removed later
 void    	print_info(t_infos *info);

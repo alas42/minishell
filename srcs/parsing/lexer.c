@@ -20,10 +20,16 @@ t_token     *join_tokens(t_token *tokens)
 {
     t_token *second;
     char    *temp;
+    int     i;
 
+    i = 1;
     second = tokens->next;
     temp = second->content;
-    second->content = ft_strjoin(tokens->content, temp);
+    i = ft_isallspace(tokens->content);
+    if (i == 0)
+        second->content = ft_strjoin("", temp); 
+    else
+        second->content = ft_strjoin(tokens->content, temp);
     tokens->next = NULL;
     second->prev = NULL;
     free(temp);
@@ -74,8 +80,8 @@ void    merge_same(t_infos *info)
     int     i;
 
     j = 0;
-    temp = info->tokens;
     i = 0;
+    temp = info->tokens;
     tmp_type = temp->type;
     while (temp)
     {

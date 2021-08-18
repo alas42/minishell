@@ -42,4 +42,5 @@ void	free_tokens(t_infos *info)
 		free(info->tokens->type);
 		free(info->tokens);
 	}
+	info->tokens = NULL;
 }
