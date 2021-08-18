@@ -22,10 +22,8 @@ int	choose_builtin(t_infos *infos, t_cmd *cmd)
 	builtins_str[B_PWD] = "pwd";
 	i = -1;
 	while (++i <= B_UNSET)
-	{
 		if (!ft_strcmp(builtins_str[i], cmd->arg[0]))
 			return ((*builtins[i])(infos, cmd));
-	}
 	return (-1);
 }
 
@@ -40,32 +38,38 @@ int	choose_builtin(t_infos *infos, t_cmd *cmd)
 **
 */
 
-static int	piping(t_infos *infos)
+static void	piping(t_infos *infos)
 {
-	int	ret_pipe;
-
-	ret_pipe = 0;
 	if (infos->index_cmd % 2)
-		pipe(infos->pipe_a);
+	{
+		if (pipe(infos->pipe_a) == -1)
+			print_error(E_PIPE, infos);
+	}
 	else
-		pipe(infos->pipe_b);
-	if (ret_pipe > -1)
-		return (0);
-	return (1);
+	{
+		if (pipe(infos->pipe_b) == -1)
+			print_error(E_PIPE, infos);
+	}
 }
 
 static void	child_process(t_infos *infos, t_cmd *cmd, char **envp)
 {
+	int	ret;
+
+	ret = 0;
 	if (child_fds(infos, cmd))
 	{
 		ft_putendl_fd("close or dup2 error in child", STDERR_FILENO);
 	}
-	if (cmd->builtin && choose_builtin(infos, cmd) > -1)
+	if (cmd->builtin)
 	{
-		ft_putendl_fd("NOT AN ERROR : the cmd is a builtin", STDERR_FILENO);
+		ret = choose_builtin(infos, cmd);
 	}
-	execve(cmd->arg[0], cmd->arg, envp);
-	ft_putendl_fd("execve error", STDERR_FILENO);
+	else if (!cmd->builtin || ret == -1)
+	{
+		execve(cmd->arg[0], cmd->arg, envp);
+		print_error(E_EXECVE, infos);
+	}
 }
 
 static void	parent_process(t_infos *infos, t_cmd *cmd, char **envp)
@@ -87,23 +91,14 @@ int	exec_cmds(t_infos *infos, char **envp)
 	cmd = get_cmd(infos);
 	if (!cmd)
 		return (1);
-	if (piping(infos))
-	{
-		ft_putendl_fd("error in pipe() function", STDERR_FILENO);
-	}
+	piping(infos);
 	process_id = fork();
 	if (process_id == 0)
-	{
 		child_process(infos, cmd, envp);
-	}
 	else if (process_id == -1)
-	{
-		ft_putendl_fd("error in fork() function", STDERR_FILENO);
-	}
+		print_error(E_FORK, infos);
 	else
-	{
 		parent_process(infos, cmd, envp);
-	}
 	return (1);
 }
 

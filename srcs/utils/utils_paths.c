@@ -66,14 +66,13 @@ int	find_pos_key(t_infos *infos, char *to_find)
 		return (-1);
 	while (infos->envs[i])
 	{
-		j = 0;
+		j = -1;
 		len_to_find = ft_strlen(to_find);
-		while (j < len_to_find)
+		while (++j < len_to_find)
 		{
 			if (infos->envs[i][j] != to_find[j])
 				break ;
-			j++;
-			if (j == ft_strlen(to_find))
+			if (j + 1 == len_to_find)
 				return (i);
 		}
 		i++;
@@ -96,19 +95,20 @@ void	check_paths(t_infos *infos)
 	int		ret_path;
 	t_cmd	*cmd;
 
+	if (!infos->paths)
+		return ;
 	cmd = infos->first_cmd;
 	while (cmd)
 	{
-		i = 0;
+		i = -1;
 		ret_path = 0;
-		while (infos->paths[i])
+		while (infos->paths[++i])
 		{
 			if (ret_path != 1)
-			{
 				ret_path = add_path(cmd->arg, infos->paths[i],
 						ft_strlen(infos->paths[i]));
-			}
-			i++;
+			if (ret_path == -1)
+				print_error(E_MALLOC, infos);
 		}
 		cmd = cmd->next;
 	}

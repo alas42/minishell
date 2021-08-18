@@ -41,6 +41,8 @@ t_cmd	*creating_cmd(char **arg, int pipe_in, int pipe_out)
 	cmd->pipe_out = pipe_out;
 	cmd->name_infile = NULL;
 	cmd->name_outfile = NULL;
+	cmd->fd_outfile = 0;
+	cmd->fd_infile = 0;
 	cmd->builtin = 0;
 	cmd->process = 1;
 	return (cmd);

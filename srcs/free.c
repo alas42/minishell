@@ -23,6 +23,7 @@ void	free_infos(t_infos *infos)
 		ft_free_tab_ptr(infos->envs);
 	if (infos->first_cmd)
 		free_cmd_list(infos);
+	free(infos);
 }
 
 void	free_tokens(t_infos *info)

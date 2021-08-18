@@ -18,7 +18,8 @@ static char	*free_and_return(char *path_dir, char *ret)
 
 static char	*realloc_path_dir(char *path_dir, size_t *length_path)
 {
-	free(path_dir);
+	if (path_dir)
+		free(path_dir);
 	*length_path = *length_path * 2;
 	path_dir = (char *)malloc(sizeof(char) * *length_path);
 	if (!path_dir)

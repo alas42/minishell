@@ -12,7 +12,7 @@
 */
 static char	**copy_new_tab(t_infos *infos, int pos_key, char **new_tab)
 {
-	int		i;
+	int	i;
 
 	i = -1;
 	while (infos->envs[++i])
