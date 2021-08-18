@@ -8,7 +8,7 @@
 
 void	add_cmd(t_infos *infos, t_cmd *new)
 {
-	t_cmd *tmp;
+	t_cmd	*tmp;
 
 	tmp = infos->first_cmd;
 	new->next = NULL;
@@ -31,7 +31,7 @@ void	add_cmd(t_infos *infos, t_cmd *new)
 
 t_cmd	*creating_cmd(char **arg, int pipe_in, int pipe_out)
 {
-	t_cmd *cmd;
+	t_cmd	*cmd;
 
 	cmd = (t_cmd *)malloc(sizeof(t_cmd));
 	if (!cmd)
@@ -41,6 +41,8 @@ t_cmd	*creating_cmd(char **arg, int pipe_in, int pipe_out)
 	cmd->pipe_out = pipe_out;
 	cmd->name_infile = NULL;
 	cmd->name_outfile = NULL;
+	cmd->fd_outfile = 0;
+	cmd->fd_infile = 0;
 	cmd->builtin = 0;
 	cmd->process = 1;
 	return (cmd);

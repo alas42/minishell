@@ -35,11 +35,12 @@ void	is_new_line(char **arg, int *i, int *new_line)
 	}
 }
 
-int	mini_echo(t_infos *infos __attribute__((unused)), t_cmd *cmd)
+int	mini_echo(t_infos *infos, t_cmd *cmd)
 {
 	int	i;
 	int	new_line;
 
+	(void)infos;
 	new_line = 1;
 	i = 1;
 	is_new_line(cmd->arg, &i, &new_line);

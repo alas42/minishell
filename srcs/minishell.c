@@ -15,14 +15,14 @@ t_infos	*init_infos(char **envp)
 		return (NULL);
 	infos->first_env = NULL;
 	infos->envs = get_env_tab(envp);
-	get_env_list(infos, infos->envs);
 	infos->pos_path = find_pos_key(infos, "PATH");
-	infos->paths = ft_split_char(get_pair(infos, infos->pos_path), ':');
+	infos->paths = ft_split_char(get_line(infos, infos->pos_path), ':');
 	infos->nb_cmd = 0;
 	infos->tokens = NULL;
 	infos->nb_pipe = 0;
 	infos->index_cmd = 0;
 	infos->first_cmd = NULL;
+	g_return_code = 0;
 	return (infos);
 }
 
@@ -50,25 +50,31 @@ t_infos	*init_infos(char **envp)
 **
 */
 
-int	main(int ac __attribute__((unused)),
-	char **av __attribute__((unused)), char **envp)
+int	main(int ac, char **av, char **envp)
 {
 	int		int_mode;
 	t_infos	*infos;
 
+	(void)ac;
+	(void)av;
 	infos = init_infos(envp);
+	signal(SIGINT, sigint_handler);
+	signal(SIGQUIT, sigquit_handler);
 	int_mode = isatty(STDIN_FILENO);
 	while (int_mode)
 	{
 		if (int_mode == 1)
 		{
 			infos->line = readline("$ ");
-			//check if interaction
-
-			start_parsing(infos);
+			if (!infos->line)
+			{
+				ft_putendl_fd("exit", STDOUT_FILENO);
+				break ;
+			}
+			//start_parsing(infos);
 			if (infos->line)
-				add_history(infos->line);/*
-			if (infos->nb_cmd > 1 || choose_builtin(infos, infos->first_cmd) == -1)
+				add_history(infos->line);
+			/*if (infos->nb_cmd > 1 || choose_builtin(infos, infos->first_cmd) == -1)
 			{
 				//it's either multiples commands OR only one that is not a builtin
 				exec_cmds(infos, infos->envs);
@@ -77,7 +83,7 @@ int	main(int ac __attribute__((unused)),
 		free(infos->line);
 		int_mode = isatty(STDIN_FILENO);
 	}
+	rl_clear_history();
 	free_infos(infos);
-	free(infos);
 	return (0);
 }
