@@ -3,7 +3,7 @@
 //fill the info->tokens->type by cmp character to defined token type
 void    get_token_type(t_token *new, t_infos *info, int i)
 {
-
+    // printf("gettokentype i is [%d]\n", i);
     if (info->line[i] == '|')
         new->type = ft_strdup("pipe");
     else if (info->line[i] == '<')
@@ -33,6 +33,7 @@ t_token  *token_init()
     if (data == NULL)
         return (NULL);
     data->content = NULL;
+    data->type = NULL;
     data->pos = -1;
     data->next = NULL;
     data->prev = NULL;
@@ -43,7 +44,6 @@ t_token  *token_init()
 void    lst_add_back(t_infos *info, t_token *new)
 {
 	t_token	*ls;
-
 	if (new == NULL)
 		return ;
 	if (info->tokens)
