@@ -85,7 +85,7 @@ void    merge_same(t_infos *info)
     tmp_type = temp->type;
     while (temp)
     {
-        if (!(ft_strncmp(tmp_type, temp->type, 3)))
+        if (!(ft_strcmp(tmp_type, temp->type)))
         {
             j++;
             temp = temp->next;

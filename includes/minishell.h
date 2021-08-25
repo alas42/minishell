@@ -52,15 +52,19 @@ enum e_error
 typedef struct s_cmd
 {
 	char			**arg;
+	int				index;				//keeping count of struct
 	int				process;
-	int				fd_outfile;
-	int				fd_infile;
-	int				here_doc_in;
 	int				builtin;
 	int				pipe_in;
-	int				pipe_out;
-	char			*name_infile;
-	char			*name_outfile;
+	int				pipe_out;			
+	int				fd_outfile;			//blank default -1
+	int				fd_infile;			//blank default -1
+	int				in_red;				//in_red = 1 if present 0 if not
+	int				out_red;			//if > then out_red = 1; if >> then out_red = 2;
+	int				here_doc_in;		//here doc present = 1 no = 0
+	char			*here_doc_eof;		//EOF word for here doc
+	char			*name_infile;		//name of first infile 
+	char			*name_outfile;		//name of first outfile
 	struct s_cmd	*next;
 	struct s_cmd	*prec;
 }					t_cmd;
@@ -132,6 +136,12 @@ void    handle_output_red(t_infos *info);
 void	handle_input_red(t_infos *info);
 void    expand_dollar(t_infos *info);
 
+//quotes_handler.c
+void    check_quotes(t_infos *info);
+
+//token_to_cmd.c
+void    add_to_cmd(t_infos *info);
+void    print_cmd(t_infos *info);
 
 
 //print_temp.c Temp Function to be removed later

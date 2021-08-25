@@ -5,8 +5,6 @@ void    remove_space_tokens(t_infos *info)
     t_token *temp;
     int     i;
 
-    // print_token_list(info->tokens);
-    // printf("-----------/------------------------------\n");
     temp = info->tokens;
     i = 0;
     if (temp->next == NULL)
@@ -22,7 +20,6 @@ void    remove_space_tokens(t_infos *info)
         temp = temp->next;
         i++;
     }
-
     if (temp && !(ft_strncmp(temp->type, "space", 5)))
     {
         temp->prev->next = NULL;
@@ -31,49 +28,61 @@ void    remove_space_tokens(t_infos *info)
         free(temp->type);
         free(temp);
     }
-    // print_token_list(info->tokens);
-
 }
 
-void    update_tokens_type(t_infos *info)
+void    free_cmd(t_infos *info)
 {
-    t_token *temp;
+    int     i;
 
-    temp = info->tokens;
-    while (temp)
+    i = 0;
+    if (info->first_cmd == NULL)
     {
-        if (!(ft_strcmp(temp->type, "pipe")))
-        {
-            if (ft_strlen(temp->content) != 1)
-                printf("error invalide character after pipe\n");
-        }
-        if (!(ft_strcmp(temp->type, "input_red")))
-        {
-            if (ft_strlen(temp->content) > 2)
-                printf("error - invalid character after >>\n");
-            if (ft_strlen(temp->content)== 2)
-            {
-                free(temp->type);
-                temp->type = ft_strdup("here_doc");
-            }
-        }
-       temp = temp->next;  
+        free(info->first_cmd);
+        return ;
     }
+    while(info->first_cmd->arg[i] != NULL)
+    {
+        free(info->first_cmd->arg[i]);
+        i++;
+    }
+    // printf("here====================\n");
+    if (info->first_cmd->arg) 
+        free(info->first_cmd->arg);
+    // printf("here 1====================\n");
+    if(info->first_cmd->name_outfile)
+        free(info->first_cmd->name_outfile);
+    // printf("here 2====================\n");
+    if (info->first_cmd->name_infile)
+        free(info->first_cmd->name_infile);
+    // printf("here 3====================\n");
+    if (info->first_cmd->here_doc_eof)
+        free(info->first_cmd->here_doc_eof);
+    // printf("here 4====================\n");
+    free(info->first_cmd);
+    // printf("here 5====================\n");
+
+
 }
 
 void    start_parsing(t_infos *info)
 {
     add_to_struct(info);
-    // print_token_list(info->tokens);
-    printf("---------------------------------\n\n\n\n");
     if (info->tokens == NULL)
         return ;
     merge_same(info);
+    check_quotes(info);
     expand_dollar(info);
     remove_space_tokens(info);
     handle_output_red(info);
     handle_input_red(info);
-    print_token_list(info->tokens);
-    free_tokens(info);
 
+    printf("--------------END-------------------\n\n\n\n");
+    print_token_list(info->tokens);
+    printf("---------------------------------\n\n\n\n");
+    add_to_cmd(info);
+    printf("--------------cmd-------------------\n\n\n\n");
+    print_cmd(info);
+    printf("---------------------------------\n\n\n\n");
+
+    free_cmd(info);
 }
