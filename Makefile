@@ -21,7 +21,9 @@ PARSING_FILES = parsing_init.c \
 	parsing.c \
 	lexer.c \
 	print_temp.c \
-	token_handler.c
+	token_handler.c \
+	quotes_handler.c \
+	token_to_cmd.c \
 
 UTILS_FILES = utils_cmds.c \
 	utils_env.c \
