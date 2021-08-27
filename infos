@@ -35,7 +35,8 @@ Download library readline to make this working
  */
 
 //some test cases ==>> if it's correctly setted in the t_cmd structures, it works
-echo "hello world" 'this' | wc -l ; ls -l | << grep 'a' >> outfile 					==>> we don't do ';'
+echo "hello world" 'this' | wc -l ; ls -l | << grep 'a' >> outfile 					
+==>> we don't do ';'
 awk –f x.awk | sort –u < infile > outfile
 
 Chained list and tab of pointers to char for the same env
