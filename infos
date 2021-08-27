@@ -52,7 +52,12 @@ Chained list and tab of pointers to char for the same env
 
 OBSERVATIONS:
 
-1. When we press only on enter in the minishell, it segfaults
+1. When we press only on enter in the minishell, it segfaults (fixed)
 2. the third arg (char **)envp can be NULL or be UNSET
 -> We should fill him with basic env variable if it is NULL
 -> before using or checking a env variable, we should ALWAYS check if the tab is not NULL
+
+
+
+->do we consider \t \b and other spaces as spaces? 
+->
