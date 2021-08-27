@@ -65,8 +65,9 @@ static void	child_process(t_infos *infos, t_cmd *cmd, char **envp)
 	{
 		ret = choose_builtin(infos, cmd);
 	}
-	else if (!cmd->builtin || ret == -1)
+	if (!cmd->builtin || ret == -1)
 	{
+		printf("%s - %s\n", cmd->arg[0], cmd->arg[1]);
 		execve(cmd->arg[0], cmd->arg, envp);
 		print_error(E_EXECVE, infos);
 	}
@@ -79,11 +80,11 @@ static void	parent_process(t_infos *infos, t_cmd *cmd, char **envp)
 		ft_putendl_fd("close error in parent", STDERR_FILENO);
 	}
 	infos->index_cmd = infos->index_cmd + 1;
-	exec_cmds(infos, envp);
+	loop_through_cmds(infos, envp);
 	wait(NULL);
 }
 
-int	exec_cmds(t_infos *infos, char **envp)
+int	loop_through_cmds(t_infos *infos, char **envp)
 {
 	t_cmd	*cmd;
 	int		process_id;
@@ -100,45 +101,4 @@ int	exec_cmds(t_infos *infos, char **envp)
 	else
 		parent_process(infos, cmd, envp);
 	return (1);
-}
-
-/*
-**
-** To be removed
-** Because there is no parsing yet
-** Creating commands
-**
-*/
-
-void	tests_exec_cmds(t_infos *infos, char **envp)
-{
-	char	**cmd1;
-	char	**cmd2;
-	char	**cmd3;
-	char	**cmd4;
-	t_cmd	*cmd01;
-	t_cmd	*cmd02;
-	t_cmd	*cmd03;
-	t_cmd	*cmd04;
-	int		stdout_save;
-	int		stdin_save;
-
-	cmd1 = ft_split_char("ls -l", ' ');
-	cmd2 = ft_split_char("grep a", ' ');
-	cmd3 = ft_split_char("grep r", ' ');
-	cmd4 = ft_split_char("wc", ' ');
-	cmd01 = creating_cmd(cmd1, 0, 1);
-	cmd02 = creating_cmd(cmd2, 1, 1);
-	cmd03 = creating_cmd(cmd3, 1, 1);
-	cmd04 = creating_cmd(cmd4, 1, 0);
-	add_cmd(infos, cmd01);
-	add_cmd(infos, cmd02);
-	add_cmd(infos, cmd03);
-	add_cmd(infos, cmd04);
-	check_paths(infos);
-	stdout_save = dup(STDOUT_FILENO);
-	stdin_save = dup(STDIN_FILENO);
-	exec_cmds(infos, envp);
-	dup2(stdin_save, STDIN_FILENO);
-	dup2(stdout_save, STDOUT_FILENO);
 }

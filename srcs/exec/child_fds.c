@@ -18,8 +18,12 @@ static int	first_cmd(t_infos *infos, t_cmd *cmd)
 				O_TRUNC | O_WRONLY | O_CREAT, 0644);
 		if (cmd->fd_outfile > -1)
 			ret[1] = dup2(cmd->fd_outfile, STDOUT_FILENO);
+		else
+			return (1);
 	}
-	if (ret[0] > -1 && ret[1] > -1 && cmd->fd_outfile > -1)
+	else
+		ret[1] = 0;
+	if (ret[0] > -1 && ret[1] > -1)
 		return (0);
 	return (1);
 }
@@ -63,8 +67,10 @@ static int	last_cmd(t_infos *infos, t_cmd *cmd)
 				O_TRUNC | O_WRONLY | O_CREAT, 0644);
 		if (cmd->fd_outfile > -1)
 			ret[0] = dup2(cmd->fd_outfile, STDOUT_FILENO);
+		else
+			return (1);
 	}
-	if (ret[0] > -1 && ret[1] > -1 && cmd->fd_outfile > -1)
+	if (ret[0] > -1 && ret[1] > -1)
 		return (0);
 	return (1);
 }

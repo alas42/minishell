@@ -66,7 +66,6 @@ typedef struct s_cmd
 	char			*name_infile;		//name of first infile 
 	char			*name_outfile;		//name of first outfile
 	struct s_cmd	*next;
-	struct s_cmd	*prec;
 }					t_cmd;
 
 typedef struct s_token
@@ -142,7 +141,8 @@ void    check_quotes(t_infos *info);
 //token_to_cmd.c
 void    add_to_cmd(t_infos *info);
 void    print_cmd(t_infos *info);
-
+t_cmd    *cmd_init(t_infos *info);
+char    *merge_content(char *str, char *content);
 
 //print_temp.c Temp Function to be removed later
 void		print_info(t_infos *info);
@@ -159,6 +159,7 @@ t_cmd		*get_cmd(t_infos *infos);
 int			child_fds(t_infos *infos, t_cmd *cmd);
 int			parent_fds(t_infos *infos, t_cmd *cmd);
 int			exec_cmds(t_infos *infos, char **envp);
+int			loop_through_cmds(t_infos *infos, char **envp);
 //[----------------end of exec_cmds.c----------------]
 
 //utils for environment variables (tab)

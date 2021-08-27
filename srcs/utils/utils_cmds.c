@@ -14,14 +14,12 @@ void	add_cmd(t_infos *infos, t_cmd *new)
 	new->next = NULL;
 	if (tmp == NULL)
 	{
-		new->prec = NULL;
 		infos->first_cmd = new;
 	}
 	else
 	{
 		while (tmp->next)
 			tmp = tmp->next;
-		new->prec = tmp;
 		tmp->next = new;
 	}
 	if (new->pipe_in)
@@ -88,4 +86,8 @@ void	free_cmd_list(t_infos *infos)
 		cmd = cmd->next;
 		free(tmp);
 	}
+	infos->first_cmd = NULL;
+	infos->index_cmd = 0;
+	infos->nb_pipe = 0;
+	infos->nb_cmd = 0;
 }

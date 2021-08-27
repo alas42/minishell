@@ -83,6 +83,4 @@ void    start_parsing(t_infos *info)
     printf("--------------cmd-------------------\n\n\n\n");
     print_cmd(info);
     printf("---------------------------------\n\n\n\n");
-
-    free_cmd(info);
 }
