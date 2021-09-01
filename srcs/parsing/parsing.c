@@ -45,21 +45,15 @@ void    free_cmd(t_infos *info)
         free(info->first_cmd->arg[i]);
         i++;
     }
-    // printf("here====================\n");
-    if (info->first_cmd->arg) 
+    if (info->first_cmd->arg)
         free(info->first_cmd->arg);
-    // printf("here 1====================\n");
     if(info->first_cmd->name_outfile)
         free(info->first_cmd->name_outfile);
-    // printf("here 2====================\n");
     if (info->first_cmd->name_infile)
         free(info->first_cmd->name_infile);
-    // printf("here 3====================\n");
     if (info->first_cmd->here_doc_eof)
         free(info->first_cmd->here_doc_eof);
-    // printf("here 4====================\n");
     free(info->first_cmd);
-    // printf("here 5====================\n");
 
 
 }
@@ -79,8 +73,8 @@ void    start_parsing(t_infos *info)
     printf("--------------END-------------------\n\n\n\n");
     print_token_list(info->tokens);
     printf("---------------------------------\n\n\n\n");
-    add_to_cmd(info);
-    printf("--------------cmd-------------------\n\n\n\n");
-    print_cmd(info);
-    printf("---------------------------------\n\n\n\n");
+    move_to_cmd(info);
+    //printf("--------------cmd-------------------\n\n\n\n");
+    //print_cmd(info);
+    //printf("---------------------------------\n\n\n\n");
 }

@@ -40,7 +40,7 @@ void	print_info(t_infos *info)
 			printf("pos [%d]\tchar [%s]\t [%s]\n", token->pos, token->content, token->type);
 		token = token->next;
 		i++;
-	}        
+	}
 	// printf("info->line [%s]\n", info->line);
 	// printf("info pos_path - [%d]\n", info->pos_path);
 	// while (info->paths[i] != 0)
@@ -50,3 +50,37 @@ void	print_info(t_infos *info)
 	// }
 	// printf("info->fd[0] - [%d]\n fd[1] - [%d]\n", info->pipe[0], info->pipe[1]);
 }
+
+
+
+void	print_cmnd_single(t_cmnd *cmd)
+{
+	int		i;
+	t_token	*red;
+
+	i  = -1;
+	printf("cmd->args are ------ \n");
+	while(cmd->arg[++i])
+		printf("ARG[%d] [%s]\n", i, cmd->arg[i]);
+	red = cmd->redirection;
+	printf("redirections are as follow --\n");
+	while(red)
+	{
+		printf("content[%s] type[%s]\n", red->content, red->type);
+		red = red->next;
+	}
+}
+
+void	print_cmnds(t_infos *info)
+{
+	t_cmnd	*commands;
+
+	commands = info->commands;
+	while (commands)
+	{
+		printf("\n------------------00---------------------\n");
+		print_cmnd_single(commands);
+		commands = commands->next;
+	}
+}
+

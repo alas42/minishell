@@ -1,27 +1,16 @@
 #include "../includes/minishell.h"
 
-t_cmd	*cmd_init(t_infos *info)
+void	*cmnd_init(void)
 {
-	t_cmd	*new;
+	t_cmnd 	*cmd;
 
-	new = (t_cmd *)malloc(sizeof(t_cmd));
-	if (new == NULL)
+	cmd = (t_cmnd *)malloc(sizeof(t_cmnd));
+	if (cmd == NULL)
 		return (NULL);
-	new->arg = NULL;
-	new->index = info->nb_cmd;
-	new->process = -1;
-	new->fd_infile = -1;
-	new->fd_outfile = -1;
-	new->here_doc_in = 0;
-	new->builtin = 0;
-	new->pipe_in = 0;
-	new->pipe_out = 0;
-	new->in_red = 0;
-	new->out_red = 0;
-	new->name_infile = NULL;
-	new->name_outfile = NULL;
-	new->here_doc_eof = NULL;
-	return (new);
+	cmd->redirection = NULL;
+	cmd->arg = NULL;
+	cmd->next = NULL;
+	return (cmd);
 }
 
 char	*merge_content(char *str, char *content)
@@ -44,78 +33,82 @@ char	*merge_content(char *str, char *content)
 	return (str);
 }
 
-void	print_cmd(t_infos *info)
+void	red_lst_add_back(t_cmnd *cmd, t_token *new)
 {
-	t_cmd	*new;
-	int		i;
-
-	new = info->first_cmd;
+	t_token	*ls;
 	if (new == NULL)
+		return ;
+	if (cmd->redirection)
+		ls = cmd->redirection;
+	else
 	{
-		printf("NULL in print_cmd\n");
+		cmd->redirection = new;
 		return ;
 	}
-	printf("new->args are ------ \n");
-	i = 0;
-	while(new->arg[i])
-	{
-		printf("ARG[%d] [%s]\n", i, new->arg[i]);
-		i++;
-	}
-	printf("-------------------------\n");
-	printf("index - [%d]\n", new->index);
-	printf("builtin - [%d]\n", new->builtin);
-	printf("pipe_in - [%d]\n", new->pipe_in);
-	printf("pipe_out - [%d]\n", new->pipe_out);
-	printf("fd_outfile - [%d]\n", new->fd_outfile);
-	printf("fd_infile - [%d]\n", new->fd_infile);
-	printf("in_red - [%d]\n", new->in_red);
-	printf("out_red - [%d]\n", new->out_red);
-	printf("here_doc_in - [%d]\n", new->here_doc_in);
-	printf("here_doc_eof - [%s]\n", new->here_doc_eof);
-	printf("name_infile - [%s]\n", new->name_infile);
-	printf("name_outfile - [%s]\n", new->name_outfile);
-   
+	while (ls->next != NULL)
+		ls = ls->next;
+	new->prev = ls;
+	ls->next = new;
 }
 
-void	add_to_cmd(t_infos *info)
+void	cmd_lst_add_back(t_cmnd *cmd, t_infos *info)
 {
-	t_cmd	*new;
-	t_token	*token;
+	t_cmnd *ls;
+
+	if (cmd == NULL)
+		return;
+	if (info->commands)
+		ls = info->commands;
+	else
+	{
+		info->commands = cmd;
+		return;
+	}
+	while(ls->next)
+		ls = ls->next;
+	ls->next = cmd;
+}
+
+void	move_to_cmd(t_infos *info)
+{
+	t_token *token;
+	t_token *new;
+	t_cmnd	*cmd;
 	char	*str;
 
+	cmd = cmnd_init();
+	if (cmd == NULL)
+		printf("error in cmd init return \n");
 	str = NULL;
+	new = NULL;
 	token = info->tokens;
-	new = cmd_init(info);
-	if (new == NULL)
-		printf("error in add to cmd 01\n");
 	while (token)
 	{
 		if (!(ft_strcmp(token->type, "pipe")))
-			break;
-		// if (!(ft_strcmp(token->type, "literal")))
-		str = merge_content(str, token->content);
-		if (!(ft_strcmp(token->type, "here_doc")))
-			new->here_doc_in = 1;
-		if (!(ft_strcmp(token->type, "here_doc_word")))
-			new->here_doc_eof = ft_strdup(token->content);
-		if (!(ft_strcmp(token->type, "input_red")))
-			new->in_red = 1;
-		if (!(ft_strcmp(token->type, "infile")))
-			new->name_infile = ft_strdup(token->content);
-		if (!(ft_strcmp(token->type, "output_red")))
-			new->out_red = 1;
-		if (!(ft_strcmp(token->type, "double_output_red")))
-			new->out_red = 2;
-		if (!(ft_strcmp(token->type, "outfile")))
-			new->name_outfile = ft_strdup(token->content);
+		{
+			//I add the cmd in link_list
+			//I update the token
+
+			printf("str in the end - [%s]\n", str);
+			cmd->arg = ft_split_char(str, ' ');
+			cmd_lst_add_back(cmd, info);
+			cmd = NULL;
+			cmd = cmnd_init();
+			str = NULL;
+			printf("--------------\n");
+		}
+		if (!(ft_strcmp(token->type, "literal")))
+			str = merge_content(str, token->content);
+		else
+		{
+			new = token_init();
+			new->content = ft_strdup(token->content);
+			new->type = ft_strdup(token->type);
+			red_lst_add_back(cmd, new);
+		}
+		//printf("token content [%s]\n", token->content);
 		token = token->next;
 	}
-	new->arg = ft_split_char(str, ' ');
-	free(str);
-   	add_cmd(info, new);
-	if(token)
-		printf("token type in the end [%s]\n", token->type);
-	else
-		printf("end of token \n");
+	print_cmnds(info);
 }
+
