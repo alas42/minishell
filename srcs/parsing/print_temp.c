@@ -13,6 +13,8 @@ void	print_token_list(t_token *tokens)
 
 	i = 0;
 	temp = tokens;
+	if (temp == NULL)
+		return;
 	while(temp)
 	{
 		if (i < 10)

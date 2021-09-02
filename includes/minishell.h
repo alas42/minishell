@@ -128,6 +128,7 @@ void		free_env_list(t_infos *infos);
 
 //parsing.c
 void		start_parsing(t_infos *info);
+void		free_cmnds(t_infos *info);
 
 //lexer.c
 void		merge_same(t_infos *info);
@@ -139,7 +140,7 @@ void		update_tokens_pos(t_infos *info);
 void		get_token_type(t_token *new, t_infos *info, int i);
 t_token		*token_init(void);
 void		lst_add_back(t_infos *info, t_token *new);
-t_token		*ft_lstlast(t_token *lst);
+t_token		*ft_lstlast_token(t_token *lst);
 void		add_to_struct(t_infos *info);
 
 //parsing_utils.c

@@ -86,17 +86,14 @@ int	main(int ac, char **av, char **envp)
 		}
 		free(infos->line);
 	    free_tokens(infos);
-		free_cmd_list(infos);
+		//free_cmnds(infos);
+		//free_cmd_list(infos);
 		int_mode = isatty(STDIN_FILENO);
 	}
 	//rl_clear_history();
 	free_infos(infos);
 	return (0);
 }
-
-
-
-
 
 //ls -l | << a cat > out1
 

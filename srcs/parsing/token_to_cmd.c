@@ -13,26 +13,6 @@ void	*cmnd_init(void)
 	return (cmd);
 }
 
-char	*merge_content(char *str, char *content)
-{
-	char	*temp;
-
-	temp = NULL;
-	if (str)
-	{
-   		temp = ft_strdup(str);
-		free(str);
-	}
-	str = ft_strjoin(temp, content);
-	if (temp)
-		free(temp);
-	temp = ft_strdup(str);
-	free(str);
-	str = ft_strjoin(temp, " ");
-	free(temp);
-	return (str);
-}
-
 void	red_lst_add_back(t_cmnd *cmd, t_token *new)
 {
 	t_token	*ls;
@@ -67,6 +47,26 @@ void	cmd_lst_add_back(t_cmnd *cmd, t_infos *info)
 	while(ls->next)
 		ls = ls->next;
 	ls->next = cmd;
+}
+
+char	*merge_content(char *str, char *content)
+{
+	char	*temp;
+
+	temp = NULL;
+	if (str)
+	{
+   		temp = ft_strdup(str);
+		free(str);
+	}
+	str = ft_strjoin(temp, content);
+	if (temp)
+		free(temp);
+	temp = ft_strdup(str);
+	free(str);
+	str = ft_strjoin(temp, " ");
+	free(temp);
+	return (str);
 }
 
 void	move_to_cmd(t_infos *info)
@@ -111,4 +111,5 @@ void	move_to_cmd(t_infos *info)
 	}
 	print_cmnds(info);
 }
+
 
