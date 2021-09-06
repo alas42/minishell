@@ -1,9 +1,11 @@
-NAME = minishell
+export CPPFLAGS="-I/Users/$(USER)/.brew/opt/readline/include"
+export LDFLAGS="-L/Users/$(USER)/.brew/opt/readline/lib"
 
+NAME = minishell
 FILES = minishell.c \
 	free.c \
   error.c
-  
+
 BUILTINS_FILES = mini_env.c \
 	mini_cd.c \
 	mini_echo.c \
@@ -73,5 +75,5 @@ fclean: clean
 	@rm -f $(NAME)
 
 re: fclean all
-	
+
 .PHONY: all clean fclean re

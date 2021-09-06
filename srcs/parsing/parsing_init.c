@@ -59,8 +59,8 @@ void    lst_add_back(t_infos *info, t_token *new)
 	ls->next = new;
 }
 
-//returns the last element of linklist
-t_token	*ft_lstlast(t_token *lst)
+//returns the last element of t_token slinklist
+t_token	*ft_lstlast_token(t_token *lst)
 {
 	t_token	*p;
 

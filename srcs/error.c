@@ -19,6 +19,6 @@ void	print_error(int state, t_infos *infos)
 	else if (state == E_EXECVE)
 		ft_putendl_fd("Execve error", STDERR_FILENO);
 	free_infos(infos);
-	rl_clear_history();
+	//rl_clear_history();
 	exit(0);
 }

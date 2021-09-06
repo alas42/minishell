@@ -36,7 +36,7 @@ void	free_tokens(t_infos *info)
 		return ;
 	while (info->tokens->next != NULL)
 	{
-		temp = ft_lstlast(info->tokens);
+		temp = ft_lstlast_token(info->tokens);
 		free(temp->type);
 		free(temp->content);
 		temp->prev->next = NULL;

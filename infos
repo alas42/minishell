@@ -3,7 +3,7 @@ ALGO OF minishell
 INIT OF structures
 WHILE (NOT_EXIT)
 |	READ_THE_LINE
-|	IF IT IS AN INTERACTION	
+|	IF IT IS AN INTERACTION
 |	|	INTERACT HISTORY ?
 |	|	INTERACT PROCESS ?
 |	ELSE
@@ -27,7 +27,7 @@ Download library readline to make this working
  doub_input            <<
  output_red            >
  doub_outfile_red      >>
- single_quote          ' 
+ single_quote          '
  double_quote          "
  pipe                  |
  dollar                $
@@ -35,14 +35,14 @@ Download library readline to make this working
  */
 
 //some test cases ==>> if it's correctly setted in the t_cmd structures, it works
-echo "hello world" 'this' | wc -l ; ls -l | << grep 'a' >> outfile 					
+echo "hello world" "this" | wc -l ; ls -l | << grep "a" >> outfile
 ==>> we don't do ';'
 awk –f x.awk | sort –u < infile > outfile
 
 Chained list and tab of pointers to char for the same env
 {
 	Why char **envs and t_env ?
-	
+
 	We have to pass a tab of pointers in execve.
 	But we have to print them in two different ways in env and export builtins
 
@@ -60,5 +60,5 @@ OBSERVATIONS:
 
 
 
-->do we consider \t \b and other spaces as spaces? 
+->do we consider \t \b and other spaces as spaces?
 ->

@@ -30,39 +30,19 @@ void    remove_space_tokens(t_infos *info)
     }
 }
 
-void    free_cmd(t_infos *info)
-{
-    int     i;
+//void    free_cmnds(t_infos *info)
+//{
+//    t_cmnd  *comm;
 
-    i = 0;
-    if (info->first_cmd == NULL)
-    {
-        free(info->first_cmd);
-        return ;
-    }
-    while(info->first_cmd->arg[i] != NULL)
-    {
-        free(info->first_cmd->arg[i]);
-        i++;
-    }
-    // printf("here====================\n");
-    if (info->first_cmd->arg) 
-        free(info->first_cmd->arg);
-    // printf("here 1====================\n");
-    if(info->first_cmd->name_outfile)
-        free(info->first_cmd->name_outfile);
-    // printf("here 2====================\n");
-    if (info->first_cmd->name_infile)
-        free(info->first_cmd->name_infile);
-    // printf("here 3====================\n");
-    if (info->first_cmd->here_doc_eof)
-        free(info->first_cmd->here_doc_eof);
-    // printf("here 4====================\n");
-    free(info->first_cmd);
-    // printf("here 5====================\n");
-
-
-}
+//    comm = NULL;
+//    if (comm == NULL)
+//        return;
+//    //while(info->commands)
+//    //{
+//        //comm = ft_lstlast()
+//        //comm = comm->next;
+//    //}
+//}
 
 void    start_parsing(t_infos *info)
 {
@@ -76,11 +56,27 @@ void    start_parsing(t_infos *info)
     handle_output_red(info);
     handle_input_red(info);
 
-    printf("--------------END-------------------\n\n\n\n");
-    print_token_list(info->tokens);
-    printf("---------------------------------\n\n\n\n");
-    add_to_cmd(info);
-    printf("--------------cmd-------------------\n\n\n\n");
-    print_cmd(info);
-    printf("---------------------------------\n\n\n\n");
+    //printf("--------------END-------------------\n\n\n\n");
+    //print_token_list(info->tokens);
+    //printf("---------------------------------\n\n\n\n");
+    //move_to_cmd(info);
 }
+
+
+
+
+
+/*
+Things to do
+
+1. Last command in move_to_cmnd not working
+2. Need to free every command
+    - Need ft_lstlast for cmd
+    - Need to structure the file properly
+3. I need to update the commands->redirection type and content
+    - Need to remove pipe from redirection
+4. Need to mege old code from laptop for single and double quotes;
+5. Need to do proper expansions after cmnds are build (inside exec)
+6. Need to execute the redirections;
+
+*/
