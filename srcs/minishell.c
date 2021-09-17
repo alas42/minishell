@@ -25,7 +25,7 @@ t_infos	*init_infos(char **envp)
 	infos->index_cmd = 0;
 	infos->first_cmd = NULL;
 	infos->commands = NULL;
-	g_return_code = 0;
+	// g_return_code = 0;
 	free(line_envp);
 	return (infos);
 }

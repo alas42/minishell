@@ -30,19 +30,26 @@ void    remove_space_tokens(t_infos *info)
     }
 }
 
-//void    free_cmnds(t_infos *info)
-//{
-//    t_cmnd  *comm;
+void	handle_redirections(t_infos *info)
+{
+	t_cmnd	*cmd;
+    t_token *temp_token;
 
-//    comm = NULL;
-//    if (comm == NULL)
-//        return;
-//    //while(info->commands)
-//    //{
-//        //comm = ft_lstlast()
-//        //comm = comm->next;
-//    //}
-//}
+	printf("\n\ninside redirection handler\n");
+	cmd = info->commands;
+	while(cmd)
+	{
+        temp_token = cmd->redirection;
+        printf("------------------------\n");
+		while (temp_token)
+		{
+			printf("content [%s] \n", temp_token->content);
+            temp_token = temp_token->next;
+		}
+        printf("------------------------\n");
+		cmd = cmd->next;
+	}
+}
 
 void    start_parsing(t_infos *info)
 {
@@ -55,16 +62,29 @@ void    start_parsing(t_infos *info)
     remove_space_tokens(info);
     handle_output_red(info);
     handle_input_red(info);
-
-    //printf("--------------END-------------------\n\n\n\n");
-    //print_token_list(info->tokens);
-    //printf("---------------------------------\n\n\n\n");
-    //move_to_cmd(info);
+    printf("--------------END-------------------\n\n\n\n");
+    print_token_list(info->tokens);
+    printf("---------------------------------\n\n\n\n");
+    move_to_cmd(info);
+	printf("--------------PRINTING CMDS-------------------\n\n\n\n");
+    print_cmnds(info);
+	printf("--------------END OF CMDS-------------------\n\n\n\n");
+	// handle_redirections(info);
 }
 
+/*
+ls -ll | grep all >> a | << a cat *
+ls -ll > a > v | grep appd | <<a <<v <<c | cat all |
+    THINGS TO FREE
 
+    CMND - redirections
+                - content
+                - type
+                - redirection node
 
-
+         - Double_args
+        -cmnd node
+*/
 
 /*
 Things to do

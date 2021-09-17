@@ -50,3 +50,54 @@ void	free_tokens(t_infos *info)
 	}
 	info->tokens = NULL;
 }
+
+
+void	free_red_tokens(t_cmnd *com)
+{
+	t_token	*temp;
+
+	if (com->redirection == NULL)
+		return ;
+	while (com->redirection->next != NULL)
+	{
+		temp = ft_lstlast_token(com->redirection);
+		free(temp->type);
+		free(temp->content);
+		temp->prev->next = NULL;
+		free(temp);
+	}
+	if (com->redirection != NULL)
+	{
+		free(com->redirection->content);
+		free(com->redirection->type);
+		free(com->redirection);
+	}
+	com->redirection = NULL;
+}
+
+void    free_cmnds(t_infos *info)
+{
+	t_cmnd  *com;
+	t_cmnd  *temp_com;
+
+	if (info->commands == NULL)
+		return ;
+	com = info->commands;
+	while (com->next != NULL)
+	{
+		temp_com = ft_lstlast_cmd(info->commands);
+		if (temp_com->arg)
+			free_doub_char(temp_com->arg);
+	 	free_red_tokens(temp_com);
+		temp_com->prev->next = NULL;
+		free(temp_com);
+	}
+	if (com)
+	{
+		if (com->arg)
+			free_doub_char(com->arg);
+		free_red_tokens(com);
+		free(com);
+		info->commands = NULL;
+	}
+}

@@ -31,7 +31,10 @@ t_token  *token_init()
 
     data = (t_token *)malloc(sizeof(t_token));
     if (data == NULL)
+    {
+        printf("malloc error in token_init\n");
         return (NULL);
+    }
     data->content = NULL;
     data->type = NULL;
     data->pos = -1;
@@ -63,6 +66,19 @@ void    lst_add_back(t_infos *info, t_token *new)
 t_token	*ft_lstlast_token(t_token *lst)
 {
 	t_token	*p;
+
+	p = lst;
+	if (lst == NULL)
+		return (NULL);
+	while (p->next != NULL)
+		p = p->next;
+	return (p);
+}
+
+//returns the last element of t_cmnd linklist
+t_cmnd	*ft_lstlast_cmd(t_cmnd *lst)
+{
+	t_cmnd	*p;
 
 	p = lst;
 	if (lst == NULL)
