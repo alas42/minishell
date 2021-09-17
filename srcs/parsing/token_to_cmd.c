@@ -1,54 +1,5 @@
 #include "../includes/minishell.h"
 
-void	*cmnd_init(void)
-{
-	t_cmnd 	*cmd;
-
-	cmd = (t_cmnd *)malloc(sizeof(t_cmnd));
-	if (cmd == NULL)
-		return (NULL);
-	cmd->redirection = NULL;
-	cmd->arg = NULL;
-	cmd->next = NULL;
-	return (cmd);
-}
-
-void	red_lst_add_back(t_cmnd *cmd, t_token *new)
-{
-	t_token	*ls;
-	if (new == NULL)
-		return ;
-	if (cmd->redirection)
-		ls = cmd->redirection;
-	else
-	{
-		cmd->redirection = new;
-		return ;
-	}
-	while (ls->next != NULL)
-		ls = ls->next;
-	new->prev = ls;
-	ls->next = new;
-}
-
-void	cmd_lst_add_back(t_cmnd *cmd, t_infos *info)
-{
-	t_cmnd *ls;
-
-	if (cmd == NULL)
-		return;
-	if (info->commands)
-		ls = info->commands;
-	else
-	{
-		info->commands = cmd;
-		return;
-	}
-	while(ls->next)
-		ls = ls->next;
-	ls->next = cmd;
-}
-
 char	*merge_content(char *str, char *content)
 {
 	char	*temp;
@@ -69,47 +20,74 @@ char	*merge_content(char *str, char *content)
 	return (str);
 }
 
+void	fill_redirections(t_token *tokens, t_cmnd *cmd)
+{
+	t_token *temp;
+
+	temp = token_init();
+	if (temp == NULL)
+		printf("initialization error in token (redirection cmnd)\n");
+	temp->content = ft_strdup(tokens->content);
+	temp->type = ft_strdup(tokens->type);
+	red_lst_add_back(cmd, temp);
+	temp = NULL;
+}
+
+void	fill_cmd(t_infos *info, int start, int end, t_cmnd *cmd)
+{
+	int		i;
+	t_token *tokens;
+	char	*str;
+
+	i = -1;
+	// printf("start [%d] end[%d]\n", start, end);
+	if (start < 0 || start > ft_lstlast_token(info->tokens)->pos
+	|| start > end || end < 0 || end > ft_lstlast_token(info->tokens)->pos)
+	{
+		free(cmd);
+		return;
+	}
+	tokens = info->tokens;
+	while (++i < start)
+		tokens = tokens->next;
+	str = NULL;
+	while (i++ <= end && tokens != NULL)
+	{
+		if (!(ft_strcmp(tokens->type, "literal")))
+			str = merge_content(str, tokens->content);
+		else
+			fill_redirections(tokens, cmd);
+		tokens = tokens->next;
+	}
+	cmd->arg = ft_split(str, ' ');
+	cmd_lst_add_back(cmd, info);
+	free(str);
+}
+
+//above ft_split_char divides everything with space as a deliminator. echo "hello world" -> [echo, hello, world] should be ->[echo , hello world]
 void	move_to_cmd(t_infos *info)
 {
 	t_token *token;
-	t_token *new;
+	int		start;
 	t_cmnd	*cmd;
-	char	*str;
 
-	cmd = cmnd_init();
-	if (cmd == NULL)
-		printf("error in cmd init return \n");
-	str = NULL;
-	new = NULL;
+	start = 0;
 	token = info->tokens;
 	while (token)
 	{
 		if (!(ft_strcmp(token->type, "pipe")))
 		{
-			//I add the cmd in link_list
-			//I update the token
-
-			printf("str in the end - [%s]\n", str);
-			cmd->arg = ft_split_char(str, ' ');
-			cmd_lst_add_back(cmd, info);
-			cmd = NULL;
 			cmd = cmnd_init();
-			str = NULL;
-			printf("--------------\n");
+			if (cmd == NULL)
+				printf("error in cmd init return \n");
+			fill_cmd(info, start, token->pos - 1, cmd);
+			start = token->pos + 1;
+			cmd = NULL;
 		}
-		if (!(ft_strcmp(token->type, "literal")))
-			str = merge_content(str, token->content);
-		else
-		{
-			new = token_init();
-			new->content = ft_strdup(token->content);
-			new->type = ft_strdup(token->type);
-			red_lst_add_back(cmd, new);
-		}
-		//printf("token content [%s]\n", token->content);
 		token = token->next;
 	}
-	print_cmnds(info);
+	cmd = cmnd_init();
+	if (cmd == NULL)
+		printf("error in cmd init return \n");
+	fill_cmd(info, start, ft_lstlast_token(info->tokens)->pos, cmd);
 }
-
-

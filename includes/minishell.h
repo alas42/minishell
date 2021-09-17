@@ -20,7 +20,7 @@
 # include <term.h>
 # include "libft.h"
 
-int	g_return_code;
+// int	g_return_code;
 
 enum e_file_end
 {
@@ -70,13 +70,6 @@ typedef struct s_cmd
 	struct s_cmd	*next;
 }					t_cmd;
 
-typedef	struct s_red
-{
-	char			*content;
-	char			*type;
-	struct s_red	*next;
-}				t_red;
-
 typedef struct s_token
 {
 	int				pos;
@@ -93,6 +86,7 @@ typedef	struct s_cmnd
 	char			**arg;
 	struct s_token	*redirection;
 	struct s_cmnd	*next;
+	struct s_cmnd	*prev;
 }				t_cmnd;
 
 typedef struct s_env
@@ -125,6 +119,8 @@ void		free_tokens(t_infos *info);
 void		free_cmd_list(t_infos *infos);
 void		ft_free_tab_ptr(char **ptr);
 void		free_env_list(t_infos *infos);
+void		free_red_tokens(t_cmnd *com);
+void		free_cmnds(t_infos *info);
 
 //parsing.c
 void		start_parsing(t_infos *info);
@@ -142,6 +138,7 @@ t_token		*token_init(void);
 void		lst_add_back(t_infos *info, t_token *new);
 t_token		*ft_lstlast_token(t_token *lst);
 void		add_to_struct(t_infos *info);
+t_cmnd		*ft_lstlast_cmd(t_cmnd *lst);
 
 //parsing_utils.c
 int			ft_strncmp(const char *s1, const char *s2, size_t n);
@@ -155,14 +152,22 @@ void    handle_output_red(t_infos *info);
 void	handle_input_red(t_infos *info);
 void    expand_dollar(t_infos *info);
 
+//token_handler_utils.c
+char    **ft_split(char *str, char c);
+void    free_doub_char(char **str);
+
 //quotes_handler.c
 void    check_quotes(t_infos *info);
 
+//token_utils.c
+void	*cmnd_init(void);
+void	cmd_lst_add_back(t_cmnd *cmd, t_infos *info);
+
+
 //token_to_cmd.c
 void	move_to_cmd(t_infos *info);
-void    print_cmd(t_infos *info);
-t_cmd    *cmd_init(t_infos *info);
 char    *merge_content(char *str, char *content);
+void	red_lst_add_back(t_cmnd *cmd, t_token *new);
 
 //print_temp.c Temp Function to be removed later
 void		print_info(t_infos *info);

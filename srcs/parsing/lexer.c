@@ -15,7 +15,7 @@ void    update_tokens_pos(t_infos *info)
     }
 }
 
-//merge first two node of token linklist 
+//merge first two node of token linklist
 t_token     *join_tokens(t_token *tokens)
 {
     t_token *second;
@@ -26,8 +26,9 @@ t_token     *join_tokens(t_token *tokens)
     second = tokens->next;
     temp = second->content;
     i = ft_isallspace(tokens->content);
+        //second->content = ft_strjoin("", temp);
     if (i == 0)
-        second->content = ft_strjoin("", temp); 
+        second->content = ft_strdup(temp);
     else
         second->content = ft_strjoin(tokens->content, temp);
     tokens->next = NULL;

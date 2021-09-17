@@ -60,12 +60,21 @@ void	print_cmnd_single(t_cmnd *cmd)
 	int		i;
 	t_token	*red;
 
-	i  = -1;
-	printf("cmd->args are ------ \n");
-	while(cmd->arg[++i])
-		printf("ARG[%d] [%s]\n", i, cmd->arg[i]);
+	i  = 0;
+	if (cmd == NULL)
+	{
+		printf("found a null command in temp print\n");
+	}
+	if (cmd->arg != NULL)
+	{
+		while(cmd->arg[i] != NULL)
+		{
+			printf("ARG[%d] [%s]\n", i, cmd->arg[i]);
+			i++;
+		}
+	}
 	red = cmd->redirection;
-	printf("redirections are as follow --\n");
+	printf("\nredirections are as follow --\n");
 	while(red)
 	{
 		printf("content[%s] type[%s]\n", red->content, red->type);
@@ -78,8 +87,11 @@ void	print_cmnds(t_infos *info)
 	t_cmnd	*commands;
 
 	commands = info->commands;
+	if (commands == NULL)
+		return;
 	while (commands)
 	{
+
 		printf("\n------------------00---------------------\n");
 		print_cmnd_single(commands);
 		commands = commands->next;
