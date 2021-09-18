@@ -49,8 +49,8 @@ void    handle_output_red(t_infos *info)
             }
             if (temp->next == NULL)
             {
-                printf("bash: syntax error near unexpected token `newline'");
-                printf("Error in hanfle output no outfile\n");
+                printf("bash: syntax error near unexpected token `newline`\n");
+                printf("Error in handle output no outfile\n");
                 return;
             }
             get_outfile(temp);

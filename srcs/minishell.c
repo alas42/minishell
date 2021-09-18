@@ -86,7 +86,7 @@ int	main(int ac, char **av, char **envp)
 		}
 		free(infos->line);
 	    free_tokens(infos);
-		//free_cmnds(infos);
+		free_cmnds(infos);
 		//free_cmd_list(infos);
 		int_mode = isatty(STDIN_FILENO);
 	}

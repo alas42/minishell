@@ -33,18 +33,24 @@ void    remove_space_tokens(t_infos *info)
 void	handle_redirections(t_infos *info)
 {
 	t_cmnd	*cmd;
-    t_token *temp_token;
 
-	printf("\n\ninside redirection handler\n");
 	cmd = info->commands;
 	while(cmd)
 	{
-        temp_token = cmd->redirection;
         printf("------------------------\n");
-		while (temp_token)
+		while (cmd->redirection)
 		{
-			printf("content [%s] \n", temp_token->content);
-            temp_token = temp_token->next;
+            if (!(ft_strcmp(cmd->redirection->type, "output_red"))
+            || !(ft_strcmp(cmd->redirection->type, "double_output_red")))
+            {
+                // if (cmd->redirection->next != NULL && (!ft_strcmp(cmd->redirection->type, "outfile")))
+                // {
+                    // printf("found outfile red - outfile [%s]\n\n", cmd->redirection->next->content);                
+                // }
+                // else
+                    // printf("Cannot find outfile....Exiting now.. \n");
+            }
+            cmd->redirection = cmd->redirection->next;
 		}
         printf("------------------------\n");
 		cmd = cmd->next;
@@ -62,14 +68,14 @@ void    start_parsing(t_infos *info)
     remove_space_tokens(info);
     handle_output_red(info);
     handle_input_red(info);
-    printf("--------------END-------------------\n\n\n\n");
-    print_token_list(info->tokens);
-    printf("---------------------------------\n\n\n\n");
+    // printf("--------------END-------------------\n\n\n\n");
+    // print_token_list(info->tokens);
+    // printf("---------------------------------\n\n\n\n");
     move_to_cmd(info);
-	printf("--------------PRINTING CMDS-------------------\n\n\n\n");
-    print_cmnds(info);
-	printf("--------------END OF CMDS-------------------\n\n\n\n");
-	// handle_redirections(info);
+	// printf("--------------PRINTING CMDS-------------------\n\n\n\n");
+    // print_cmnds(info);
+	// printf("--------------END OF CMDS-------------------\n\n\n\n");
+	handle_redirections(info);
 }
 
 /*
