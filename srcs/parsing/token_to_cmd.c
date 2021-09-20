@@ -40,7 +40,6 @@ void	fill_cmd(t_infos *info, int start, int end, t_cmd *cmd)
 	char	*str;
 
 	i = -1;
-	// printf("start [%d] end[%d]\n", start, end);
 	if (start < 0 || start > ft_lstlast_token(info->tokens)->pos
 	|| start > end || end < 0 || end > ft_lstlast_token(info->tokens)->pos)
 	{
@@ -59,6 +58,8 @@ void	fill_cmd(t_infos *info, int start, int end, t_cmd *cmd)
 			fill_redirections(tokens, cmd);
 		tokens = tokens->next;
 	}
+	i = ft_strlen(str);
+	str[i - 1] = '\0';
 	cmd->arg = ft_split(str, ' ');
 	cmd_lst_add_back(cmd, info);
 	free(str);
