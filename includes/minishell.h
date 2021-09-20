@@ -95,8 +95,8 @@ typedef struct s_infos
 	char			**paths;
 	int				pos_path;
 	struct s_token	*tokens;
-	struct s_cmd	*first_cmd;
 	struct s_cmd	*commands;
+	struct s_cmd	*first_cmd;
 	struct s_env	*first_env;
 	char			**envs;
 }					t_infos;

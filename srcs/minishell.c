@@ -76,18 +76,17 @@ int	main(int ac, char **av, char **envp)
 				break ;
 			}
 			start_parsing(infos);
+			infos->first_cmd = infos->commands;
 			if (infos->line)
 				add_history(infos->line);
-			// check_paths(infos);
-			//if (infos->nb_cmd > 1 || choose_builtin(infos, infos->first_cmd) == -1)
-			//{
-				//exec_cmds(infos, infos->envs);
-			//}
+			if (infos->nb_cmd > 1 || choose_builtin(infos, infos->first_cmd) == -1)
+			{
+				exec_cmds(infos, infos->envs);
+			}
 		}
 		free(infos->line);
 	    free_tokens(infos);
 		free_cmnds(infos);
-		//free_cmd_list(infos);
 		int_mode = isatty(STDIN_FILENO);
 	}
 	//rl_clear_history();
