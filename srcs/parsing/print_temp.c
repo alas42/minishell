@@ -74,12 +74,16 @@ void	print_cmnd_single(t_cmnd *cmd)
 		}
 	}
 	red = cmd->redirection;
-	printf("\nredirections are as follow --\n");
+	// printf("\nredirections are as follow --\n");
 	while(red)
 	{
-		printf("content[%s] type[%s]\n", red->content, red->type);
+		// printf("content[%s] type[%s]\n", red->content, red->type);
 		red = red->next;
 	}
+	if (cmd->name_outfile)
+		printf("outfile_fd is	[%d] for file [%s]\n", cmd->output_fd, cmd->name_outfile);
+	if (cmd->name_infile)
+		printf("infile_fd is 	[%d] for file [%s]\n", cmd->input_fd, cmd->name_infile);
 }
 
 void	print_cmnds(t_infos *info)

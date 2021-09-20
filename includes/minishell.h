@@ -53,16 +53,16 @@ enum e_error
 
 typedef struct s_cmd
 {
-	char			**arg;
-	int				index;				//keeping count of struct
+	char			**arg;				//-------------------
+	int				index;				//-------------------
 	int				process;
 	int				builtin;
 	int				pipe_in;
 	int				pipe_out;
-	int				fd_outfile;			//blank default -1
-	int				fd_infile;			//blank default -1
-	int				in_red;				//in_red = 1 if present 0 if not
-	int				out_red;			//if > then out_red = 1; if >> then out_red = 2;
+	int				fd_outfile;			//-------------------
+	int				fd_infile;			//----------------------
+	int				in_red;				//xxxxxxxxxxxxxxxxxxxxxxxxx
+	int				out_red;			//xxxxxxxxxxxx
 	int				here_doc_in;		//here doc present = 1 no = 0
 	char			*here_doc_eof;		//EOF word for here doc
 	char			*name_infile;		//name of first infile
@@ -81,8 +81,11 @@ typedef struct s_token
 
 typedef	struct s_cmnd
 {
+	int				index;				//keeping count of struct
 	int				input_fd;
 	int 			output_fd;
+	char			*name_infile;		//name of file of input_fd
+	char			*name_outfile;		//name of file of output_fd
 	char			**arg;
 	struct s_token	*redirection;
 	struct s_cmnd	*next;

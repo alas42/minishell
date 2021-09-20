@@ -13,6 +13,8 @@ void	*cmnd_init(void)
 	cmd->arg = NULL;
 	cmd->input_fd = -1;
 	cmd->output_fd = -1;
+	cmd->name_infile = NULL;
+	cmd->name_outfile = NULL;
 	cmd->next = NULL;
 	cmd->prev = NULL;
 	return (cmd);

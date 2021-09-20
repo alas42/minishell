@@ -89,6 +89,10 @@ void    free_cmnds(t_infos *info)
 		if (temp_com->arg)
 			free_doub_char(temp_com->arg);
 	 	free_red_tokens(temp_com);
+		if (temp_com->name_infile)
+			free(temp_com->name_infile);		
+		if (temp_com->name_outfile)
+			free(temp_com->name_outfile);
 		temp_com->prev->next = NULL;
 		free(temp_com);
 	}
@@ -97,7 +101,34 @@ void    free_cmnds(t_infos *info)
 		if (com->arg)
 			free_doub_char(com->arg);
 		free_red_tokens(com);
+		if (com->name_infile)
+			free(com->name_infile);		
+		if (com->name_outfile)
+			free(com->name_outfile);
 		free(com);
 		info->commands = NULL;
 	}
 }
+
+
+
+
+/*
+
+	//Not closing the fd in cmnd yet. Add this in free_cmnd or where you need to close the last file_fd of commands
+
+		if (temp_com->output_fd > 0)
+		{
+			i = close(temp_com->output_fd);
+			if (i < 0)
+				printf("error in closing file [%s]\n", temp_com->name_outfile)
+		}
+		if (temp_com->input_fd > 0)
+		{
+			i = close(temp_com->input_fd);
+			if (i < 0)
+				printf("error in closing file [%s]\n", temp_com->name_infile)
+		}
+
+
+*/
