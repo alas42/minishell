@@ -4,24 +4,31 @@
 //Function to initialize the t_cmnd node
 void	*cmnd_init(void)
 {
-	t_cmnd 	*cmd;
+	t_cmd 	*cmd;
 
-	cmd = (t_cmnd *)malloc(sizeof(t_cmnd));
+	cmd = (t_cmd *)malloc(sizeof(t_cmd));
 	if (cmd == NULL)
 		return (NULL);
 	cmd->redirection = NULL;
 	cmd->arg = NULL;
-	cmd->input_fd = -1;
-	cmd->output_fd = -1;
+	cmd->builtin = -1;
+	cmd->index = -1;
+	cmd->pipe_in = -1;
+	cmd->pipe_out = -1;
+	cmd->process = -1;
+	cmd->fd_infile = -1;
+	cmd->fd_outfile = -1;
+	cmd->name_infile = NULL;
+	cmd->name_outfile = NULL;
 	cmd->next = NULL;
 	cmd->prev = NULL;
 	return (cmd);
 }
 
 //Function to add the t_cmnd in (t_info)info->commands
-void	cmd_lst_add_back(t_cmnd *cmd, t_infos *info)
+void	cmd_lst_add_back(t_cmd *cmd, t_infos *info)
 {
-	t_cmnd *ls;
+	t_cmd *ls;
 
 	if (cmd == NULL)
 		return;
@@ -39,7 +46,7 @@ void	cmd_lst_add_back(t_cmnd *cmd, t_infos *info)
 }
 
 //For adding the info->commands->redirection node (t_token) in info->commands
-void	red_lst_add_back(t_cmnd *cmd, t_token *new)
+void	red_lst_add_back(t_cmd *cmd, t_token *new)
 {
 	t_token	*ls;
 	if (new == NULL)

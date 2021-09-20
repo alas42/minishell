@@ -51,25 +51,6 @@ enum e_error
 	E_OPEN
 };
 
-typedef struct s_cmd
-{
-	char			**arg;
-	int				index;				//keeping count of struct
-	int				process;
-	int				builtin;
-	int				pipe_in;
-	int				pipe_out;
-	int				fd_outfile;			//blank default -1
-	int				fd_infile;			//blank default -1
-	int				in_red;				//in_red = 1 if present 0 if not
-	int				out_red;			//if > then out_red = 1; if >> then out_red = 2;
-	int				here_doc_in;		//here doc present = 1 no = 0
-	char			*here_doc_eof;		//EOF word for here doc
-	char			*name_infile;		//name of first infile
-	char			*name_outfile;		//name of first outfile
-	struct s_cmd	*next;
-}					t_cmd;
-
 typedef struct s_token
 {
 	int				pos;
@@ -79,15 +60,22 @@ typedef struct s_token
 	struct s_token	*prev;
 }					t_token;
 
-typedef	struct s_cmnd
+typedef	struct s_cmd
 {
-	int				input_fd;
-	int 			output_fd;
+	int				index;				//keeping count of struct
+	int				builtin;
+	int				process;
+	int				pipe_in;
+	int				pipe_out;
+	int				fd_infile;
+	int 			fd_outfile;
+	char			*name_infile;		//name of file of input_fd
+	char			*name_outfile;		//name of file of output_fd
 	char			**arg;
 	struct s_token	*redirection;
-	struct s_cmnd	*next;
-	struct s_cmnd	*prev;
-}				t_cmnd;
+	struct s_cmd	*next;
+	struct s_cmd	*prev;
+}				t_cmd;
 
 typedef struct s_env
 {
@@ -108,7 +96,7 @@ typedef struct s_infos
 	int				pos_path;
 	struct s_token	*tokens;
 	struct s_cmd	*first_cmd;
-	struct s_cmnd	*commands;
+	struct s_cmd	*commands;
 	struct s_env	*first_env;
 	char			**envs;
 }					t_infos;
@@ -119,7 +107,7 @@ void		free_tokens(t_infos *info);
 void		free_cmd_list(t_infos *infos);
 void		ft_free_tab_ptr(char **ptr);
 void		free_env_list(t_infos *infos);
-void		free_red_tokens(t_cmnd *com);
+void		free_red_tokens(t_cmd *com);
 void		free_cmnds(t_infos *info);
 
 //parsing.c
@@ -138,7 +126,7 @@ t_token		*token_init(void);
 void		lst_add_back(t_infos *info, t_token *new);
 t_token		*ft_lstlast_token(t_token *lst);
 void		add_to_struct(t_infos *info);
-t_cmnd		*ft_lstlast_cmd(t_cmnd *lst);
+t_cmd		*ft_lstlast_cmd(t_cmd *lst);
 
 //parsing_utils.c
 int			ft_strncmp(const char *s1, const char *s2, size_t n);
@@ -161,18 +149,18 @@ void    check_quotes(t_infos *info);
 
 //token_utils.c
 void	*cmnd_init(void);
-void	cmd_lst_add_back(t_cmnd *cmd, t_infos *info);
+void	cmd_lst_add_back(t_cmd *cmd, t_infos *info);
 
 
 //token_to_cmd.c
 void	move_to_cmd(t_infos *info);
 char    *merge_content(char *str, char *content);
-void	red_lst_add_back(t_cmnd *cmd, t_token *new);
+void	red_lst_add_back(t_cmd *cmd, t_token *new);
 
 //print_temp.c Temp Function to be removed later
 void		print_info(t_infos *info);
 void		print_token_list(t_token *token);
-void		print_cmnd_single(t_cmnd *cmd);
+void		print_cmnd_single(t_cmd *cmd);
 void		print_cmnds(t_infos *info);
 
 

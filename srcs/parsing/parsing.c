@@ -30,23 +30,76 @@ void    remove_space_tokens(t_infos *info)
     }
 }
 
+void    handle_outfile(char *outfile, char *type, t_cmd *cmd)
+{
+    int i;
+
+    i = -1;
+    if (cmd->fd_outfile > 0)
+    {
+        i = close(cmd->fd_outfile);
+        if (i < 0)
+            printf("error in closing the file_des [%d] \n", cmd->fd_outfile);
+        if (cmd->name_outfile != NULL)
+            free(cmd->name_outfile);
+    }
+    if (!(ft_strcmp(type, "output_red")))
+        cmd->fd_outfile = open(outfile, O_TRUNC | O_WRONLY | O_CREAT, 0644);   
+    else
+        cmd->fd_outfile = open(outfile, O_TRUNC | O_WRONLY | O_CREAT | O_APPEND, 0644);
+    if (cmd->fd_outfile < 0)
+            printf("error in opening the file [%s] in mode [%s]\n", outfile, type);
+    cmd->name_outfile = ft_strdup(outfile);
+}
+
+void    handle_infile(char *infile, char *type, t_cmd *cmd)
+{
+    int i;
+
+    i = -1;
+    if (cmd->fd_infile > 0)
+    {
+        i = close(cmd->fd_infile);
+        if (i < 0)
+            printf("error in closing the file_des [%d] \n", cmd->fd_infile);
+    }
+    cmd->fd_infile = open(infile, O_RDONLY, 0644);
+    if (cmd->fd_infile < 0)
+            printf("error in opening the file [%s] in mode [%s]\n", infile, type);
+     if (cmd->name_infile != NULL)
+        free(cmd->name_infile);
+    cmd->name_infile = ft_strdup(infile);
+}
+
 void	handle_redirections(t_infos *info)
 {
-	t_cmnd	*cmd;
-    t_token *temp_token;
+	t_cmd	*cmd;
+    t_token *red;
 
-	printf("\n\ninside redirection handler\n");
 	cmd = info->commands;
 	while(cmd)
 	{
-        temp_token = cmd->redirection;
+        red = cmd->redirection;
         printf("------------------------\n");
-		while (temp_token)
+		while (red)
 		{
-			printf("content [%s] \n", temp_token->content);
-            temp_token = temp_token->next;
+            if (!(ft_strcmp(red->type, "output_red"))
+            || !(ft_strcmp(red->type, "double_output_red")))
+            {
+                if (red->next != NULL && (!ft_strcmp(red->next->type, "outfile")))
+                    handle_outfile(red->next->content, red->type, cmd);              
+                else
+                    printf("Cannot find outfile....Exiting now.. \n");
+            }
+            else if (!(ft_strcmp(red->type, "input_red")))
+            {
+                if (red->next != NULL && (!ft_strcmp(red->next->type, "infile")))
+                    handle_infile(red->next->content, red->type, cmd);              
+                else
+                    printf("Cannot find infile....Exiting now.. \n");
+            }
+            red = red->next;
 		}
-        printf("------------------------\n");
 		cmd = cmd->next;
 	}
 }
@@ -62,40 +115,26 @@ void    start_parsing(t_infos *info)
     remove_space_tokens(info);
     handle_output_red(info);
     handle_input_red(info);
-    printf("--------------END-------------------\n\n\n\n");
-    print_token_list(info->tokens);
-    printf("---------------------------------\n\n\n\n");
     move_to_cmd(info);
-	printf("--------------PRINTING CMDS-------------------\n\n\n\n");
-    print_cmnds(info);
-	printf("--------------END OF CMDS-------------------\n\n\n\n");
-	// handle_redirections(info);
+	handle_redirections(info);
+
+                printf("--------------PRINTING ALL TOKENS-------------------\n\n\n\n");
+                print_token_list(info->tokens);
+                printf("----------------END OF TOKENS-----------------\n\n\n\n");
+                printf("--------------PRINTING CMDS-------------------\n\n\n\n");
+                print_cmnds(info);
+                printf("--------------END OF CMDS-------------------\n\n\n\n");
 }
 
 /*
-ls -ll | grep all >> a | << a cat *
-ls -ll > a > v | grep appd | <<a <<v <<c | cat all |
-    THINGS TO FREE
-
-    CMND - redirections
-                - content
-                - type
-                - redirection node
-
-         - Double_args
-        -cmnd node
+        echo "hello world" >> a >> b < a >>papa | grep all >> al > la
+    ls -ll | grep all >> a | << a cat *
+    ls -ll > a > v | grep appd | <a <v >caa | cat all |
 */
 
 /*
 Things to do
 
-1. Last command in move_to_cmnd not working
-2. Need to free every command
-    - Need ft_lstlast for cmd
-    - Need to structure the file properly
-3. I need to update the commands->redirection type and content
-    - Need to remove pipe from redirection
-4. Need to mege old code from laptop for single and double quotes;
 5. Need to do proper expansions after cmnds are build (inside exec)
 6. Need to execute the redirections;
 

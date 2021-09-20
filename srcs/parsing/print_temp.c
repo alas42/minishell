@@ -55,7 +55,7 @@ void	print_info(t_infos *info)
 
 
 
-void	print_cmnd_single(t_cmnd *cmd)
+void	print_cmnd_single(t_cmd *cmd)
 {
 	int		i;
 	t_token	*red;
@@ -74,17 +74,21 @@ void	print_cmnd_single(t_cmnd *cmd)
 		}
 	}
 	red = cmd->redirection;
-	printf("\nredirections are as follow --\n");
+	// printf("\nredirections are as follow --\n");
 	while(red)
 	{
-		printf("content[%s] type[%s]\n", red->content, red->type);
+		// printf("content[%s] type[%s]\n", red->content, red->type);
 		red = red->next;
 	}
+	if (cmd->name_outfile)
+		printf("outfile_fd is	[%d] for file [%s]\n", cmd->fd_outfile, cmd->name_outfile);
+	if (cmd->name_infile)
+		printf("infile_fd is 	[%d] for file [%s]\n", cmd->fd_infile, cmd->name_infile);
 }
 
 void	print_cmnds(t_infos *info)
 {
-	t_cmnd	*commands;
+	t_cmd	*commands;
 
 	commands = info->commands;
 	if (commands == NULL)
