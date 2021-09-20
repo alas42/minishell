@@ -78,7 +78,7 @@ int	main(int ac, char **av, char **envp)
 			start_parsing(infos);
 			if (infos->line)
 				add_history(infos->line);
-			check_paths(infos);
+			// check_paths(infos);
 			//if (infos->nb_cmd > 1 || choose_builtin(infos, infos->first_cmd) == -1)
 			//{
 				//exec_cmds(infos, infos->envs);

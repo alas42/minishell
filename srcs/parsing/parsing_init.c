@@ -76,9 +76,9 @@ t_token	*ft_lstlast_token(t_token *lst)
 }
 
 //returns the last element of t_cmnd linklist
-t_cmnd	*ft_lstlast_cmd(t_cmnd *lst)
+t_cmd	*ft_lstlast_cmd(t_cmd *lst)
 {
-	t_cmnd	*p;
+	t_cmd	*p;
 
 	p = lst;
 	if (lst == NULL)

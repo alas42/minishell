@@ -20,7 +20,7 @@ char	*merge_content(char *str, char *content)
 	return (str);
 }
 
-void	fill_redirections(t_token *tokens, t_cmnd *cmd)
+void	fill_redirections(t_token *tokens, t_cmd *cmd)
 {
 	t_token *temp;
 
@@ -33,7 +33,7 @@ void	fill_redirections(t_token *tokens, t_cmnd *cmd)
 	temp = NULL;
 }
 
-void	fill_cmd(t_infos *info, int start, int end, t_cmnd *cmd)
+void	fill_cmd(t_infos *info, int start, int end, t_cmd *cmd)
 {
 	int		i;
 	t_token *tokens;
@@ -69,7 +69,7 @@ void	move_to_cmd(t_infos *info)
 {
 	t_token *token;
 	int		start;
-	t_cmnd	*cmd;
+	t_cmd	*cmd;
 
 	start = 0;
 	token = info->tokens;
