@@ -65,6 +65,46 @@ void	fill_cmd(t_infos *info, int start, int end, t_cmd *cmd)
 	free(str);
 }
 
+int		check_builtin(char *str)
+{
+	if (!(ft_strcmp(str, "unset")) || !(ft_strcmp(str, "echo"))
+		|| !(ft_strcmp(str, "cd")) || !(ft_strcmp(str, "env"))
+		|| !(ft_strcmp(str, "exit")) || !(ft_strcmp(str, "export"))
+		|| !(ft_strcmp(str, "pwd")))
+		return (1);
+	return (0);
+}
+
+void	fill_cmd_info(t_infos *info)
+{
+	t_cmd *temp;
+	int		i;
+
+	i = 0;
+	temp = info->commands;
+	while(temp)
+	{
+		temp->index = i;
+		if (temp->arg != NULL)
+			temp->builtin = check_builtin(temp->arg[0]);
+		else
+			temp->builtin = 0;
+		if (i == 0)
+		{
+			temp->pipe_in = 0;
+		}
+		if (temp->next != NULL)
+		{
+			temp->pipe_out = 1;
+			temp->next->pipe_in = 1;
+		}
+		else
+			temp->pipe_out = 0;
+		temp = temp->next;
+		i++;
+	}
+	
+}
 //above ft_split_char divides everything with space as a deliminator. echo "hello world" -> [echo, hello, world] should be ->[echo , hello world]
 void	move_to_cmd(t_infos *info)
 {
@@ -91,4 +131,5 @@ void	move_to_cmd(t_infos *info)
 	if (cmd == NULL)
 		printf("error in cmd init return \n");
 	fill_cmd(info, start, ft_lstlast_token(info->tokens)->pos, cmd);
+	fill_cmd_info(info);
 }
