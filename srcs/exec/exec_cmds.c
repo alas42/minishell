@@ -27,17 +27,6 @@ int	choose_builtin(t_infos *infos, t_cmd *cmd)
 	return (-1);
 }
 
-/*
-**
-** A Recursiv function that executes the commands :
-** creating child processes &&
-** setting the pipes and correct fds
-**
-** DIDNT DO THE >>  and << because I don't really understands
-**(for now) how it is working
-**
-*/
-
 static void	piping(t_infos *infos)
 {
 	if (infos->index_cmd % 2)
@@ -67,7 +56,6 @@ static void	child_process(t_infos *infos, t_cmd *cmd, char **envp)
 	}
 	if (!cmd->builtin || ret == -1)
 	{
-		printf("%s - %s\n", cmd->arg[0], cmd->arg[1]);
 		execve(cmd->arg[0], cmd->arg, envp);
 		print_error(E_EXECVE, infos);
 	}
