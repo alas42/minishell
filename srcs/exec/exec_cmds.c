@@ -67,7 +67,6 @@ static void	child_process(t_infos *infos, t_cmd *cmd, char **envp)
 	}
 	if (!cmd->builtin || ret == -1)
 	{
-		printf("%s - %s\n", cmd->arg[0], cmd->arg[1]);
 		execve(cmd->arg[0], cmd->arg, envp);
 		print_error(E_EXECVE, infos);
 	}

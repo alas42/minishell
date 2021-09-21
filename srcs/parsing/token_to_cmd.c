@@ -103,7 +103,7 @@ void	fill_cmd_info(t_infos *info)
 		temp = temp->next;
 		i++;
 	}
-	
+	info->nb_cmd = i;	
 }
 //above ft_split_char divides everything with space as a deliminator. echo "hello world" -> [echo, hello, world] should be ->[echo , hello world]
 void	move_to_cmd(t_infos *info)
