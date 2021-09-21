@@ -65,6 +65,10 @@ void	print_cmnd_single(t_cmd *cmd)
 	{
 		printf("found a null command in temp print\n");
 	}
+	printf("INDEX 		[%d]\n", cmd->index);
+	printf("BUILTINS 	[%d]\n", cmd->builtin);
+	printf("PIPEIN		[%d]\n", cmd->pipe_in);
+	printf("PIPEOUT		[%d]\n", cmd->pipe_out);
 	if (cmd->arg != NULL)
 	{
 		while(cmd->arg[i] != NULL)
