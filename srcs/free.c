@@ -108,9 +108,6 @@ void    free_cmnds(t_infos *info)
 	}
 }
 
-
-
-
 /*
 
 	//Not closing the fd in cmnd yet. Add this in free_cmnd or where you need to close the last file_fd of commands

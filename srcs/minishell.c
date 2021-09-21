@@ -25,7 +25,6 @@ t_infos	*init_infos(char **envp)
 	infos->index_cmd = 0;
 	infos->first_cmd = NULL;
 	infos->commands = NULL;
-	// g_return_code = 0;
 	free(line_envp);
 	return (infos);
 }
@@ -86,6 +85,7 @@ int	main(int ac, char **av, char **envp)
 				exec_cmds(infos, infos->envs);
 			}
 		}
+		infos->first_cmd = NULL;
 		free(infos->line);
 	    free_tokens(infos);
 		free_cmnds(infos);

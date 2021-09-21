@@ -4,11 +4,8 @@ static int	first_cmd(t_infos *infos, t_cmd *cmd)
 {
 	int	ret_close;
 
+	(void)cmd;
 	ret_close = close(infos->pipe_b[WRITE]);
-	if (cmd->name_infile != NULL)
-		ret_close = close(cmd->fd_infile);
-	if (cmd->name_outfile != NULL)
-		ret_close = close(cmd->fd_outfile);
 	return (ret_close);
 }
 
@@ -33,6 +30,7 @@ static int	last_cmd(t_infos *infos, t_cmd *cmd)
 {
 	int	ret_close;
 
+	(void)cmd;
 	if (infos->index_cmd % 2)
 	{
 		ret_close = close(infos->pipe_b[READ]);
@@ -43,8 +41,6 @@ static int	last_cmd(t_infos *infos, t_cmd *cmd)
 		ret_close = close(infos->pipe_a[READ]);
 		ret_close = close(infos->pipe_a[WRITE]);
 	}
-	if (cmd->name_outfile != NULL)
-		ret_close = close(cmd->fd_outfile);
 	return (ret_close);
 }
 
