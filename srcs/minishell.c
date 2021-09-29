@@ -74,6 +74,8 @@ int	main(int ac, char **av, char **envp)
 				ft_putendl_fd("exit", STDOUT_FILENO);
 				break ;
 			}
+			infos->index_cmd = 0;
+			infos->nb_cmd = 0;
 			start_parsing(infos);
 			infos->first_cmd = infos->commands;
 			if (infos->line)
@@ -89,7 +91,7 @@ int	main(int ac, char **av, char **envp)
 		free_cmnds(infos);
 		int_mode = isatty(STDIN_FILENO);
 	}
-	//rl_clear_history();
+	rl_clear_history();
 	free_infos(infos);
 	return (0);
 }

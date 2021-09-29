@@ -80,7 +80,6 @@ void	handle_redirections(t_infos *info)
 	while(cmd)
 	{
         red = cmd->redirection;
-        printf("------------------------\n");
 		while (red)
 		{
             if (!(ft_strcmp(red->type, "output_red"))
@@ -118,26 +117,31 @@ void    start_parsing(t_infos *info)
     move_to_cmd(info);
 	handle_redirections(info);
 
-                printf("--------------PRINTING ALL TOKENS-------------------\n\n\n\n");
-                print_token_list(info->tokens);
-                printf("----------------END OF TOKENS-----------------\n\n\n\n");
+                // printf("--------------PRINTING ALL TOKENS-------------------\n\n\n\n");
+                // print_token_list(info->tokens);
+                // printf("----------------END OF TOKENS-----------------\n\n\n\n");
               
-			    printf("--------------PRINTING CMDS-------------------\n\n\n\n");
-                print_cmnds(info);
-                printf("--------------END OF CMDS-------------------\n\n\n\n");
+			    // printf("--------------PRINTING CMDS-------------------\n\n\n\n");
+                // print_cmnds(info);
+                // printf("--------------END OF CMDS-------------------\n\n\n\n");
 
 }
 
-/*
-        echo "hello world" >> a >> b < a >>papa | grep all >> al > la
-    ls -ll | grep all >> a | << a cat *
-    ls -ll > a > v | grep appd | <a <v >caa | cat all |
-*/
 
 /*
 Things to do
 
-5. Need to do proper expansions after cmnds are build (inside exec)
-6. Need to execute the redirections;
+* Need to do proper expansions after cmnds are build (inside exec)
+* Need to handle single quotes
+* Need to handle """" this case
+* Need to handle dollar sign
+* echo "hello world" -> exp [echo] [hello world] -> Got [echo] [hello] [world] (this is wrong)
 
+*/
+
+
+/*
+    echo "hello world" >> a >> b < a >>papa | grep all >> al > la
+    ls -ll | grep all >> a | << a cat *
+    ls -ll > a > v | grep appd | <a <v >caa | cat all |
 */
