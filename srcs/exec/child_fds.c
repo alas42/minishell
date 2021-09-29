@@ -2,11 +2,15 @@
 
 static int	first_cmd(t_infos *infos, t_cmd *cmd)
 {
-	int	ret[2];
+	int	ret[3];
 
 	(void)cmd;
 	ret[0] = close(infos->pipe_b[READ]);
-	if (cmd->pipe_out)
+	if (cmd->fd_infile > -1)
+		ret[2] = dup2(cmd->fd_infile, STDIN_FILENO);
+	if (cmd->fd_outfile > -1)
+		ret[1] = dup2(cmd->fd_outfile, STDOUT_FILENO);
+	else if (cmd->pipe_out)
 		ret[1] = dup2(infos->pipe_b[WRITE], STDOUT_FILENO);
 	else
 		ret[1] = 0;
