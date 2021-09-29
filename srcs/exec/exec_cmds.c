@@ -54,10 +54,14 @@ static void	child_process(t_infos *infos, t_cmd *cmd, char **envp)
 	{
 		ret = choose_builtin(infos, cmd);
 	}
-	if (!cmd->builtin || ret == -1)
+	if (!cmd->builtin || ret == -1) // check for error on infile before going there
 	{
 		execve(cmd->arg[0], cmd->arg, envp);
 		print_error(E_EXECVE, infos);
+	}
+	else
+	{
+		ft_putendl_fd("Something went wrong", STDERR_FILENO);
 	}
 }
 

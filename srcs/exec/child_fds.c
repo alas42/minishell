@@ -4,17 +4,18 @@ static int	first_cmd(t_infos *infos, t_cmd *cmd)
 {
 	int	ret[3];
 
-	(void)cmd;
 	ret[0] = close(infos->pipe_b[READ]);
 	if (cmd->fd_infile > -1)
 		ret[2] = dup2(cmd->fd_infile, STDIN_FILENO);
+	else
+		ret[2] = 0;
 	if (cmd->fd_outfile > -1)
 		ret[1] = dup2(cmd->fd_outfile, STDOUT_FILENO);
 	else if (cmd->pipe_out)
 		ret[1] = dup2(infos->pipe_b[WRITE], STDOUT_FILENO);
 	else
 		ret[1] = 0;
-	if (ret[0] > -1 && ret[1] > -1)
+	if (ret[0] > -1 && ret[1] > -1 && ret[2] > -1)
 		return (0);
 	return (1);
 }
@@ -40,20 +41,29 @@ static int	other_cmd(t_infos *infos)
 
 static int	last_cmd(t_infos *infos, t_cmd *cmd)
 {
-	int	ret[2];
+	int	ret[3];
 
-	(void)cmd;
 	if (infos->index_cmd % 2)
 	{
-		ret[0] = dup2(infos->pipe_b[READ], STDIN_FILENO);
+		if (cmd->fd_infile > -1)
+			ret[0] = dup2(cmd->fd_infile, STDIN_FILENO);
+		else
+			ret[0] = dup2(infos->pipe_b[READ], STDIN_FILENO);
 		ret[1] = close(infos->pipe_b[WRITE]);
 	}
 	else
 	{
-		ret[0] = dup2(infos->pipe_a[READ], STDIN_FILENO);
+		if (cmd->fd_infile > -1)
+			ret[0] = dup2(cmd->fd_infile, STDIN_FILENO);
+		else
+			ret[0] = dup2(infos->pipe_a[READ], STDIN_FILENO);
 		ret[1] = close(infos->pipe_a[WRITE]);
 	}
-	if (ret[0] > -1 && ret[1] > -1)
+	if (cmd->fd_outfile > -1)
+		ret[2] = dup2(cmd->fd_outfile, STDOUT_FILENO);
+	else
+		ret[2] = 0;
+	if (ret[0] > -1 && ret[1] > -1 && ret[2] > -1)
 		return (0);
 	return (1);
 }

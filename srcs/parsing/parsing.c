@@ -116,15 +116,15 @@ void    start_parsing(t_infos *info)
     handle_input_red(info);
     move_to_cmd(info);
 	handle_redirections(info);
-
-                // printf("--------------PRINTING ALL TOKENS-------------------\n\n\n\n");
-                // print_token_list(info->tokens);
-                // printf("----------------END OF TOKENS-----------------\n\n\n\n");
-              
-			    // printf("--------------PRINTING CMDS-------------------\n\n\n\n");
-                // print_cmnds(info);
-                // printf("--------------END OF CMDS-------------------\n\n\n\n");
-
+/*
+    printf("--------------PRINTING ALL TOKENS-------------------\n\n\n\n");
+    print_token_list(info->tokens);
+    printf("----------------END OF TOKENS-----------------\n\n\n\n");
+       
+	printf("--------------PRINTING CMDS-------------------\n\n\n\n");
+    print_cmnds(info);
+    printf("--------------END OF CMDS-------------------\n\n\n\n");
+*/
 }
 
 

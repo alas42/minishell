@@ -2,11 +2,20 @@
 
 static int	first_cmd(t_infos *infos, t_cmd *cmd)
 {
-	int	ret_close;
+	int	ret_close[3];
 
-	(void)cmd;
-	ret_close = close(infos->pipe_b[WRITE]);
-	return (ret_close);
+	ret_close[0] = close(infos->pipe_b[WRITE]);
+	if (cmd->fd_infile > -1)
+		ret_close[1] = close(cmd->fd_infile);
+	else
+		ret_close[1] = 0;
+	if (cmd->fd_outfile > -1)
+		ret_close[2] = close(cmd->fd_outfile);
+	else
+		ret_close[2] = 0;
+	if (ret_close[0] > -1 && ret_close[1] > -1 && ret_close[2] > -1)
+		return (0);
+	return (1);
 }
 
 static int	other_cmd(t_infos *infos)
@@ -28,20 +37,29 @@ static int	other_cmd(t_infos *infos)
 
 static int	last_cmd(t_infos *infos, t_cmd *cmd)
 {
-	int	ret_close;
+	int	ret[4];
 
-	(void)cmd;
 	if (infos->index_cmd % 2)
 	{
-		ret_close = close(infos->pipe_b[READ]);
-		ret_close = close(infos->pipe_b[WRITE]);
+		ret[0] = close(infos->pipe_b[READ]);
+		ret[1] = close(infos->pipe_b[WRITE]);
 	}
 	else
 	{
-		ret_close = close(infos->pipe_a[READ]);
-		ret_close = close(infos->pipe_a[WRITE]);
+		ret[0] = close(infos->pipe_a[READ]);
+		ret[1] = close(infos->pipe_a[WRITE]);
 	}
-	return (ret_close);
+	if (cmd->fd_infile > -1)
+		ret[2] = close(cmd->fd_infile);
+	else
+		ret[2] = 0;
+	if (cmd->fd_outfile > -1)
+		ret[3] = close(cmd->fd_outfile);
+	else
+		ret[3] = 0;
+	if (ret[0] > -1 && ret[1] > -1 && ret[2] > -1 && ret[3] > -1)
+		return (0);
+	return (1);
 }
 
 int	parent_fds(t_infos *infos, t_cmd *cmd)
@@ -54,7 +72,7 @@ int	parent_fds(t_infos *infos, t_cmd *cmd)
 		ret_close = last_cmd(infos, cmd);
 	else
 		ret_close = other_cmd(infos);
-	if (ret_close > -1)
+	if (!ret_close)
 		return (0);
 	return (1);
 }

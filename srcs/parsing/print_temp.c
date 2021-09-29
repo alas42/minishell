@@ -53,8 +53,6 @@ void	print_info(t_infos *info)
 	// printf("info->fd[0] - [%d]\n fd[1] - [%d]\n", info->pipe[0], info->pipe[1]);
 }
 
-
-
 void	print_cmnd_single(t_cmd *cmd)
 {
 	int		i;
