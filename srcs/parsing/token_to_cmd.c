@@ -97,6 +97,7 @@ void	fill_cmd_info(t_infos *info)
 		{
 			temp->pipe_out = 1;
 			temp->next->pipe_in = 1;
+			info->nb_pipe = info->nb_pipe + 1;
 		}
 		else
 			temp->pipe_out = 0;

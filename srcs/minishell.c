@@ -76,6 +76,7 @@ int	main(int ac, char **av, char **envp)
 			}
 			infos->index_cmd = 0;
 			infos->nb_cmd = 0;
+			infos->nb_pipe = 0;
 			start_parsing(infos);
 			infos->first_cmd = infos->commands;
 			if (infos->line)
