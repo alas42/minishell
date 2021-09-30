@@ -73,7 +73,8 @@ static void	parent_process(t_infos *infos, t_cmd *cmd, char **envp)
 	}
 	infos->index_cmd = infos->index_cmd + 1;
 	loop_through_cmds(infos, envp);
-	wait(NULL);
+	wait(NULL); //waitpid or wait3/4 to get the status (to know if there was an interruption like CTRL+C ?)
+	//set the ? (env variable) to its correct return code (127 + ...)
 }
 
 int	loop_through_cmds(t_infos *infos, char **envp)
