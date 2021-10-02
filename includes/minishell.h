@@ -99,6 +99,7 @@ typedef struct s_infos
 	struct s_cmd	*first_cmd;
 	struct s_env	*first_env;
 	char			**envs;
+	int				last_return_code;
 }					t_infos;
 
 //free.c

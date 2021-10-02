@@ -1,10 +1,5 @@
 #include "../../includes/minishell.h"
 
-/*
-**
-** NOT TO FORGET : SET CORRECT RETURN STATUS CODE
-**
-*/
 static char	*free_and_return(char *path_dir, char *ret)
 {
 	if (!ret)
@@ -79,49 +74,3 @@ int	mini_cd(t_infos *infos, t_cmd *cmd)
 	free(old_path);
 	return (ret);
 }
-
-/*
-**
-** Tests all paths contained in *path[] one after another
-** And calls to mini_pwd to print where the terminal is
-
-
-void	test_cd(t_infos *infos)
-{
-	char	**cmd1;
-	t_cmd	*cmd01;
-	cmd1 = ft_split_char("cd srcs", ' ');
-	cmd01 = creating_cmd(cmd1, 0, 1);
-	char	**cmd2;
-	char	**cmd3;
-	char	**cmd4;
-
-	t_cmd	*cmd02;
-	t_cmd	*cmd03;
-	t_cmd	*cmd04;
-
-
-	cmd2 = ft_split_char("cd ../..", ' ');
-	cmd3 = ft_split_char("cd ./minishell/includes", ' ');
-	cmd4 = ft_split_char("cd /", ' ');
-
-	cmd02 = creating_cmd(cmd2, 1, 1);
-	cmd03 = creating_cmd(cmd3, 1, 1);
-	cmd04 = creating_cmd(cmd4, 1, 0);
-	int		ret_mini_cd;
-
-	ret_mini_cd = mini_cd(infos, cmd01);
-	if (!ret_mini_cd)
-		ft_putendl_fd("cd error", STDERR_FILENO);
-	ret_mini_cd = mini_cd(infos, cmd02);
-	if (!ret_mini_cd)
-		ft_putendl_fd("cd error", STDERR_FILENO);
-	ret_mini_cd = mini_cd(infos, cmd03);
-	if (!ret_mini_cd)
-		ft_putendl_fd("cd error", STDERR_FILENO);
-	ret_mini_cd = mini_cd(infos, cmd04);
-	if (!ret_mini_cd)
-		ft_putendl_fd("cd error", STDERR_FILENO);
-	print_env_tab(infos);
-}
-*/

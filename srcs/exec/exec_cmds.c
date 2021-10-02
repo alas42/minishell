@@ -67,14 +67,20 @@ static void	child_process(t_infos *infos, t_cmd *cmd, char **envp)
 
 static void	parent_process(t_infos *infos, t_cmd *cmd, char **envp)
 {
+	int	status;
+
 	if (parent_fds(infos, cmd))
 	{
 		ft_putendl_fd("close error in parent", STDERR_FILENO);
 	}
 	infos->index_cmd = infos->index_cmd + 1;
 	loop_through_cmds(infos, envp);
-	wait(NULL); //waitpid or wait3/4 to get the status (to know if there was an interruption like CTRL+C ?)
-	//set the ? (env variable) to its correct return code (127 + ...)
+	wait(&status); //know if there was an interruption like CTRL+C ?
+	if (WIFEXITED(status))
+        printf("Exit status: %d\n", WEXITSTATUS(status));
+    else if (WIFSIGNALED(status))
+        psignal(WTERMSIG(status), "Exit signal");
+	//set the ? (NOT AN ENV VAR) to its correct return code (127 + ...)
 }
 
 int	loop_through_cmds(t_infos *infos, char **envp)

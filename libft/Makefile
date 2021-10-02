@@ -1,5 +1,7 @@
 FILES = ft_putchar.c \
 	ft_putstr.c \
+	ft_atoi.c \
+	ft_itoa.c \
 	ft_atof.c \
 	ft_isalpha.c \
 	ft_isdigit.c \
