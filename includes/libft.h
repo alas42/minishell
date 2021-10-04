@@ -12,6 +12,8 @@ typedef struct s_list
 }					t_list;
 
 float	ft_atof(const char *str, size_t *i);
+int		ft_atoi(const char *str);
+char	*ft_itoa(int n);
 int		ft_isalpha(int c);
 int		ft_isdigit(int c);
 int		ft_isspace(int c);

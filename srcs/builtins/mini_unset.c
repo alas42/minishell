@@ -1,15 +1,5 @@
 #include "../../includes/minishell.h"
 
-/*
-**
-** NOT TO FORGET : SET CORRECT RETURN STATUS CODE
-**
-*/
-/*
-** Remove an entry from envs tab
-** - Returns a copy from initial tab without the line wanted to be removed
-** - Returns the original tab as is if the key isn't found
-*/
 static char	**copy_new_tab(t_infos *infos, int pos_key, char **new_tab)
 {
 	int	i;
@@ -75,12 +65,3 @@ int	mini_unset(t_infos *infos, t_cmd *cmd)
 	}
 	return (1);
 }
-
-/*
-void	test_unset(t_infos *infos)
-{
-	mini_unset(infos, "test_key");
-	mini_unset(infos, "testare_key");
-	print_env_tab(infos);
-}
-*/

@@ -1,13 +1,5 @@
 #include "../../includes/minishell.h"
 
-/*
-**
-** Echo like the others shall have a **arg filled
-** But It doesn't have to be NULL like many other
-** Only Echo and Export treats their arguments
-**
-*/
-
 void	is_new_line(char **arg, int *i, int *new_line)
 {
 	int	j;
@@ -53,19 +45,5 @@ int	mini_echo(t_infos *infos, t_cmd *cmd)
 	}
 	if (new_line)
 		ft_putchar_fd('\n', STDOUT_FILENO);
-	return (1);
+	return (0);
 }
-/*
-void	test_echo(void)
-{
-	char	*arg[7];
-
-	arg[0] = "echo";
-	arg[1] = "-nnnnnnnn";
-	arg[2] = "-nnnnnnnnn";
-	arg[3] = "-nnnnnnnaaaaa";
-	arg[4] = "-nnnnnnnnnnnn";
-	arg[5] = "abc";
-	arg[6] = NULL;
-	mini_echo(arg);
-}*/

@@ -94,12 +94,6 @@ void	print_export(t_infos *infos)
 	print_asci_order(infos, number_env, order);
 }
 
-/*
-**
-** NOT TO FORGET : SET CORRECT RETURN STATUS CODE
-**
-*/
-
 int	mini_export(t_infos *infos, t_cmd *cmd)
 {
 	int		ret_find_path;
@@ -122,24 +116,5 @@ int	mini_export(t_infos *infos, t_cmd *cmd)
 	else
 		infos->envs = add_env_tab(infos->envs, cmd->arg[1]);
 	ft_free_tab_ptr(key_value_tab);
-	return (1);
+	return (0);
 }
-
-/*
-void	test_export(t_infos *infos)
-{
-	char	*key;
-	char	*value;
-	char	*key2;
-	char	*value2;
-
-	key = "test_key";
-	key2 = "testare_key";
-	value = "value2_key";
-	value2 = "oazkdozak";
-	ft_putendl_fd("\n\n", STDOUT_FILENO);
-	mini_export(infos, key, value);
-	mini_export(infos, key2, value2);
-	print_env_tab(infos);
-	ft_putendl_fd("\n\n", STDOUT_FILENO);
-}*/

@@ -1,5 +1,30 @@
 #include "../includes/minishell.h"
 
+static int	add_layer_shlvl(t_infos *infos)
+{
+	char 	*value_shlvl;
+	int		pos_shlvl;
+	int		shlvl_int;
+
+	value_shlvl = NULL;
+	pos_shlvl = find_pos_key(infos, "SHLVL");
+	if (pos_shlvl > -1)
+	{
+		value_shlvl = get_value(infos, "SHLVL");
+		if (value_shlvl == NULL)
+			return (0);
+		shlvl_int = ft_atoi(value_shlvl) + 1;
+		free(value_shlvl);
+		value_shlvl = ft_itoa(shlvl_int);
+		if (!value_shlvl)
+			return (0);
+		pos_shlvl = change_line_env_tab(infos, "SHLVL", value_shlvl);
+		free(value_shlvl);
+		return(pos_shlvl);
+	}
+	return (0);
+}
+
 /*
 **
 ** We shouldn't forget that envp can be NULL
@@ -19,8 +44,10 @@ t_infos	*init_infos(char **envp)
 	infos->pos_path = find_pos_key(infos, "PATH");
 	line_envp = get_line(infos, infos->pos_path);
 	infos->paths = ft_split_char(line_envp, ':');
+	add_layer_shlvl(infos);
 	infos->nb_cmd = 0;
 	infos->tokens = NULL;
+	infos->last_return_code = 0;
 	infos->nb_pipe = 0;
 	infos->index_cmd = 0;
 	infos->first_cmd = NULL;
@@ -96,11 +123,3 @@ int	main(int ac, char **av, char **envp)
 	free_infos(infos);
 	return (0);
 }
-
-//ls -l | << a cat > out1
-
-//export AA="s -l"
-//l$AA ==> ls -l
-
-// << a << b << c cat | < c cat
-
