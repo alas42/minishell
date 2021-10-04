@@ -76,10 +76,10 @@ static void	parent_process(t_infos *infos, t_cmd *cmd, char **envp)
 	infos->index_cmd = infos->index_cmd + 1;
 	loop_through_cmds(infos, envp);
 	wait(&status); //know if there was an interruption like CTRL+C ?
-	if (WIFEXITED(status))
+	/*if (WIFEXITED(status))
         printf("Exit status: %d\n", WEXITSTATUS(status));
     else if (WIFSIGNALED(status))
-        psignal(WTERMSIG(status), "Exit signal");
+        psignal(WTERMSIG(status), "Exit signal");*/
 	//set the ? (NOT AN ENV VAR) to its correct return code (127 + ...)
 }
 
