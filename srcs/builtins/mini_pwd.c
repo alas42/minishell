@@ -6,7 +6,7 @@
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 13:20:07 by avogt             #+#    #+#             */
-/*   Updated: 2021/10/05 13:20:07 by avogt            ###   ########.fr       */
+/*   Updated: 2021/10/05 14:44:50 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,7 @@
 
 static void	print_path(t_cmd *cmd, char *path_dir)
 {
-	if (cmd->fd_outfile > -1)
-		ft_putendl_fd(path_dir, cmd->fd_outfile);
-	else
-		ft_putendl_fd(path_dir, STDOUT_FILENO);
+	ft_putendl_fd(path_dir, STDOUT_FILENO);
 	if (path_dir)
 		free(path_dir);
 }
