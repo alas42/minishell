@@ -1,9 +1,17 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils_paths.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/10/05 13:23:28 by avogt             #+#    #+#             */
+/*   Updated: 2021/10/05 13:27:28 by avogt            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/minishell.h"
 
-/*
-** Checks if a file exist at the given path
-** Returns 1 on success, 0 on failure
-*/
 int	ft_exists(char *file_path)
 {
 	struct stat	file_info;
@@ -15,10 +23,6 @@ int	ft_exists(char *file_path)
 	return (0);
 }
 
-/*
-** Add a given path to the first argument of the command
-** Returns 1 on success, 0 on failure
-*/
 int	add_path(char **arg, char *path, int len_path)
 {
 	char	*new_str;
@@ -47,13 +51,6 @@ int	add_path(char **arg, char *path, int len_path)
 	return (1);
 }
 
-/*
-**
-** Find the index of env value 'to_find' in the environment list
-** If not found, return -1
-**
-*/
-
 int	find_pos_key(t_infos *infos, char *to_find)
 {
 	int	i;
@@ -79,15 +76,6 @@ int	find_pos_key(t_infos *infos, char *to_find)
 	}
 	return (-1);
 }
-
-/*
-**
-** (void functions are a no go, because there are errors that should be checked
-** This function add the execution path to every command in the chained list
-** If it doesn't find, the path stays the same,
-** it will try to execute it in the directory
-**
-*/
 
 void	check_paths(t_infos *infos)
 {

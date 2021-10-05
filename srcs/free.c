@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   free.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/10/05 13:28:05 by avogt             #+#    #+#             */
+/*   Updated: 2021/10/05 13:34:45 by avogt            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/minishell.h"
 
 void	ft_free_tab_ptr(char **ptr)
@@ -24,6 +36,7 @@ void	free_infos(t_infos *infos)
 	if (infos->tokens)
 		free_tokens(infos);
 	free(infos);
+	rl_clear_history();
 }
 
 void	free_tokens(t_infos *info)

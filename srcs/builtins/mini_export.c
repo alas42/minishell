@@ -1,16 +1,17 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   mini_export.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/10/05 13:19:31 by avogt             #+#    #+#             */
+/*   Updated: 2021/10/05 13:19:32 by avogt            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/minishell.h"
 
-/*
-**
-** Export without arg - print in ascii order the tab of ptrs with some changes
-** 1. It displays the word "export" followed by a whitespace
-** 2. It displays the key
-** 3. It displays a opening double quote
-** 4. It displays all the values of the key
-** 5. It displays the closing double quote
-** 6. It displays '\n'
-**
-*/
 static int	print_line(t_infos *infos, int index)
 {
 	char	*key;

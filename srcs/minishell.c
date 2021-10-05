@@ -1,66 +1,17 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/10/05 13:38:06 by avogt             #+#    #+#             */
+/*   Updated: 2021/10/05 13:44:13 by avogt            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/minishell.h"
 
-static int	add_layer_shlvl(t_infos *infos)
-{
-	char 	*value_shlvl;
-	int		pos_shlvl;
-	int		shlvl_int;
-
-	value_shlvl = NULL;
-	pos_shlvl = find_pos_key(infos, "SHLVL");
-	if (pos_shlvl > -1)
-	{
-		value_shlvl = get_value(infos, "SHLVL");
-		if (value_shlvl == NULL)
-			return (0);
-		shlvl_int = ft_atoi(value_shlvl) + 1;
-		free(value_shlvl);
-		value_shlvl = ft_itoa(shlvl_int);
-		if (!value_shlvl)
-			return (0);
-		pos_shlvl = change_line_env_tab(infos, "SHLVL", value_shlvl);
-		free(value_shlvl);
-		return(pos_shlvl);
-	}
-	return (0);
-}
-
-/*
-**
-** We shouldn't forget that envp can be NULL
-**
-*/
-t_infos	*init_infos(char **envp)
-{
-	t_infos	*infos;
-	char	*line_envp;
-
-	line_envp = NULL;
-	infos = (t_infos *)malloc(sizeof(t_infos));
-	if (!infos)
-		return (NULL);
-	infos->first_env = NULL;
-	infos->envs = get_env_tab(envp);
-	infos->pos_path = find_pos_key(infos, "PATH");
-	line_envp = get_line(infos, infos->pos_path);
-	infos->paths = ft_split_char(line_envp, ':');
-	add_layer_shlvl(infos);
-	infos->nb_cmd = 0;
-	infos->tokens = NULL;
-	infos->last_return_code = 0;
-	infos->nb_pipe = 0;
-	infos->index_cmd = 0;
-	infos->first_cmd = NULL;
-	infos->commands = NULL;
-	free(line_envp);
-	return (infos);
-}
-
-/*
-** Prepare the terrain
-** save the stdin and out fds in case they are manipulated during the execetion part
-** Launch the function that loop through all cmds nodes
-*/
 int	exec_cmds(t_infos *infos, char **envp)
 {
 	int		stdout_save;
@@ -75,11 +26,32 @@ int	exec_cmds(t_infos *infos, char **envp)
 	return (1);
 }
 
-/*
-**
-** They speak about one global for exit or error status
-**
-*/
+void	minishell(t_infos *infos, int int_mode)
+{
+	while (int_mode)
+	{
+
+		if (int_mode == 1)
+		{
+			infos->line = readline("$ ");
+			if (!infos->line)
+			{
+				ft_putendl_fd("exit", STDOUT_FILENO);
+				break ;
+			}
+			reinit_infos(infos);
+			start_parsing(infos);
+			infos->first_cmd = infos->commands;
+			if (infos->line)
+				add_history(infos->line);
+			if (infos->nb_cmd > 1 || choose_builtin(infos, infos->first_cmd) == -1)
+				exec_cmds(infos, infos->envs);
+		}
+		clear_infos(infos);
+		int_mode = isatty(STDIN_FILENO);
+	}
+}
+
 int	main(int ac, char **av, char **envp)
 {
 	int		int_mode;
@@ -91,35 +63,7 @@ int	main(int ac, char **av, char **envp)
 	signal(SIGINT, sigint_handler);
 	signal(SIGQUIT, sigquit_handler);
 	int_mode = isatty(STDIN_FILENO);
-	while (int_mode)
-	{
-		if (int_mode == 1)
-		{
-			infos->line = readline("$ ");
-			if (!infos->line)
-			{
-				ft_putendl_fd("exit", STDOUT_FILENO);
-				break ;
-			}
-			infos->index_cmd = 0;
-			infos->nb_cmd = 0;
-			infos->nb_pipe = 0;
-			start_parsing(infos);
-			infos->first_cmd = infos->commands;
-			if (infos->line)
-				add_history(infos->line);
-			if (infos->nb_cmd > 1 || choose_builtin(infos, infos->first_cmd) == -1)
-			{
-				exec_cmds(infos, infos->envs);
-			}
-		}
-		infos->first_cmd = NULL;
-		free(infos->line);
-	    free_tokens(infos);
-		free_cmnds(infos);
-		int_mode = isatty(STDIN_FILENO);
-	}
-	rl_clear_history();
+	minishell(infos, int_mode);
 	free_infos(infos);
 	return (0);
 }

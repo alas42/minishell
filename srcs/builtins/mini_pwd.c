@@ -1,49 +1,45 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   mini_pwd.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/10/05 13:20:07 by avogt             #+#    #+#             */
+/*   Updated: 2021/10/05 13:20:07 by avogt            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/minishell.h"
 
-static char	*free_and_return(char *path_dir, char *ret)
+static void	print_path(t_cmd *cmd, char *path_dir)
 {
-	if (!ret)
-	{
-		if (path_dir)
-			free(path_dir);
-		return (NULL);
-	}
-	return (path_dir);
-}
-
-static char	*realloc_path_dir(char *path_dir, size_t *length_path)
-{
-	free(path_dir);
-	*length_path = *length_path * 2;
-	path_dir = (char *)malloc(sizeof(char) * *length_path);
-	if (!path_dir)
-		return (NULL);
-	return (path_dir);
+	if (cmd->fd_outfile > -1)
+		ft_putendl_fd(path_dir, cmd->fd_outfile);
+	else
+		ft_putendl_fd(path_dir, STDOUT_FILENO);
+	if (path_dir)
+		free(path_dir);
 }
 
 int	mini_pwd(t_infos *infos, t_cmd *cmd)
 {
 	char	*path_dir;
 	size_t	length_path;
-	char	*ret;
 
-	ret = 0;
 	length_path = 1024;
-	path_dir = (char *)malloc(sizeof(char) * length_path);
-	if (!path_dir)
-		return (0);
-	ret = getcwd(path_dir, length_path);
+	path_dir = NULL;
+	path_dir = getcwd(path_dir, length_path);
 	while (errno == ERANGE)
 	{
-		path_dir = realloc_path_dir(path_dir, &length_path);
-		if (!path_dir)
-			return (0);
-		ret = getcwd(path_dir, length_path);
-		if (ret)
+		length_path *= 2;
+		path_dir = getcwd(path_dir, length_path);
+		if (path_dir)
 			break ;
 	}
-	ft_putendl_fd(free_and_return(path_dir, ret), STDOUT_FILENO);
-	return (1);
-	(void)infos;
-	(void)cmd;
+	if (!path_dir)
+		return (-1);
+	print_path(cmd, path_dir);
+	return (0);
+	(void) infos;
 }

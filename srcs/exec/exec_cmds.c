@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exec_cmds.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/10/05 13:21:00 by avogt             #+#    #+#             */
+/*   Updated: 2021/10/05 13:22:31 by avogt            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/minishell.h"
 
 int	choose_builtin(t_infos *infos, t_cmd *cmd)
@@ -54,7 +66,7 @@ static void	child_process(t_infos *infos, t_cmd *cmd, char **envp)
 	{
 		ret = choose_builtin(infos, cmd);
 	}
-	if (!cmd->builtin || ret == -1) // check for error on infile before going there
+	if (!cmd->builtin || ret == -1)
 	{
 		execve(cmd->arg[0], cmd->arg, envp);
 		print_error(E_EXECVE, infos);
@@ -75,12 +87,15 @@ static void	parent_process(t_infos *infos, t_cmd *cmd, char **envp)
 	}
 	infos->index_cmd = infos->index_cmd + 1;
 	loop_through_cmds(infos, envp);
-	wait(&status); //know if there was an interruption like CTRL+C ?
-	/*if (WIFEXITED(status))
-        printf("Exit status: %d\n", WEXITSTATUS(status));
-    else if (WIFSIGNALED(status))
-        psignal(WTERMSIG(status), "Exit signal");*/
-	//set the ? (NOT AN ENV VAR) to its correct return code (127 + ...)
+	wait(&status);
+/*
+**
+** if (WIFEXITED(status))
+**    printf("Exit status: %d\n", WEXITSTATUS(status));
+** else if (WIFSIGNALED(status))
+**    psignal(WTERMSIG(status), "Exit signal");
+** set the ? (NOT AN ENV VAR) to its correct return code (127 + ...)
+*/
 }
 
 int	loop_through_cmds(t_infos *infos, char **envp)
