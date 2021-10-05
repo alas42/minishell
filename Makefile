@@ -12,7 +12,8 @@ BUILTINS_FILES = mini_env.c \
 	mini_exit.c \
 	mini_export.c \
 	mini_pwd.c \
-	mini_unset.c
+	mini_unset.c \
+	solo_builtin.c
 
 EXEC_FILES = exec_cmds.c \
 	child_fds.c \
