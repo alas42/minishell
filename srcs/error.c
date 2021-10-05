@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   error.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/10/05 13:27:46 by avogt             #+#    #+#             */
+/*   Updated: 2021/10/05 13:35:02 by avogt            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/minishell.h"
 
 void	print_error(int state, t_infos *infos)
@@ -19,6 +31,5 @@ void	print_error(int state, t_infos *infos)
 	else if (state == E_EXECVE)
 		ft_putendl_fd("Execve error", STDERR_FILENO);
 	free_infos(infos);
-	//rl_clear_history();
 	exit(0);
 }

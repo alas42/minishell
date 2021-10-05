@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils_env.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/10/05 13:23:23 by avogt             #+#    #+#             */
+/*   Updated: 2021/10/05 13:32:08 by avogt            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/minishell.h"
 
 /*
@@ -87,4 +99,29 @@ void	print_env_tab(t_infos *infos)
 		ft_putendl_fd(infos->envs[i], STDOUT_FILENO);
 		i++;
 	}
+}
+
+int	add_layer_shlvl(t_infos *infos)
+{
+	char 	*value_shlvl;
+	int		pos_shlvl;
+	int		shlvl_int;
+
+	value_shlvl = NULL;
+	pos_shlvl = find_pos_key(infos, "SHLVL");
+	if (pos_shlvl > -1)
+	{
+		value_shlvl = get_value(infos, "SHLVL");
+		if (value_shlvl == NULL)
+			return (0);
+		shlvl_int = ft_atoi(value_shlvl) + 1;
+		free(value_shlvl);
+		value_shlvl = ft_itoa(shlvl_int);
+		if (!value_shlvl)
+			return (0);
+		pos_shlvl = change_line_env_tab(infos, "SHLVL", value_shlvl);
+		free(value_shlvl);
+		return(pos_shlvl);
+	}
+	return (0);
 }

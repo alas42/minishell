@@ -32,7 +32,8 @@ PARSING_FILES = parsing_init.c \
 UTILS_FILES = utils_cmds.c \
 	utils_env.c \
 	utils_paths.c \
-	utils_env_getters.c
+	utils_env_getters.c \
+	utils_infos.c
 
 SIGNALS_FILES = sigint.c \
 	sigquit.c

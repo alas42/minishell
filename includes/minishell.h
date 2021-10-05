@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/10/05 13:57:49 by avogt             #+#    #+#             */
+/*   Updated: 2021/10/05 14:00:35 by avogt            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
@@ -11,8 +23,6 @@
 # include <stdio.h>
 # include <readline/readline.h>
 # include <readline/history.h>
-//#include <editline/readline.h>
-//#include <editline/history.h>
 # include <errno.h>
 # include <dirent.h>
 # include <curses.h>
@@ -20,7 +30,8 @@
 # include <term.h>
 # include "libft.h"
 
-// int	g_return_code;
+//#include <editline/readline.h>
+//#include <editline/history.h>
 
 enum e_file_end
 {
@@ -60,22 +71,22 @@ typedef struct s_token
 	struct s_token	*prev;
 }					t_token;
 
-typedef	struct s_cmd
+typedef struct s_cmd
 {
-	int				index;				//keeping count of struct
+	int				index;
 	int				builtin;
 	int				process;
 	int				pipe_in;
 	int				pipe_out;
 	int				fd_infile;
-	int 			fd_outfile;
-	char			*name_infile;		//name of file of input_fd
-	char			*name_outfile;		//name of file of output_fd
+	int				fd_outfile;
+	char			*name_infile;
+	char			*name_outfile;
 	char			**arg;
 	struct s_token	*redirection;
 	struct s_cmd	*next;
 	struct s_cmd	*prev;
-}				t_cmd;
+}					t_cmd;
 
 typedef struct s_env
 {
@@ -102,7 +113,9 @@ typedef struct s_infos
 	int				last_return_code;
 }					t_infos;
 
-//free.c
+/*
+** Free functions
+*/
 void		free_infos(t_infos *infos);
 void		free_tokens(t_infos *info);
 void		free_cmd_list(t_infos *infos);
@@ -132,31 +145,30 @@ t_cmd		*ft_lstlast_cmd(t_cmd *lst);
 //parsing_utils.c
 int			ft_strncmp(const char *s1, const char *s2, size_t n);
 int			ft_isspace_isdigit(char c, char d);
-char    	*char_to_str(char c);
+char		*char_to_str(char c);
 char		*remove_space_digit(char *line, char c);
 int			ft_isallspace(char *line);
 
 //token_handler.c
-void    handle_output_red(t_infos *info);
-void	handle_input_red(t_infos *info);
-void    expand_dollar(t_infos *info);
+void		handle_output_red(t_infos *info);
+void		handle_input_red(t_infos *info);
+void		expand_dollar(t_infos *info);
 
 //token_handler_utils.c
-char    **ft_split(char *str, char c);
-void    free_doub_char(char **str);
+char		**ft_split(char *str, char c);
+void		free_doub_char(char **str);
 
 //quotes_handler.c
-void    check_quotes(t_infos *info);
+void		check_quotes(t_infos *info);
 
 //token_utils.c
-void	*cmnd_init(void);
-void	cmd_lst_add_back(t_cmd *cmd, t_infos *info);
-
+void		*cmnd_init(void);
+void		cmd_lst_add_back(t_cmd *cmd, t_infos *info);
 
 //token_to_cmd.c
-void	move_to_cmd(t_infos *info);
-char    *merge_content(char *str, char *content);
-void	red_lst_add_back(t_cmd *cmd, t_token *new);
+void		move_to_cmd(t_infos *info);
+char		*merge_content(char *str, char *content);
+void		red_lst_add_back(t_cmd *cmd, t_token *new);
 
 //print_temp.c Temp Function to be removed later
 void		print_info(t_infos *info);
@@ -164,22 +176,33 @@ void		print_token_list(t_token *token);
 void		print_cmnd_single(t_cmd *cmd);
 void		print_cmnds(t_infos *info);
 
+/*
+** UTILS FOR THE INFOS STRUCTURE
+*/
+/*
+** Clear the structures before another loop
+*/
+void		clear_infos(t_infos *infos);
+/*
+** Free some data from the infos structure before another loop
+*/
+void		reinit_infos(t_infos *infos);
+t_infos		*init_infos(char **envp);
 
-//utils for t_cmds
-void		add_cmd(t_infos *infos, t_cmd *new);
-t_cmd		*creating_cmd(char **arg, int pipe_in, int pipe_out);
-void		init_cmds(t_infos *infos, char *str);
-void		tests_exec_cmds(t_infos *infos, char **envp);
+/*
+** Returns the command associated with infos->index_cmd
+** Returns Null if no command is found
+*/
 t_cmd		*get_cmd(t_infos *infos);
 
-//[----------------exec_cmds.c----------------]
 int			child_fds(t_infos *infos, t_cmd *cmd);
 int			parent_fds(t_infos *infos, t_cmd *cmd);
 int			exec_cmds(t_infos *infos, char **envp);
 int			loop_through_cmds(t_infos *infos, char **envp);
-//[----------------end of exec_cmds.c----------------]
 
-//utils for environment variables (tab)
+/*
+** Utils for environment variables (tab)
+*/
 char		**get_env_tab(char **envp);
 void		print_env_tab(t_infos *infos);
 char		**add_env_tab(char **envs, char *key_value_str);
@@ -189,27 +212,36 @@ char		*create_pair_key_value(char *key, char *value);
 char		*get_value(t_infos *infos, char *key);
 char		*get_key(t_infos *infos, int index);
 char		*get_line(t_infos *infos, int index);
+int			add_layer_shlvl(t_infos *infos);
 
-//[----------------paths.c----------------]
 /*
 ** Returns the index from the environment variable to_find in the tab
 */
 int			find_pos_key(t_infos *infos, char *to_find);
+
+/*
+** Add a path string from environment table to the name of the executable given
+*/
 int			add_path(char **arg, char *path, int len_path);
 
 /*
 ** Checks if the paths given corresponds to an existing file
 */
 int			ft_exists(char *file_path);
+
+/*
+** Loops until the correct path if found
+*/
 void		check_paths(t_infos *infos);
-//[----------------end of paths.c----------------]
 
 /*
 ** Finds the correct builtins function and lauchs it
 */
 int			choose_builtin(t_infos *infos, t_cmd *cmd);
 
-//builtins functions
+/*
+** Builtins functions
+*/
 int			mini_unset(t_infos *infos, t_cmd *cmd);
 int			mini_export(t_infos *infos, t_cmd *cmd);
 void		print_export(t_infos *infos);
@@ -218,14 +250,6 @@ int			mini_echo(t_infos *infos, t_cmd *cmd);
 int			mini_env(t_infos *infos, t_cmd *cmd);
 int			mini_exit(t_infos *infos, t_cmd *cmd);
 int			mini_pwd(t_infos *infos, t_cmd *cmd );
-
-//functions to test the builtins (to be removed)
-void		test_unset(t_infos *infos);
-void		test_env(t_infos *infos);
-void		test_echo(void);
-void		test_pwd(void);
-void		test_cd(t_infos *infos);
-void		test_export(t_infos *infos);
 
 /*
 ** SIGNALS
@@ -237,5 +261,7 @@ void		sigquit_handler(int signal);
 ** Error
 */
 void		print_error(int state, t_infos *infos);
+
+void		minishell(t_infos *infos, int int_mode);
 
 #endif
