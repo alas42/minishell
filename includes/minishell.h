@@ -6,7 +6,7 @@
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 13:57:49 by avogt             #+#    #+#             */
-/*   Updated: 2021/10/05 14:00:35 by avogt            ###   ########.fr       */
+/*   Updated: 2021/10/05 14:37:21 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -250,6 +250,7 @@ int			mini_echo(t_infos *infos, t_cmd *cmd);
 int			mini_env(t_infos *infos, t_cmd *cmd);
 int			mini_exit(t_infos *infos, t_cmd *cmd);
 int			mini_pwd(t_infos *infos, t_cmd *cmd );
+int			solo_builtin(t_infos *infos, t_cmd *cmd);
 
 /*
 ** SIGNALS
