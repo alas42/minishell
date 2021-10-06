@@ -6,7 +6,7 @@
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 13:20:47 by avogt             #+#    #+#             */
-/*   Updated: 2021/10/05 14:24:22 by avogt            ###   ########.fr       */
+/*   Updated: 2021/10/06 23:24:20 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,20 +32,39 @@ static int	first_cmd(t_infos *infos, t_cmd *cmd)
 	return (1);
 }
 
-static int	other_cmd(t_infos *infos)
+static int	other_cmd_odd(t_infos *infos, t_cmd *cmd)
 {
 	int	ret_dup[2];
 
-	if (infos->index_cmd % 2)
-	{
-		ret_dup[0] = dup2(infos->pipe_b[READ], STDIN_FILENO);
-		ret_dup[1] = dup2(infos->pipe_a[WRITE], STDOUT_FILENO);
-	}
+	close(infos->pipe_a[READ]);
+	if (cmd->fd_infile > -1)
+		ret_dup[0] = dup2(cmd->fd_infile, STDIN_FILENO);
 	else
-	{
+		ret_dup[0] = dup2(infos->pipe_b[READ], STDIN_FILENO);
+	if (cmd->fd_outfile > -1)
+		ret_dup[1] = dup2(cmd->fd_outfile, STDOUT_FILENO);
+	else
+		ret_dup[1] = dup2(infos->pipe_a[WRITE], STDOUT_FILENO);
+	close(infos->pipe_b[WRITE]);
+	if (ret_dup[0] > -1 && ret_dup[1] > -1)
+		return (0);
+	return (1);
+}
+
+static int	other_cmd_even(t_infos *infos, t_cmd *cmd)
+{
+	int	ret_dup[2];
+
+	close(infos->pipe_b[READ]);
+	if (cmd->fd_infile > -1)
+		ret_dup[0] = dup2(cmd->fd_infile, STDIN_FILENO);
+	else
 		ret_dup[0] = dup2(infos->pipe_a[READ], STDIN_FILENO);
+	if (cmd->fd_outfile > -1)
+		ret_dup[1] = dup2(cmd->fd_outfile, STDOUT_FILENO);
+	else
 		ret_dup[1] = dup2(infos->pipe_b[WRITE], STDOUT_FILENO);
-	}
+	close(infos->pipe_a[WRITE]);
 	if (ret_dup[0] > -1 && ret_dup[1] > -1)
 		return (0);
 	return (1);
@@ -87,9 +106,16 @@ int	child_fds(t_infos *infos, t_cmd *cmd)
 	if (infos->index_cmd == 0)
 		ret = first_cmd(infos, cmd);
 	else if (infos->index_cmd == infos->nb_pipe)
+	{
 		ret = last_cmd(infos, cmd);
+	}
 	else
-		ret = other_cmd(infos);
+	{
+		if (infos->index_cmd % 2)
+			ret = other_cmd_odd(infos, cmd);
+		else
+			ret = other_cmd_even(infos, cmd);
+	}
 	if (!ret)
 		return (0);
 	return (1);
