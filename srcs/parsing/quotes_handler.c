@@ -1,12 +1,13 @@
 #include "../includes/minishell.h"
 
-char    *update_doubqt_content(t_token *temp)
+//Remove the first and last char from content '' ""
+char    *update_quotes_content(t_token *temp)
 {
     char    *str;
     int     len;
     int     i;
-
     i = 0;
+
     len = ft_strlen(temp->content);
     str = (char *)malloc(sizeof(char) * len);
     while(i < len - 2)
@@ -19,7 +20,8 @@ char    *update_doubqt_content(t_token *temp)
     return(str);
 }
 
-void    update_doubquote_token(t_infos *info, char *from, char *to)
+//Update the type of token
+void    update_token_type(t_infos *info, char *from, char *to)
 {
     t_token *temp;
 
@@ -30,14 +32,14 @@ void    update_doubquote_token(t_infos *info, char *from, char *to)
         {
             free(temp->type);
             temp->type = ft_strdup(to);
-            temp->content = update_doubqt_content(temp);
+            temp->content = update_quotes_content(temp);
             break;
         }
         temp = temp->next;
     }
 }
 
-int    check_closing_quote(t_infos *info, int pos)
+int    check_closing_quote(t_infos *info, int pos, int mode)
 {
     t_token *temp;
     int     i;
@@ -50,10 +52,21 @@ int    check_closing_quote(t_infos *info, int pos)
         temp = temp->next;
     while (temp)
     {
-        if (!(ft_strcmp(temp->type, "double_quote")))
+        if (mode == 2)
         {
-            close = temp->pos;
-            break;
+            if (!(ft_strcmp(temp->type, "double_quote")))
+            {
+                close = temp->pos;
+                break;
+            }
+        }
+        if (mode == 1)
+        {
+            if (!(ft_strcmp(temp->type, "single_quote")))
+            {
+                close = temp->pos;
+                break;
+            }
         }
         if (!(ft_strcmp(temp->type, "pipe")))
             break;
@@ -62,66 +75,43 @@ int    check_closing_quote(t_infos *info, int pos)
     return (close);
 }
 
-void    remove_consec_doubqt(t_infos *info, int pos)
-{
-    t_token     *temp;
-    int         total;
-    int         i;
-
-    temp = info->tokens;
-    i = 0;
-    while (i++ <= pos)
-        temp = temp->next;
-    while (temp)
-    {
-        if (!(ft_strcmp(temp->type, "double_quote")))
-        {
-            total = -1;
-            total = ft_strlen(temp->content) % 2;
-            free(temp->content);
-            if (total == 1)
-            {
-                temp->content = ft_strdup("a");
-                temp->content[0] = '"';
-            }
-            else
-            {
-                temp->content = ft_strdup(" ");
-                free(temp->content);
-                temp->content = ft_strdup("space");
-            }
-        }
-        temp = temp->next;
-    }
-}
-
+//Need to do something about the errors and handling their return code
 void    check_quotes(t_infos *info)
 {
     t_token *token;
     int     close;
-    int     len;
 
     close = -2;
-    len = 0;
     token = info->tokens;
-
+  
     while(token)
     {
         if (!(ft_strcmp(token->type, "double_quote")))
         {
-            len = ft_strlen(token->content);
-            if (len > 1)
-               remove_consec_doubqt(info, token->pos);
-            close = check_closing_quote(info, token->pos);
+            close = check_closing_quote(info, token->pos, 2);
             if (close < 0)
                 printf("error cannot find closing quote\n");
             else
             {
                 merge_tokens(info, token->pos, close - token->pos);
-                update_doubquote_token(info, "double_quote", "literal");
+                update_token_type(info, "double_quote", "literal");
+                token = info->tokens;
+            }
+            close = -2;
+        }
+        else if (!(ft_strcmp(token->type, "single_quote")))
+        {
+            close = check_closing_quote(info, token->pos, 1);
+            if (close < 0)
+                printf("error cannot find closing quote\n");
+            else
+            {
+                merge_tokens(info, token->pos, close - token->pos);
+                update_token_type(info, "single_quote", "literal");
                 token = info->tokens;
             }
         }
-        token = token->next;
+        close = -2;
+            token = token->next;
     }
 }

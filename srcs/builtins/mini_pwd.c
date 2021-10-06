@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mini_pwd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
+/*   By: yassharm <yassharm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 13:20:07 by avogt             #+#    #+#             */
-/*   Updated: 2021/10/05 14:44:50 by avogt            ###   ########.fr       */
+/*   Updated: 2021/10/05 23:20:16 by yassharm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 static void	print_path(t_cmd *cmd, char *path_dir)
 {
+	(void)cmd;
 	ft_putendl_fd(path_dir, STDOUT_FILENO);
 	if (path_dir)
 		free(path_dir);
