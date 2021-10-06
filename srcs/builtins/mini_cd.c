@@ -6,56 +6,49 @@
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 13:19:58 by avogt             #+#    #+#             */
-/*   Updated: 2021/10/05 13:19:59 by avogt            ###   ########.fr       */
+/*   Updated: 2021/10/06 18:28:32 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-static char	*free_and_return(char *path_dir, char *ret)
-{
-	if (!ret)
-	{
-		if (path_dir)
-			free(path_dir);
-		return (NULL);
-	}
-	return (path_dir);
-}
-
-static char	*realloc_path_dir(char *path_dir, size_t *length_path)
-{
-	if (path_dir)
-		free(path_dir);
-	*length_path = *length_path * 2;
-	path_dir = (char *)malloc(sizeof(char) * *length_path);
-	if (!path_dir)
-		return (NULL);
-	return (path_dir);
-}
-
 static char	*get_actual_path(void)
 {
 	char	*path_dir;
 	size_t	length_path;
-	char	*ret;
 
-	ret = 0;
 	length_path = 1024;
-	path_dir = (char *)malloc(sizeof(char) * length_path);
-	if (!path_dir)
-		return (NULL);
-	ret = getcwd(path_dir, length_path);
+	path_dir = NULL;
+	path_dir = getcwd(path_dir, length_path);
 	while (errno == ERANGE)
 	{
-		path_dir = realloc_path_dir(path_dir, &length_path);
-		if (!path_dir)
-			return (NULL);
-		ret = getcwd(path_dir, length_path);
-		if (ret)
+		length_path *= 2;
+		path_dir = getcwd(path_dir, length_path);
+		if (path_dir)
 			break ;
 	}
-	return (free_and_return(path_dir, ret));
+	if (!path_dir)
+		return (NULL);
+	return (path_dir);
+}
+
+static int	change_lines(t_infos *infos, char *old, char *cur, char *path)
+{
+	int	ret_change_line[2];
+	int	ret;
+
+	ret_change_line[0] = change_line_env_tab(infos, "OLDPWD", old);
+	ret_change_line[1] = change_line_env_tab(infos, "PWD", cur);
+	ret = 0;
+	if (!ret_change_line[0] || !ret_change_line[1])
+		ret = -1;
+	if (cur)
+		free(cur);
+	if (path)
+		free(path);
+	if (old)
+		free(old);
+	return (ret);
 }
 
 int	mini_cd(t_infos *infos, t_cmd *cmd)
@@ -64,25 +57,24 @@ int	mini_cd(t_infos *infos, t_cmd *cmd)
 	char	*current_path;
 	char	*path;
 	int		ret;
-	int		ret_change_line[2];
 
 	old_path = get_value(infos, "PWD");
 	if (cmd->arg[1] == NULL)
 		path = get_value(infos, "HOME");
 	else
-		path = cmd->arg[1];
-	if (chdir(path))
-		ret = 0;
-	else
+		path = ft_strdup(cmd->arg[1]);
+	if (!old_path || !path || chdir(path))
+		return(-1);
+	ret = 0;
+	current_path = get_actual_path();
+	if (!current_path)
 	{
-		ret = 1;
-		current_path = get_actual_path();
-		ret_change_line[0] = change_line_env_tab(infos, "OLDPWD", old_path);
-		ret_change_line[1] = change_line_env_tab(infos, "PWD", current_path);
-		if (!ret_change_line[0] || !ret_change_line[1])
-			ret = 0;
-		free(current_path);
+		if (path)
+			free(path);
+		if (old_path)
+			free(old_path);
+		return (-1);
 	}
-	free(old_path);
+	ret = change_lines(infos, old_path, current_path, path);
 	return (ret);
 }
