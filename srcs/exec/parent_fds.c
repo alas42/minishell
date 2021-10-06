@@ -6,7 +6,7 @@
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 13:21:06 by avogt             #+#    #+#             */
-/*   Updated: 2021/10/05 13:21:07 by avogt            ###   ########.fr       */
+/*   Updated: 2021/10/06 23:21:34 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,21 +30,29 @@ static int	first_cmd(t_infos *infos, t_cmd *cmd)
 	return (1);
 }
 
-static int	other_cmd(t_infos *infos)
+static int	other_cmd(t_infos *infos, t_cmd *cmd)
 {
-	int	ret_close;
+	int	ret[4];
 
 	if (infos->index_cmd % 2)
 	{
-		ret_close = close(infos->pipe_b[READ]);
-		ret_close = close(infos->pipe_a[WRITE]);
+		ret[0] = close(infos->pipe_b[READ]);
+		ret[1] = close(infos->pipe_a[WRITE]);
 	}
 	else
 	{
-		ret_close = close(infos->pipe_a[READ]);
-		ret_close = close(infos->pipe_b[WRITE]);
+		ret[1] = close(infos->pipe_a[READ]);
+		ret[1] = close(infos->pipe_b[WRITE]);
 	}
-	return (ret_close);
+	ret[2] = 0;
+	ret[3] = 0;
+	if (cmd->fd_infile > -1)
+		ret[2] = close(cmd->fd_infile);
+	if (cmd->fd_outfile > -1)
+		ret[3] = close(cmd->fd_outfile);
+	if (ret[0] > -1 && ret[1] > -1 && ret[2] > -1 && ret[3] > -1)
+		return (0);
+	return (1);
 }
 
 static int	last_cmd(t_infos *infos, t_cmd *cmd)
@@ -61,14 +69,12 @@ static int	last_cmd(t_infos *infos, t_cmd *cmd)
 		ret[0] = close(infos->pipe_a[READ]);
 		ret[1] = close(infos->pipe_a[WRITE]);
 	}
+	ret[2] = 0;
+	ret[3] = 0;
 	if (cmd->fd_infile > -1)
 		ret[2] = close(cmd->fd_infile);
-	else
-		ret[2] = 0;
 	if (cmd->fd_outfile > -1)
 		ret[3] = close(cmd->fd_outfile);
-	else
-		ret[3] = 0;
 	if (ret[0] > -1 && ret[1] > -1 && ret[2] > -1 && ret[3] > -1)
 		return (0);
 	return (1);
@@ -83,7 +89,7 @@ int	parent_fds(t_infos *infos, t_cmd *cmd)
 	else if (infos->index_cmd == infos->nb_pipe)
 		ret_close = last_cmd(infos, cmd);
 	else
-		ret_close = other_cmd(infos);
+		ret_close = other_cmd(infos, cmd);
 	if (!ret_close)
 		return (0);
 	return (1);
