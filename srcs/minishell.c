@@ -6,7 +6,7 @@
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 13:38:06 by avogt             #+#    #+#             */
-/*   Updated: 2021/10/05 14:36:47 by avogt            ###   ########.fr       */
+/*   Updated: 2021/10/08 11:53:38 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,11 +41,14 @@ void	minishell(t_infos *infos, int int_mode)
 			}
 			reinit_infos(infos);
 			start_parsing(infos);
-			infos->first_cmd = infos->commands;
-			if (infos->line)
-				add_history(infos->line);
-			if (infos->nb_cmd > 1 || solo_builtin(infos, infos->first_cmd) == -1)
-				exec_cmds(infos, infos->envs);
+			if (infos->tokens)
+			{
+				infos->first_cmd = infos->commands;
+				if (infos->line)
+					add_history(infos->line);
+				if (infos->nb_cmd > 1 || solo_builtin(infos, infos->first_cmd) == -1)
+					exec_cmds(infos, infos->envs);
+			}
 		}
 		clear_infos(infos);
 		int_mode = isatty(STDIN_FILENO);

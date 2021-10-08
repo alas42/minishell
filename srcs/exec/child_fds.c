@@ -6,7 +6,7 @@
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 13:20:47 by avogt             #+#    #+#             */
-/*   Updated: 2021/10/06 23:24:20 by avogt            ###   ########.fr       */
+/*   Updated: 2021/10/08 11:57:42 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ static int	other_cmd_even(t_infos *infos, t_cmd *cmd)
 
 static int	last_cmd(t_infos *infos, t_cmd *cmd)
 {
-	int	ret[3];
+	int	ret[2];
 
 	if (infos->index_cmd % 2)
 	{
@@ -80,7 +80,6 @@ static int	last_cmd(t_infos *infos, t_cmd *cmd)
 			ret[0] = dup2(cmd->fd_infile, STDIN_FILENO);
 		else
 			ret[0] = dup2(infos->pipe_b[READ], STDIN_FILENO);
-		ret[1] = close(infos->pipe_b[WRITE]);
 	}
 	else
 	{
@@ -88,13 +87,11 @@ static int	last_cmd(t_infos *infos, t_cmd *cmd)
 			ret[0] = dup2(cmd->fd_infile, STDIN_FILENO);
 		else
 			ret[0] = dup2(infos->pipe_a[READ], STDIN_FILENO);
-		ret[1] = close(infos->pipe_a[WRITE]);
 	}
+	ret[1] = 0;
 	if (cmd->fd_outfile > -1)
-		ret[2] = dup2(cmd->fd_outfile, STDOUT_FILENO);
-	else
-		ret[2] = 0;
-	if (ret[0] > -1 && ret[1] > -1 && ret[2] > -1)
+		ret[1] = dup2(cmd->fd_outfile, STDOUT_FILENO);
+	if (ret[0] > -1 && ret[1] > -1)
 		return (0);
 	return (1);
 }

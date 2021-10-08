@@ -6,7 +6,7 @@
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 13:21:00 by avogt             #+#    #+#             */
-/*   Updated: 2021/10/06 22:57:36 by avogt            ###   ########.fr       */
+/*   Updated: 2021/10/08 11:57:47 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,15 +41,18 @@ int	choose_builtin(t_infos *infos, t_cmd *cmd)
 
 static void	piping(t_infos *infos)
 {
-	if (infos->index_cmd % 2)
+	if (infos->index_cmd != infos->nb_cmd - 1)
 	{
-		if (pipe(infos->pipe_a) == -1)
-			print_error(E_PIPE, infos);
-	}
-	else
-	{
-		if (pipe(infos->pipe_b) == -1)
-			print_error(E_PIPE, infos);
+		if (infos->index_cmd % 2)
+		{
+			if (pipe(infos->pipe_a) == -1)
+				print_error(E_PIPE, infos);
+		}
+		else
+		{
+			if (pipe(infos->pipe_b) == -1)
+				print_error(E_PIPE, infos);
+		}
 	}
 }
 
