@@ -6,7 +6,7 @@
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 13:57:49 by avogt             #+#    #+#             */
-/*   Updated: 2021/10/05 14:37:21 by avogt            ###   ########.fr       */
+/*   Updated: 2021/10/12 17:45:57 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -197,23 +197,24 @@ t_cmd		*get_cmd(t_infos *infos);
 
 int			child_fds(t_infos *infos, t_cmd *cmd);
 int			parent_fds(t_infos *infos, t_cmd *cmd);
-int			exec_cmds(t_infos *infos, char **envp);
-int			loop_through_cmds(t_infos *infos, char **envp);
+int			exec_cmds(t_infos *infos);
+int			loop_through_cmds(t_infos *infos);
 
 /*
 ** Utils for environment variables (tab)
 */
 char		**get_env_tab(char **envp);
+char		*get_value(t_infos *infos, char *key);
+char		*get_key(t_infos *infos, int index);
+char		*get_line(t_infos *infos, int index);
+char		*get_exit_code(t_infos *infos);
+
+int			add_layer_shlvl(t_infos *infos);
 void		print_env_tab(t_infos *infos);
 char		**add_env_tab(char **envs, char *key_value_str);
 int			change_line_env_tab(t_infos *infos, char *key, char *value);
 char		**remove_env_tab(t_infos *infos, char *key);
 char		*create_pair_key_value(char *key, char *value);
-char		*get_value(t_infos *infos, char *key);
-char		*get_key(t_infos *infos, int index);
-char		*get_line(t_infos *infos, int index);
-int			add_layer_shlvl(t_infos *infos);
-
 /*
 ** Returns the index from the environment variable to_find in the tab
 */
@@ -262,6 +263,7 @@ void		sigquit_handler(int signal);
 ** Error
 */
 void		print_error(int state, t_infos *infos);
+void		print_bash_error(int state, t_cmd *cmd);
 
 void		minishell(t_infos *infos, int int_mode);
 

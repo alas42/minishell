@@ -6,7 +6,7 @@
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 13:20:07 by avogt             #+#    #+#             */
-/*   Updated: 2021/10/07 16:08:44 by avogt            ###   ########.fr       */
+/*   Updated: 2021/10/12 17:25:45 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	mini_pwd(t_infos *infos, t_cmd *cmd)
 			break ;
 	}
 	if (!path_dir)
-		return (-1);
+		return (1);
 	print_path(path_dir);
 	return (0);
 	(void) infos;

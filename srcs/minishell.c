@@ -6,13 +6,13 @@
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 13:38:06 by avogt             #+#    #+#             */
-/*   Updated: 2021/10/08 11:53:38 by avogt            ###   ########.fr       */
+/*   Updated: 2021/10/12 22:12:00 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	exec_cmds(t_infos *infos, char **envp)
+int	exec_cmds(t_infos *infos)
 {
 	int		stdout_save;
 	int		stdin_save;
@@ -20,7 +20,7 @@ int	exec_cmds(t_infos *infos, char **envp)
 	check_paths(infos);
 	stdout_save = dup(STDOUT_FILENO);
 	stdin_save = dup(STDIN_FILENO);
-	loop_through_cmds(infos, envp);
+	loop_through_cmds(infos);
 	dup2(stdin_save, STDIN_FILENO);
 	dup2(stdout_save, STDOUT_FILENO);
 	return (1);
@@ -30,7 +30,6 @@ void	minishell(t_infos *infos, int int_mode)
 {
 	while (int_mode)
 	{
-
 		if (int_mode == 1)
 		{
 			infos->line = readline("$ ");
@@ -47,7 +46,7 @@ void	minishell(t_infos *infos, int int_mode)
 				if (infos->line)
 					add_history(infos->line);
 				if (infos->nb_cmd > 1 || solo_builtin(infos, infos->first_cmd) == -1)
-					exec_cmds(infos, infos->envs);
+					exec_cmds(infos);
 			}
 		}
 		clear_infos(infos);

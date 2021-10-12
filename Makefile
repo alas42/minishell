@@ -4,7 +4,7 @@ export LDFLAGS="-L/Users/$(USER)/.brew/opt/readline/lib"
 NAME = minishell
 FILES = minishell.c \
 	free.c \
-  error.c
+	error.c
 
 BUILTINS_FILES = mini_env.c \
 	mini_cd.c \

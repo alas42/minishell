@@ -6,7 +6,7 @@
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 13:19:58 by avogt             #+#    #+#             */
-/*   Updated: 2021/10/06 18:28:32 by avogt            ###   ########.fr       */
+/*   Updated: 2021/10/12 17:24:49 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static int	change_lines(t_infos *infos, char *old, char *cur, char *path)
 	ret_change_line[1] = change_line_env_tab(infos, "PWD", cur);
 	ret = 0;
 	if (!ret_change_line[0] || !ret_change_line[1])
-		ret = -1;
+		ret = 1;
 	if (cur)
 		free(cur);
 	if (path)
@@ -64,7 +64,7 @@ int	mini_cd(t_infos *infos, t_cmd *cmd)
 	else
 		path = ft_strdup(cmd->arg[1]);
 	if (!old_path || !path || chdir(path))
-		return(-1);
+		return(1);
 	ret = 0;
 	current_path = get_actual_path();
 	if (!current_path)
@@ -73,7 +73,7 @@ int	mini_cd(t_infos *infos, t_cmd *cmd)
 			free(path);
 		if (old_path)
 			free(old_path);
-		return (-1);
+		return (1);
 	}
 	ret = change_lines(infos, old_path, current_path, path);
 	return (ret);

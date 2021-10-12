@@ -6,7 +6,7 @@
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 13:21:06 by avogt             #+#    #+#             */
-/*   Updated: 2021/10/08 11:59:45 by avogt            ###   ########.fr       */
+/*   Updated: 2021/10/12 22:11:50 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,9 @@ static int	first_cmd(t_infos *infos, t_cmd *cmd)
 {
 	int	ret_close[3];
 
-	ret_close[0] = close(infos->pipe_b[WRITE]);
+	ret_close[0] = 0;
+	if (infos->index_cmd != infos->nb_cmd - 1)
+		ret_close[0] = close(infos->pipe_b[WRITE]);
 	if (cmd->fd_infile > -1)
 		ret_close[1] = close(cmd->fd_infile);
 	else

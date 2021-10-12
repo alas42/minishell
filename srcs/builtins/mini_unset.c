@@ -6,7 +6,7 @@
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 13:20:13 by avogt             #+#    #+#             */
-/*   Updated: 2021/10/05 13:20:13 by avogt            ###   ########.fr       */
+/*   Updated: 2021/10/12 17:30:08 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,11 +69,18 @@ char	**remove_env_tab(t_infos *infos, char *key)
 
 int	mini_unset(t_infos *infos, t_cmd *cmd)
 {
+	int	i;
+
+	i = 1;
 	if (infos->envs)
 	{
-		infos->envs = remove_env_tab(infos, cmd->arg[1]);
-		if (!infos->envs)
-			print_error(E_MALLOC, infos);
+		while (cmd->arg[i])
+		{
+			infos->envs = remove_env_tab(infos, cmd->arg[1]);
+			if (!infos->envs)
+				print_error(E_MALLOC, infos);
+			i++;
+		}
 	}
-	return (1);
+	return (0);
 }
