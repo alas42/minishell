@@ -53,7 +53,7 @@ char    *check_dollar_arg(t_infos *info, char *arg)
     while (temp_args[i])
     {
         value = get_dollar_value(info, temp_args[i]);
-        content = merge_content(content, value);
+        content = merge_content(content, value, 0);
         free(value);
         i++;
     }
