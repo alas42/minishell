@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
+/*   By: yassharm <yassharm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 13:57:49 by avogt             #+#    #+#             */
 /*   Updated: 2021/10/12 17:45:57 by avogt            ###   ########.fr       */
@@ -152,11 +152,16 @@ int			ft_isallspace(char *line);
 //token_handler.c
 void		handle_output_red(t_infos *info);
 void		handle_input_red(t_infos *info);
-void		expand_dollar(t_infos *info);
 
 //token_handler_utils.c
 char		**ft_split(char *str, char c);
 void		free_doub_char(char **str);
+
+//dollar_handler.c
+void    	expand_dollar(t_infos *info);
+void		get_dollar(t_infos *info);
+void    	update_dollar_type(t_infos *info, int pos);
+
 
 //quotes_handler.c
 void		check_quotes(t_infos *info);

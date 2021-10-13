@@ -1,36 +1,36 @@
 
-void    remove_consec_doubqt(t_infos *info, int pos)
-{
-    t_token     *temp;
-    int         total;
-    int         i;
+// void    remove_consec_doubqt(t_infos *info, int pos)
+// {
+//     t_token     *temp;
+//     int         total;
+//     int         i;
 
-    temp = info->tokens;
-    i = 0;
-    while (i++ <= pos)
-        temp = temp->next;
-    while (temp)
-    {
-        if (!(ft_strcmp(temp->type, "double_quote")))
-        {
-            total = -1;
-            total = ft_strlen(temp->content) % 2;
-            free(temp->content);
-            if (total == 1)
-            {
-                temp->content = ft_strdup("a");
-                temp->content[0] = '"';
-            }
-            else
-            {
-                temp->content = ft_strdup(" ");
-                free(temp->content);
-                temp->content = ft_strdup("space");
-            }
-        }
-        temp = temp->next;
-    }
-}
+//     temp = info->tokens;
+//     i = 0;
+//     while (i++ <= pos)
+//         temp = temp->next;
+//     while (temp)
+//     {
+//         if (!(ft_strcmp(temp->type, "double_quote")))
+//         {
+//             total = -1;
+//             total = ft_strlen(temp->content) % 2;
+//             free(temp->content);
+//             if (total == 1)
+//             {
+//                 temp->content = ft_strdup("a");
+//                 temp->content[0] = '"';
+//             }
+//             else
+//             {
+//                 temp->content = ft_strdup(" ");
+//                 free(temp->content);
+//                 temp->content = ft_strdup("space");
+//             }
+//         }
+//         temp = temp->next;
+//     }
+// }
 
 
 
