@@ -6,7 +6,7 @@
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 13:21:00 by avogt             #+#    #+#             */
-/*   Updated: 2021/10/08 11:57:47 by avogt            ###   ########.fr       */
+/*   Updated: 2021/10/12 17:52:17 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,14 +56,14 @@ static void	piping(t_infos *infos)
 	}
 }
 
-static void	child_process(t_infos *infos, t_cmd *cmd, char **envp)
+static void	child_process(t_infos *infos, t_cmd *cmd)
 {
 	int	ret;
 
 	ret = 0;
 	if (child_fds(infos, cmd))
 	{
-		ft_putendl_fd("close or dup2 error in child", STDERR_FILENO);
+		print_error(E_CLOSE, infos);
 	}
 	if (cmd->builtin)
 	{
@@ -71,37 +71,38 @@ static void	child_process(t_infos *infos, t_cmd *cmd, char **envp)
 	}
 	if (!cmd->builtin || ret == -1)
 	{
-		execve(cmd->arg[0], cmd->arg, envp);
-		print_error(E_EXECVE, infos);
+		execve(cmd->arg[0], cmd->arg, infos->envs);
 	}
+	if (!ft_exists(cmd->arg[0]))
+		print_bash_error(127, cmd);
 	else
-	{
-		ft_putendl_fd("Something went wrong", STDERR_FILENO);
-	}
+		print_bash_error(126, cmd);
 }
 
-static void	parent_process(t_infos *infos, t_cmd *cmd, char **envp)
+static void	parent_process(t_infos *infos, t_cmd *cmd)
 {
 	int	status;
 
 	if (parent_fds(infos, cmd))
 	{
-		ft_putendl_fd("close error in parent", STDERR_FILENO);
+		print_error(E_CLOSE, infos);
 	}
 	infos->index_cmd = infos->index_cmd + 1;
-	loop_through_cmds(infos, envp);
+	loop_through_cmds(infos);
 	wait(&status);
-/*
-**
-** if (WIFEXITED(status))
-**    printf("Exit status: %d\n", WEXITSTATUS(status));
-** else if (WIFSIGNALED(status))
-**    psignal(WTERMSIG(status), "Exit signal");
-** set the ? (NOT AN ENV VAR) to its correct return code (127 + ...)
-*/
+	if (WIFEXITED(status))
+	{
+		infos->last_return_code = WEXITSTATUS(status);
+	}
+	else if (WIFSIGNALED(status))
+	{
+		infos->last_return_code = WTERMSIG(status) + 128;
+	}
+	else
+		infos->last_return_code = 1;
 }
 
-int	loop_through_cmds(t_infos *infos, char **envp)
+int	loop_through_cmds(t_infos *infos)
 {
 	t_cmd	*cmd;
 	int		process_id;
@@ -112,10 +113,10 @@ int	loop_through_cmds(t_infos *infos, char **envp)
 	piping(infos);
 	process_id = fork();
 	if (process_id == 0)
-		child_process(infos, cmd, envp);
+		child_process(infos, cmd);
 	else if (process_id == -1)
 		print_error(E_FORK, infos);
 	else
-		parent_process(infos, cmd, envp);
+		parent_process(infos, cmd);
 	return (1);
 }
