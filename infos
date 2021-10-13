@@ -62,3 +62,15 @@ OBSERVATIONS:
 
 ->do we consider \t \b and other spaces as spaces?
 ->
+
+
+
+
+--------------Test cases ---------------
+
+cat | cat | cat | ls
+
+output - good 
+**Conditional jump in other_cmd
+
+
