@@ -6,7 +6,7 @@
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 13:27:46 by avogt             #+#    #+#             */
-/*   Updated: 2021/10/12 17:26:21 by avogt            ###   ########.fr       */
+/*   Updated: 2021/10/13 18:31:21 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	print_error(int state, t_infos *infos)
 		ft_putendl_fd("Execve error", STDERR_FILENO);
 	infos->last_return_code = 1;
 	free_infos(infos);
-	exit(infos->last_return_code);
+	exit(1);
 }
 
 void	print_bash_error(int state, t_cmd *cmd)
