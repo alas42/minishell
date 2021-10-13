@@ -29,6 +29,7 @@ PARSING_FILES = parsing_init.c \
 	token_to_cmd.c \
 	token_handler_utils.c \
 	token_utils.c \
+	dollar_handler.c \
 	
 UTILS_FILES = utils_cmds.c \
 	utils_env.c \

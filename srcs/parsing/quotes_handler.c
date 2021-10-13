@@ -20,18 +20,42 @@ char    *update_quotes_content(t_token *temp)
     return(str);
 }
 
+
+int     check_dollar(char *content)
+{
+    int     i;
+    int     len;
+
+    i = 0;
+    len = ft_strlen(content);
+    while (i < len)
+    {
+        if (content[i] == '$')
+            return (1);
+        i++;
+    }
+    return (0);
+}
+
 //Update the type of token
 void    update_token_type(t_infos *info, char *from, char *to)
 {
     t_token *temp;
+    int     i;
 
+    i = -1;
     temp = info->tokens;
     while (temp)
     {
         if (!(ft_strcmp(temp->type, from)))
         {
+            if (!(ft_strcmp(temp->type, "double_quote")))
+                i = check_dollar(temp->content);
             free(temp->type);
-            temp->type = ft_strdup(to);
+            if (i != 1)
+                temp->type = ft_strdup(to);
+            else
+                temp->type = ft_strdup("literal_dollar");
             temp->content = update_quotes_content(temp);
             break;
         }
@@ -75,6 +99,7 @@ int    check_closing_quote(t_infos *info, int pos, int mode)
     return (close);
 }
 
+//echo "$hello" '$hello' $hello
 //Need to do something about the errors and handling their return code
 void    check_quotes(t_infos *info)
 {
