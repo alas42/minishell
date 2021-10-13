@@ -6,7 +6,7 @@
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 13:20:47 by avogt             #+#    #+#             */
-/*   Updated: 2021/10/08 11:57:42 by avogt            ###   ########.fr       */
+/*   Updated: 2021/10/12 22:10:52 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,9 @@ static int	first_cmd(t_infos *infos, t_cmd *cmd)
 {
 	int	ret[3];
 
-	ret[0] = close(infos->pipe_b[READ]);
+	ret[0] = 0;
+	if (infos->index_cmd != infos->nb_cmd - 1)
+		ret[0] = close(infos->pipe_b[READ]);
 	if (cmd->fd_infile > -1)
 		ret[2] = dup2(cmd->fd_infile, STDIN_FILENO);
 	else
@@ -101,7 +103,9 @@ int	child_fds(t_infos *infos, t_cmd *cmd)
 	int	ret;
 
 	if (infos->index_cmd == 0)
+	{
 		ret = first_cmd(infos, cmd);
+	}
 	else if (infos->index_cmd == infos->nb_pipe)
 	{
 		ret = last_cmd(infos, cmd);

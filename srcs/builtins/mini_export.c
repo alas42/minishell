@@ -6,7 +6,7 @@
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 13:19:31 by avogt             #+#    #+#             */
-/*   Updated: 2021/10/05 13:19:32 by avogt            ###   ########.fr       */
+/*   Updated: 2021/10/12 17:25:34 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ int	mini_export(t_infos *infos, t_cmd *cmd)
 		if (!infos->envs)
 			return (1);
 		print_export(infos);
-		return (1);
+		return (0);
 	}
 	key_value_tab = ft_split_char(cmd->arg[1], '=');
 	ret_find_path = find_pos_key(infos, key_value_tab[0]);
