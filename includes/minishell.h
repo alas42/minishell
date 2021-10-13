@@ -6,7 +6,7 @@
 /*   By: yassharm <yassharm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 13:57:49 by avogt             #+#    #+#             */
-/*   Updated: 2021/10/12 17:45:57 by avogt            ###   ########.fr       */
+/*   Updated: 2021/10/13 18:10:18 by yassharm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,7 +172,7 @@ void		cmd_lst_add_back(t_cmd *cmd, t_infos *info);
 
 //token_to_cmd.c
 void		move_to_cmd(t_infos *info);
-char		*merge_content(char *str, char *content);
+char		*merge_content(char *str, char *content, int space);
 void		red_lst_add_back(t_cmd *cmd, t_token *new);
 
 //print_temp.c Temp Function to be removed later

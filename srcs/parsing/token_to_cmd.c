@@ -1,6 +1,6 @@
 #include "../includes/minishell.h"
 
-char	*merge_content(char *str, char *content)
+char	*merge_content(char *str, char *content, int space)
 {
 	char	*temp;
 
@@ -13,10 +13,13 @@ char	*merge_content(char *str, char *content)
 	str = ft_strjoin(temp, content);
 	if (temp)
 		free(temp);
-	temp = ft_strdup(str);
-	free(str);
-	str = ft_strjoin(temp, " ");
-	free(temp);
+	if (space == 1)
+	{
+		temp = ft_strdup(str);
+		free(str);
+		str = ft_strjoin(temp, " ");
+		free(temp);
+	}
 	return (str);
 }
 
@@ -53,7 +56,7 @@ void	fill_cmd(t_infos *info, int start, int end, t_cmd *cmd)
 	while (i++ <= end && tokens != NULL)
 	{
 		if (!(ft_strcmp(tokens->type, "literal")))
-			str = merge_content(str, tokens->content);
+			str = merge_content(str, tokens->content, 1);
 		else
 			fill_redirections(tokens, cmd);
 		tokens = tokens->next;
