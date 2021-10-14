@@ -68,8 +68,10 @@ void    expand_dollar(t_infos *info)
     char        *ret_val;
     int         i;
     int         j;
+    int         counter;
     
     i = 0;
+    counter = 0;
     token = info->tokens;
     ret_val = NULL;
     while (token)
@@ -86,23 +88,30 @@ void    expand_dollar(t_infos *info)
         else if (!(ft_strcmp(token->type, "literal_dollar")))
         {
             arg = ft_split(token->content, ' ');
+            free(token->content);
+            token->content = ft_strdup("");
             while(arg[i])
             {
                 j = 0;
-                // printf("before change 00 [%s]\n", arg[i]);
                 while (arg[i][j])
                 {
                     if (arg[i][j] == '$')
                     {
                         ret_val = check_dollar_arg(info, arg[i]);
-                        printf("got 00[%s] for [%s]\n", ret_val, arg[i]);
+                        token->content =  merge_content(token->content, ret_val, 1);
+                        free(ret_val);
+                        counter = 1;
                         break;
                     }
                     j++;
                 }
-                // printf("after change 00 [%s]\n", arg[i]);
+                if (counter == 0)
+                    token->content = merge_content(token->content, arg[i], 1);
+                counter = 0;
                 i++;
             }
+            free(token->type);
+            token->type = ft_strdup("literal");
             free_doub_char(arg);
         }
         token = token->next;
@@ -139,6 +148,13 @@ void    get_dollar(t_infos *info)
     {
         if (ft_strcmp(temp->type, "dollar") == 0)
         {
+            if (temp->prev != NULL && !(ft_strcmp(temp->prev->type, "literal")))
+            {
+                merge_tokens(info, i-1, 1);
+                update_dollar_type(info, i);
+                temp = info->tokens;
+                i = 0;
+            }
             if (temp->next != NULL && !(ft_strcmp(temp->next->type, "literal")))
             {
                 merge_tokens(info, i, 1);

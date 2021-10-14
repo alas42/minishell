@@ -36,11 +36,35 @@ void	fill_redirections(t_token *tokens, t_cmd *cmd)
 	temp = NULL;
 }
 
+char	**get_cmd_args(t_infos *info, int start, int end)
+{
+	int		i;
+	t_token	*tokens;
+	int		counter;
+	char	**args;
+
+	i = -1;
+	counter = 0;
+	tokens = info->tokens;
+	while(++i < start)
+		tokens = tokens->next;
+	while(i++ <= end && tokens != NULL)
+	{
+		if (!(ft_strcmp(tokens->type, "literal")))
+			counter++;
+	}
+	args = NULL;
+	args = (char **)malloc(sizeof(char *) * (counter + 1));
+	if (args == NULL)
+		printf("Error in malloc in get_cmd_args\n");
+	return (args);
+}
+
 void	fill_cmd(t_infos *info, int start, int end, t_cmd *cmd)
 {
 	int		i;
+	int		j;
 	t_token *tokens;
-	char	*str;
 
 	i = -1;
 	if (start < 0 || start > ft_lstlast_token(info->tokens)->pos
@@ -52,20 +76,21 @@ void	fill_cmd(t_infos *info, int start, int end, t_cmd *cmd)
 	tokens = info->tokens;
 	while (++i < start)
 		tokens = tokens->next;
-	str = NULL;
+	cmd->arg = get_cmd_args(info, start, end);
+	j = 0;
 	while (i++ <= end && tokens != NULL)
 	{
 		if (!(ft_strcmp(tokens->type, "literal")))
-			str = merge_content(str, tokens->content, 1);
+		{
+			cmd->arg[j] = ft_strdup(tokens->content);
+			j++;
+		}
 		else
 			fill_redirections(tokens, cmd);
 		tokens = tokens->next;
 	}
-	i = ft_strlen(str);
-	str[i - 1] = '\0';
-	cmd->arg = ft_split(str, ' ');
+	cmd->arg[j] = NULL;
 	cmd_lst_add_back(cmd, info);
-	free(str);
 }
 
 int		check_builtin(char *str)
