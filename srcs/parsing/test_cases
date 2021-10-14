@@ -1,0 +1,26 @@
+
+
+#Echo
+
+echo "hello world" | cat -e
+echo "hello world" this is a test  | cat -e
+
+#An extra space in my output
+export one="This is a test"
+echo "$one" | cat -e
+
+#ok
+export one="This is a test      "
+echo "$one" | cat -e
+
+echo $one | cat -e
+echo somerandom$one | cat -e
+echo this$onekaka | cat -e
+
+export one="this is first word" 
+export two="this is a second word"
+
+
+echo $o 
+#This is still printing the $one;
+#Need to be fixed where I compare the word with env

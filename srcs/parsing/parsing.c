@@ -109,43 +109,30 @@ void    start_parsing(t_infos *info)
     add_to_struct(info);
     if (info->tokens == NULL)
         return ;
-    get_dollar(info);
+    get_dollar(info);   
     check_quotes(info);
     merge_same(info);   
     remove_space_tokens(info);
     handle_output_red(info);
     handle_input_red(info);
-    expand_dollar(info);
-    // printf("--------------PRINTING ALL TOKENS AT THE END END-------------------\n\n\n\n");
-    // print_token_list(info->tokens);
-    // printf("----------------END OF TOKENS-----------------\n\n\n\n");
-       
+    expand_dollar(info);       
     move_to_cmd(info);
 	handle_redirections(info)   ;
   
-/*
-	printf("--------------PRINTING CMDS-------------------\n\n\n\n");
-    print_cmnds(info);
-    printf("--------------END OF CMDS-------------------\n\n\n\n");
-*/
 }
-
-
-/*
-Things to do
-
-* Need to do proper expansions after cmnds are build (inside exec)
-* Need to handle single quotes
-* Need to handle """" this case
-* Need to handle dollar sign
-* echo "hello world" -> exp [echo] [hello world] -> Got [echo] [hello] [world] (this is wrong)
-
-*/
-
 
 /*
     echo "echo""this""is"'a''test'"wow's"
     echo "hello world" >> a >> b < a >>papa | grep all >> al > la
     ls -ll | grep all >> a | << a cat *
     ls -ll > a > v | grep appd | <a <v >caa | cat all |
+*/
+
+/*
+    // printf("--------------PRINTING ALL TOKENS AT THE END END-------------------\n\n\n\n");
+    // print_token_list(info->tokens);
+    // printf("----------------END OF TOKENS-----------------\n\n\n\n");
+	// printf("--------------PRINTING CMDS-------------------\n\n\n\n");
+    // print_cmnds(info);
+    // printf("--------------END OF CMDS-------------------\n\n\n\n");
 */
