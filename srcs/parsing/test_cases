@@ -21,6 +21,23 @@ export one="this is first word"
 export two="this is a second word"
 
 
+
+
+#TEST CASES WITH PROBLEMS
+
 echo $o 
 #This is still printing the $one;
 #Need to be fixed where I compare the word with env
+
+echo "hello world" >> a |< a cat
+#Giving conditional jumps
+
+>> a
+< a
+#Any redirection wothout anything else is giving conditional jumps
+#inside add_path() in utils_paths.c
+
+ls proc/self/fd
+#its showing a lot more fd's than its suppose to show
+#which means there are fd leaks in our processes
+

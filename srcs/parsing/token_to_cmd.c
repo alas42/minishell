@@ -95,6 +95,8 @@ void	fill_cmd(t_infos *info, int start, int end, t_cmd *cmd)
 
 int		check_builtin(char *str)
 {
+	if (str == NULL)
+		return (0);
 	if (!(ft_strcmp(str, "unset")) || !(ft_strcmp(str, "echo"))
 		|| !(ft_strcmp(str, "cd")) || !(ft_strcmp(str, "env"))
 		|| !(ft_strcmp(str, "exit")) || !(ft_strcmp(str, "export"))
@@ -134,6 +136,7 @@ void	fill_cmd_info(t_infos *info)
 	}
 	info->nb_cmd = i;	
 }
+
 //above ft_split_char divides everything with space as a deliminator. echo "hello world" -> [echo, hello, world] should be ->[echo , hello world]
 void	move_to_cmd(t_infos *info)
 {

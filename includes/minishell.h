@@ -6,7 +6,7 @@
 /*   By: yassharm <yassharm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 13:57:49 by avogt             #+#    #+#             */
-/*   Updated: 2021/10/13 18:10:18 by yassharm         ###   ########.fr       */
+/*   Updated: 2021/10/16 21:26:36 by yassharm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,7 +161,7 @@ void		free_doub_char(char **str);
 void    	expand_dollar(t_infos *info);
 void		get_dollar(t_infos *info);
 void    	update_dollar_type(t_infos *info, int pos);
-
+void		get_dollar_prev(t_infos *info);
 
 //quotes_handler.c
 void		check_quotes(t_infos *info);

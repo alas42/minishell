@@ -7,19 +7,21 @@ char    *get_dollar_value(t_infos *info, char *str)
     int     counter;
     char    *ret;
     int     size;
+    char    *temp;
 
-    i = 0;
     ret = NULL;
+    temp = ft_strjoin(str, "=");
+    i = 0;
     while (info->envs[i])
     {
-        if (!(ft_strncmp(str, info->envs[i], ft_strlen(str))))
+        if (!(ft_strncmp(temp, info->envs[i], ft_strlen(temp))))
         {
-            size = ft_strlen(info->envs[i]) - ft_strlen(str);
-            ret = (char *)malloc(sizeof(char) * size);
+            size = ft_strlen(info->envs[i]) - ft_strlen(temp);
+            ret = (char *)malloc(sizeof(char) * (size + 1));
             if (ret == NULL)
                 printf("malloc error in get dolalr value\n");
             j = 0;
-            while (info->envs[i][j] != '=')
+            while (info->envs[i][j] != '=' || info->envs[i][j] == '\0')
                 j++;
             counter = 0;
             j++;
@@ -35,17 +37,17 @@ char    *get_dollar_value(t_infos *info, char *str)
     }
     if (ret == NULL)
         ret = ft_strdup("");
+    free(temp);
     return (ret);
 }
-
 
 // echo "$one$two$three"
 char    *check_dollar_arg(t_infos *info, char *arg)
 {
     char    **temp_args;
-    int     i;
     char    *value;
     char    *content;
+    int     i;
 
     i = 1;
     temp_args = ft_split(arg, '$');
@@ -118,8 +120,21 @@ void    expand_dollar(t_infos *info)
     }
 }
 
+void    get_dollar_prev(t_infos *info)
+{
+    t_token *token;
 
-
+    token = info->tokens;
+    while(token)
+    {
+        if (!(ft_strcmp(token->type, "dollar")))
+        {
+            if(token->prev != NULL && !(ft_strcmp(token->prev->type, "literal")))
+                merge_tokens(info, token->prev->pos, 1);
+        }
+        token = token->next;
+    }
+}
 
 void    update_dollar_type(t_infos *info, int pos)
 {
@@ -148,13 +163,6 @@ void    get_dollar(t_infos *info)
     {
         if (ft_strcmp(temp->type, "dollar") == 0)
         {
-            if (temp->prev != NULL && !(ft_strcmp(temp->prev->type, "literal")))
-            {
-                merge_tokens(info, i-1, 1);
-                update_dollar_type(info, i);
-                temp = info->tokens;
-                i = 0;
-            }
             if (temp->next != NULL && !(ft_strcmp(temp->next->type, "literal")))
             {
                 merge_tokens(info, i, 1);
