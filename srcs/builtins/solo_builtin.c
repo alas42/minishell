@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   solo_builtin.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
+/*   By: yassharm <yassharm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 14:15:59 by avogt             #+#    #+#             */
-/*   Updated: 2021/10/05 14:41:45 by avogt            ###   ########.fr       */
+/*   Updated: 2021/10/15 15:30:50 by yassharm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static int	is_it_builtin(t_cmd *cmd)
 	builtins_str[B_PWD] = "pwd";
 	i = -1;
 	while (++i <= B_UNSET)
-		if (!ft_strcmp(builtins_str[i], cmd->arg[0]))
+		if (cmd->arg[0] != NULL && !ft_strcmp(builtins_str[i], cmd->arg[0]))
 			return (1);
 	return (-1);
 }

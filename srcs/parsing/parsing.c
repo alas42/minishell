@@ -112,13 +112,13 @@ void    start_parsing(t_infos *info)
     get_dollar(info);   
     check_quotes(info);
     merge_same(info);   
+    get_dollar_prev(info);
     remove_space_tokens(info);
     handle_output_red(info);
     handle_input_red(info);
     expand_dollar(info);       
     move_to_cmd(info);
 	handle_redirections(info)   ;
-  
 }
 
 /*
