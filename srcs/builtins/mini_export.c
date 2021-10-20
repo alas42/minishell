@@ -6,7 +6,7 @@
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 13:19:31 by avogt             #+#    #+#             */
-/*   Updated: 2021/10/13 18:37:29 by avogt            ###   ########.fr       */
+/*   Updated: 2021/10/20 18:28:09 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,10 +95,35 @@ void	print_export(t_infos *infos)
 	print_asci_order(infos, number_env, order);
 }
 
+static char	*join_args(t_cmd *cmd, t_infos *infos)
+{
+	char	*final_str;
+	int		total_len;
+	int		i;
+
+	i = 0;
+	total_len = 1;
+	while (cmd->arg[++i])
+		total_len += ft_strlen(cmd->arg[i]);
+	final_str = malloc(sizeof(char) * (total_len));
+	if (!final_str)
+		print_error(E_MALLOC, infos);
+	final_str[0] = '\0';
+	i = 0;
+	while (cmd->arg[++i])
+	{
+		if (i != 1)
+			final_str = ft_strcat(final_str, " ");
+		final_str = ft_strcat(final_str, cmd->arg[i]);
+	}
+	return (final_str);
+}
+
 int	mini_export(t_infos *infos, t_cmd *cmd)
 {
 	int		ret_find_path;
 	char	**key_value_tab;
+	char	*str_to_add;
 
 	if (!cmd->arg[1])
 	{
@@ -109,13 +134,15 @@ int	mini_export(t_infos *infos, t_cmd *cmd)
 	}
 	key_value_tab = ft_split_char(cmd->arg[1], '=');
 	ret_find_path = find_pos_key(infos, key_value_tab[0]);
+	str_to_add = join_args(cmd, infos);
 	if (ret_find_path > -1)
 	{
 		free(infos->envs[ret_find_path]);
-		infos->envs[ret_find_path] = ft_strdup(cmd->arg[1]);
+		infos->envs[ret_find_path] = ft_strdup(str_to_add);
 	}
 	else
-		infos->envs = add_env_tab(infos->envs, cmd->arg[1]);
+		infos->envs = add_env_tab(infos->envs, str_to_add);
 	ft_free_tab_ptr(key_value_tab);
+	free(str_to_add);
 	return (0);
 }
