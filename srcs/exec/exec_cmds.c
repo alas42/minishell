@@ -6,7 +6,7 @@
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 13:21:00 by avogt             #+#    #+#             */
-/*   Updated: 2021/10/12 17:52:17 by avogt            ###   ########.fr       */
+/*   Updated: 2021/10/20 18:39:35 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,13 +91,9 @@ static void	parent_process(t_infos *infos, t_cmd *cmd)
 	loop_through_cmds(infos);
 	wait(&status);
 	if (WIFEXITED(status))
-	{
 		infos->last_return_code = WEXITSTATUS(status);
-	}
 	else if (WIFSIGNALED(status))
-	{
 		infos->last_return_code = WTERMSIG(status) + 128;
-	}
 	else
 		infos->last_return_code = 1;
 }
