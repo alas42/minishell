@@ -6,7 +6,7 @@
 /*   By: yassharm <yassharm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 14:15:59 by avogt             #+#    #+#             */
-/*   Updated: 2021/10/15 15:30:50 by yassharm         ###   ########.fr       */
+/*   Updated: 2021/10/19 04:02:54 by yassharm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,26 @@ static int	is_it_builtin(t_cmd *cmd)
 
 static int	dup_fd_builtin(t_infos *infos, t_cmd *cmd)
 {
-	int	ret_dup;
+	int		ret_dup;
+	int		i;
+	char 	*line;
 
+	i = -1;
+	line = NULL;
 	ret_dup = 0;
+	if (cmd->fd_infile == 1)
+	{
+		ret_dup = dup2(cmd->fd_infile, STDIN_FILENO);
+   		while ((i = get_next_line(1, &line)) > 0)
+        {
+			if (!(ft_strcmp(line, "end\0")))
+			{
+				free(line);
+				break;
+			}
+			free(line);
+		}
+	}
 	if (cmd->fd_infile > -1)
 		ret_dup = dup2(cmd->fd_infile, STDIN_FILENO);
 	if (ret_dup == -1)

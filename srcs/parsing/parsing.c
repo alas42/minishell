@@ -71,6 +71,29 @@ void    handle_infile(char *infile, char *type, t_cmd *cmd)
     cmd->name_infile = ft_strdup(infile);
 }
 
+void    handle_here_doc(t_token *token, t_cmd *cmd)
+{
+    int     i;
+    char    *line;
+
+    line = NULL;
+    printf("here doc word is %s \n\n\n", token->next->content);
+    (void)cmd;
+    i = -1;
+    while ((i = get_next_line(1, &line)) > 0)
+    {
+        printf("line[%s]\n", line);
+        if (!(ft_strcmp(line, token->next->content)))
+        {
+            printf("found end \n");
+            free(line);
+            break;
+        }
+        free(line);
+    }
+    cmd->fd_infile = 1;
+}
+
 void	handle_redirections(t_infos *info)
 {
 	t_cmd	*cmd;
@@ -97,6 +120,14 @@ void	handle_redirections(t_infos *info)
                 else
                     printf("Cannot find infile....Exiting now.. \n");
             }
+            else if (!(ft_strcmp(red->type, "here_doc")))
+            {
+                // if(red->next != NULL && (!(ft_strcmp(red->next->type, "here_doc_word")))
+                cmd->fd_infile = 1;
+        
+                // handle_here_doc(red, cmd);
+                printf("found here doc. Here doc word is [%s]\n", red->type);
+            }
             red = red->next;
 		}
 		cmd = cmd->next;
@@ -116,9 +147,15 @@ void    start_parsing(t_infos *info)
     remove_space_tokens(info);
     handle_output_red(info);
     handle_input_red(info);
-    expand_dollar(info);       
+    expand_dollar(info);
+    printf("--------------PRINTING ALL TOKENS AT THE END END-------------------\n\n\n\n");
+    print_token_list(info->tokens);
+    printf("----------------END OF TOKENS-----------------\n\n\n\n");
     move_to_cmd(info);
-	handle_redirections(info)   ;
+	handle_redirections(info);
+    printf("--------------PRINTING CMDS-------------------\n\n\n\n");
+    print_cmnds(info);
+    printf("--------------END OF CMDS-------------------\n\n\n\n");       
 }
 
 /*
@@ -129,10 +166,10 @@ void    start_parsing(t_infos *info)
 */
 
 /*
-    // printf("--------------PRINTING ALL TOKENS AT THE END END-------------------\n\n\n\n");
-    // print_token_list(info->tokens);
-    // printf("----------------END OF TOKENS-----------------\n\n\n\n");
-	// printf("--------------PRINTING CMDS-------------------\n\n\n\n");
-    // print_cmnds(info);
-    // printf("--------------END OF CMDS-------------------\n\n\n\n");
+    printf("--------------PRINTING CMDS-------------------\n\n\n\n");
+    print_cmnds(info);
+    printf("--------------END OF CMDS-------------------\n\n\n\n");
+    printf("--------------PRINTING ALL TOKENS AT THE END END-------------------\n\n\n\n");
+    print_token_list(info->tokens);
+    printf("----------------END OF TOKENS-----------------\n\n\n\n");
 */

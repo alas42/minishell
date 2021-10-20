@@ -62,6 +62,7 @@ void	print_cmnd_single(t_cmd *cmd)
 	if (cmd == NULL)
 	{
 		printf("found a null command in temp print\n");
+		return;
 	}
 	printf("INDEX 		[%d]\n", cmd->index);
 	printf("BUILTINS 	[%d]\n", cmd->builtin);
@@ -76,16 +77,17 @@ void	print_cmnd_single(t_cmd *cmd)
 		}
 	}
 	red = cmd->redirection;
-	// printf("\nredirections are as follow --\n");
+	printf("\nredirections are as follow --\n");
 	while(red)
 	{
-		// printf("content[%s] type[%s]\n", red->content, red->type);
+		printf("content[%s] type[%s]\n", red->content, red->type);
 		red = red->next;
 	}
+	printf("input_fd [%d] output_fd [%d]\n", cmd->fd_infile, cmd->fd_outfile);
 	if (cmd->name_outfile)
-		printf("outfile_fd is	[%d] for file [%s]\n", cmd->fd_outfile, cmd->name_outfile);
+		printf("outfile_fd file [%s]\n",  cmd->name_outfile);
 	if (cmd->name_infile)
-		printf("infile_fd is 	[%d] for file [%s]\n", cmd->fd_infile, cmd->name_infile);
+		printf("infile_fd file [%s]\n", cmd->name_infile);
 }
 
 void	print_cmnds(t_infos *info)

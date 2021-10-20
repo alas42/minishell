@@ -52,6 +52,7 @@ char	**get_cmd_args(t_infos *info, int start, int end)
 	{
 		if (!(ft_strcmp(tokens->type, "literal")))
 			counter++;
+		tokens = tokens->next;
 	}
 	args = NULL;
 	args = (char **)malloc(sizeof(char *) * (counter + 1));
