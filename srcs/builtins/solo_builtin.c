@@ -6,7 +6,7 @@
 /*   By: yassharm <yassharm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 14:15:59 by avogt             #+#    #+#             */
-/*   Updated: 2021/10/19 04:02:54 by yassharm         ###   ########.fr       */
+/*   Updated: 2021/10/21 18:59:10 by yassharm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,15 +84,19 @@ int	solo_builtin(t_infos *infos, t_cmd *cmd)
 {
 	int	stdout_save;
 	int	stdin_save;
+	int	exit_code;
 
 	if (is_it_builtin(cmd) == -1)
 		return (-1);
 	stdout_save = dup(STDOUT_FILENO);
 	stdin_save = dup(STDIN_FILENO);
 	dup_fd_builtin(infos, cmd);
-	choose_builtin(infos, cmd);
+	exit_code = choose_builtin(infos, cmd);
+	infos->last_return_code = exit_code;
 	close_fd_builtin(infos, cmd);
 	dup2(stdin_save, STDIN_FILENO);
 	dup2(stdout_save, STDOUT_FILENO);
+	close(stdin_save);
+	close(stdout_save);
 	return (1);
 }

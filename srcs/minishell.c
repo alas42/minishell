@@ -6,7 +6,7 @@
 /*   By: yassharm <yassharm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 13:38:06 by avogt             #+#    #+#             */
-/*   Updated: 2021/10/19 22:31:47 by yassharm         ###   ########.fr       */
+/*   Updated: 2021/10/21 18:57:58 by yassharm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@ int	exec_cmds(t_infos *infos)
 	stdin_save = dup(STDIN_FILENO);
 	loop_through_cmds(infos);
 	dup2(stdin_save, STDIN_FILENO);
-	close(stdin_save);
 	dup2(stdout_save, STDOUT_FILENO);
+	close(stdin_save);
 	close(stdout_save);
 	return (1);
 }
