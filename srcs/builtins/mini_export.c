@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mini_export.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yassharm <yassharm@student.42.fr>          +#+  +:+       +#+        */
+/*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 13:19:31 by avogt             #+#    #+#             */
-/*   Updated: 2021/10/22 09:17:51 by yassharm         ###   ########.fr       */
+/*   Updated: 2021/10/22 12:45:34 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ static char	*join_args(t_cmd *cmd, t_infos *infos)
 	total_len = 1;
 	while (cmd->arg[++i])
 		total_len += ft_strlen(cmd->arg[i]);
-	final_str = malloc(sizeof(char) * (total_len));
+	final_str = malloc(sizeof(char) * (total_len + i - 1));
 	if (!final_str)
 		print_error(E_MALLOC, infos);
 	final_str[0] = '\0';
