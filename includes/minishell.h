@@ -6,7 +6,7 @@
 /*   By: yassharm <yassharm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 13:57:49 by avogt             #+#    #+#             */
-/*   Updated: 2021/10/16 21:26:36 by yassharm         ###   ########.fr       */
+/*   Updated: 2021/10/21 23:46:19 by yassharm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ typedef struct s_cmd
 	int				pipe_out;
 	int				fd_infile;
 	int				fd_outfile;
+	int				here_doc_count;
 	char			*name_infile;
 	char			*name_outfile;
 	char			**arg;
@@ -170,6 +171,9 @@ void		check_quotes(t_infos *info);
 void		*cmnd_init(void);
 void		cmd_lst_add_back(t_cmd *cmd, t_infos *info);
 
+//redirections.c
+void	handle_redirections(t_infos *info);
+
 //token_to_cmd.c
 void		move_to_cmd(t_infos *info);
 char		*merge_content(char *str, char *content, int space);
@@ -199,7 +203,6 @@ t_infos		*init_infos(char **envp);
 ** Returns Null if no command is found
 */
 t_cmd		*get_cmd(t_infos *infos);
-
 int			child_fds(t_infos *infos, t_cmd *cmd);
 int			parent_fds(t_infos *infos, t_cmd *cmd);
 int			exec_cmds(t_infos *infos);

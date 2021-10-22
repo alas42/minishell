@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strcat.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
+/*   By: yassharm <yassharm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 13:56:13 by avogt             #+#    #+#             */
-/*   Updated: 2021/10/05 13:57:18 by avogt            ###   ########.fr       */
+/*   Updated: 2021/10/22 09:10:21 by yassharm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/libft.h"
+#include "stdio.h"
 
 char	*ft_strcat(char *dest, char *src)
 {

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   solo_builtin.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
+/*   By: yassharm <yassharm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 14:15:59 by avogt             #+#    #+#             */
-/*   Updated: 2021/10/20 18:39:42 by avogt            ###   ########.fr       */
+/*   Updated: 2021/10/22 09:18:53 by yassharm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static int	is_it_builtin(t_cmd *cmd)
 
 static int	dup_fd_builtin(t_infos *infos, t_cmd *cmd)
 {
-	int	ret_dup;
+	int		ret_dup;
 
 	ret_dup = 0;
 	if (cmd->fd_infile > -1)
