@@ -77,13 +77,13 @@ void	print_cmnd_single(t_cmd *cmd)
 		}
 	}
 	red = cmd->redirection;
-	printf("\nredirections are as follow --\n");
+	printf("\nredirections are as follow --\n\n");
 	while(red)
 	{
-		printf("content[%s] type[%s]\n", red->content, red->type);
+		printf("pos[%d] content[%s] \t\ttype[%s]\n",red->pos, red->content, red->type);
 		red = red->next;
 	}
-	printf("input_fd [%d] output_fd [%d]\n", cmd->fd_infile, cmd->fd_outfile);
+	printf("\n\ninput_fd [%d] output_fd [%d]\n", cmd->fd_infile, cmd->fd_outfile);
 	if (cmd->name_outfile)
 		printf("outfile_fd file [%s]\n",  cmd->name_outfile);
 	if (cmd->name_infile)

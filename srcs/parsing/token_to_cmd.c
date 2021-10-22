@@ -42,29 +42,43 @@ char	**get_cmd_args(t_infos *info, int start, int end)
 	t_token	*tokens;
 	int		counter;
 	char	**args;
+	char	*join_str;
 
 	i = -1;
 	counter = 0;
 	tokens = info->tokens;
+	join_str = ft_strdup("");
 	while(++i < start)
 		tokens = tokens->next;
 	while(i++ <= end && tokens != NULL)
 	{
 		if (!(ft_strcmp(tokens->type, "literal")))
+		{
+			join_str = merge_content(join_str, tokens->content, 1);
 			counter++;
+		}
 		tokens = tokens->next;
 	}
-	args = NULL;
-	args = (char **)malloc(sizeof(char *) * (counter + 1));
-	if (args == NULL)
-		printf("Error in malloc in get_cmd_args\n");
+	join_str[ft_strlen(join_str) - 1] = '\0';
+	// printf("joined str is [%s] len is [%d]\n", join_str, ft_strlen(join_str));
+	// i = 0;
+	args = ft_split(join_str, ' ');
+	// while (args[i])
+	// {
+		// printf("arg[%d] is [%s]\n", i, args[i]);
+		// i++;
+	// }
+	free(join_str);
 	return (args);
+	// args = NULL;
+	// args = (char **)malloc(sizeof(char *) * (counter + 1));
+	// if (args == NULL)
+	// 	printf("Error in malloc in get_cmd_args\n");
 }
 
 void	fill_cmd(t_infos *info, int start, int end, t_cmd *cmd)
 {
 	int		i;
-	int		j;
 	t_token *tokens;
 
 	i = -1;
@@ -78,19 +92,12 @@ void	fill_cmd(t_infos *info, int start, int end, t_cmd *cmd)
 	while (++i < start)
 		tokens = tokens->next;
 	cmd->arg = get_cmd_args(info, start, end);
-	j = 0;
 	while (i++ <= end && tokens != NULL)
 	{
-		if (!(ft_strcmp(tokens->type, "literal")))
-		{
-			cmd->arg[j] = ft_strdup(tokens->content);
-			j++;
-		}
-		else
+		if ((ft_strcmp(tokens->type, "literal")))
 			fill_redirections(tokens, cmd);
 		tokens = tokens->next;
 	}
-	cmd->arg[j] = NULL;
 	cmd_lst_add_back(cmd, info);
 }
 
@@ -106,6 +113,23 @@ int		check_builtin(char *str)
 	return (0);
 }
 
+void	fill_red_pos(t_cmd *cmd)
+{
+	t_token *red;
+	int		i;
+
+	i = 1;
+	red = cmd->redirection;
+	if (red == NULL)
+		return;
+	while (red)
+	{
+		red->pos = i;
+		red = red->next;
+		i++;
+	}
+	return;
+}
 void	fill_cmd_info(t_infos *info)
 {
 	t_cmd *temp;
@@ -116,6 +140,7 @@ void	fill_cmd_info(t_infos *info)
 	while(temp)
 	{
 		temp->index = i;
+		fill_red_pos(temp);
 		if (temp->arg != NULL)
 			temp->builtin = check_builtin(temp->arg[0]);
 		else

@@ -6,7 +6,7 @@
 /*   By: yassharm <yassharm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 13:57:49 by avogt             #+#    #+#             */
-/*   Updated: 2021/10/19 16:51:02 by yassharm         ###   ########.fr       */
+/*   Updated: 2021/10/21 23:46:19 by yassharm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,6 +170,9 @@ void		check_quotes(t_infos *info);
 //token_utils.c
 void		*cmnd_init(void);
 void		cmd_lst_add_back(t_cmd *cmd, t_infos *info);
+
+//redirections.c
+void	handle_redirections(t_infos *info);
 
 //token_to_cmd.c
 void		move_to_cmd(t_infos *info);
