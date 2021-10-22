@@ -6,7 +6,7 @@
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 13:37:09 by avogt             #+#    #+#             */
-/*   Updated: 2021/10/05 13:38:42 by avogt            ###   ########.fr       */
+/*   Updated: 2021/10/22 15:18:43 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ void	reinit_infos(t_infos *infos)
 	infos->index_cmd = 0;
 	infos->nb_cmd = 0;
 	infos->nb_pipe = 0;
+	start_parsing(infos);
 }
 
 t_infos	*init_infos(char **envp)

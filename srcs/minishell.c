@@ -6,7 +6,7 @@
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 13:38:06 by avogt             #+#    #+#             */
-/*   Updated: 2021/10/22 15:06:12 by avogt            ###   ########.fr       */
+/*   Updated: 2021/10/22 15:18:55 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,13 +41,13 @@ void	minishell(t_infos *infos, int int_mode)
 				break ;
 			}
 			reinit_infos(infos);
-			start_parsing(infos);
 			if (infos->tokens)
 			{
 				infos->first_cmd = infos->commands;
 				if (infos->line)
 					add_history(infos->line);
-				if (infos->nb_cmd > 1 || solo_builtin(infos, infos->first_cmd) == -1)
+				if (infos->nb_cmd > 1
+					|| solo_builtin(infos, infos->first_cmd) == -1)
 					exec_cmds(infos);
 			}
 		}

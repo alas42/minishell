@@ -6,7 +6,7 @@
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 13:19:58 by avogt             #+#    #+#             */
-/*   Updated: 2021/10/12 17:24:49 by avogt            ###   ########.fr       */
+/*   Updated: 2021/10/22 15:12:16 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ int	mini_cd(t_infos *infos, t_cmd *cmd)
 	else
 		path = ft_strdup(cmd->arg[1]);
 	if (!old_path || !path || chdir(path))
-		return(1);
+		return (1);
 	ret = 0;
 	current_path = get_actual_path();
 	if (!current_path)

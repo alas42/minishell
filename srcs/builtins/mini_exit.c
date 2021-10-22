@@ -6,7 +6,7 @@
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 13:19:42 by avogt             #+#    #+#             */
-/*   Updated: 2021/10/22 15:09:01 by avogt            ###   ########.fr       */
+/*   Updated: 2021/10/22 15:12:59 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,13 @@ static void	ft_error_exit(t_cmd *cmd, int code)
 {
 	if (code == -1)
 	{
-		ft_putstr_fd("minishell: exit: " ,STDERR_FILENO);
-		ft_putstr_fd(cmd->arg[1],STDERR_FILENO);
+		ft_putstr_fd("minishell: exit: ", STDERR_FILENO);
+		ft_putstr_fd(cmd->arg[1], STDERR_FILENO);
 		ft_putendl_fd(" : argument numérique nécéssaire", STDERR_FILENO);
 	}
 	if (code == -2)
 	{
-		ft_putstr_fd("minishell: exit: " ,STDERR_FILENO);
+		ft_putstr_fd("minishell: exit: ", STDERR_FILENO);
 		ft_putendl_fd("trop d'arguments", STDERR_FILENO);
 	}
 }
@@ -62,7 +62,7 @@ int	mini_exit(t_infos *infos, t_cmd *cmd)
 	if (exit_code != -1)
 	{
 		if (cmd->arg[1] && cmd->arg[2])
-				exit_code = -2;
+			exit_code = -2;
 	}
 	if (exit_code < 0)
 		ft_error_exit(cmd, exit_code);

@@ -6,17 +6,12 @@
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 13:23:23 by avogt             #+#    #+#             */
-/*   Updated: 2021/10/12 17:54:18 by avogt            ###   ########.fr       */
+/*   Updated: 2021/10/22 15:14:20 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-/*
-**
-** Create and returns a new string "key=value"
-**
-*/
 char	*create_pair_key_value(char *key, char *value)
 {
 	char	*key_value_str;
@@ -34,9 +29,6 @@ char	*create_pair_key_value(char *key, char *value)
 	return (key_value_str);
 }
 
-/*
-** Calls create_pair_key_value and change the correct line to the new one
-*/
 int	change_line_env_tab(t_infos *infos, char *key, char *value)
 {
 	char	*key_value_str;
@@ -56,10 +48,6 @@ int	change_line_env_tab(t_infos *infos, char *key, char *value)
 	return (0);
 }
 
-/*
-** Add a key_value pair to the envs tab
-** Returns a copy from envs tab with an additional line
-*/
 char	**add_env_tab(char **envs, char *key_value_str)
 {
 	int		i;
@@ -84,9 +72,6 @@ char	**add_env_tab(char **envs, char *key_value_str)
 	return (new_tab);
 }
 
-/*
-** Print the content of envs tab from infos if not NULL
-*/
 void	print_env_tab(t_infos *infos)
 {
 	int	i;
@@ -103,7 +88,7 @@ void	print_env_tab(t_infos *infos)
 
 int	add_layer_shlvl(t_infos *infos)
 {
-	char 	*value_shlvl;
+	char	*value_shlvl;
 	int		pos_shlvl;
 	int		shlvl_int;
 
@@ -121,7 +106,7 @@ int	add_layer_shlvl(t_infos *infos)
 			return (0);
 		pos_shlvl = change_line_env_tab(infos, "SHLVL", value_shlvl);
 		free(value_shlvl);
-		return(pos_shlvl);
+		return (pos_shlvl);
 	}
 	return (0);
 }

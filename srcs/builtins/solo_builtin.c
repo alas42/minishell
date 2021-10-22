@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   solo_builtin.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yassharm <yassharm@student.42.fr>          +#+  +:+       +#+        */
+/*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 14:15:59 by avogt             #+#    #+#             */
-/*   Updated: 2021/10/22 09:18:53 by yassharm         ###   ########.fr       */
+/*   Updated: 2021/10/22 15:21:29 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ static int	close_fd_builtin(t_infos *infos, t_cmd *cmd)
 	if (ret_close == -1)
 		print_error(E_CLOSE, infos);
 	if (cmd->fd_outfile > -1)
-		ret_close= close(cmd->fd_outfile);
+		ret_close = close(cmd->fd_outfile);
 	if (ret_close == -1)
 		print_error(E_CLOSE, infos);
 	return (1);
@@ -67,15 +67,13 @@ int	solo_builtin(t_infos *infos, t_cmd *cmd)
 {
 	int	stdout_save;
 	int	stdin_save;
-	int	exit_code;
 
 	if (is_it_builtin(cmd) == -1)
 		return (-1);
 	stdout_save = dup(STDOUT_FILENO);
 	stdin_save = dup(STDIN_FILENO);
 	dup_fd_builtin(infos, cmd);
-	exit_code = choose_builtin(infos, cmd);
-	infos->last_return_code = exit_code;
+	infos->last_return_code = choose_builtin(infos, cmd);
 	close_fd_builtin(infos, cmd);
 	dup2(stdin_save, STDIN_FILENO);
 	dup2(stdout_save, STDOUT_FILENO);

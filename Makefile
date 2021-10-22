@@ -3,7 +3,6 @@ export LDFLAGS="-L/Users/$(USER)/.brew/opt/readline/lib"
 
 NAME = minishell
 FILES = minishell.c \
-	free.c \
 	error.c
 
 BUILTINS_FILES = mini_env.c \
@@ -36,7 +35,9 @@ UTILS_FILES = utils_cmds.c \
 	utils_env.c \
 	utils_paths.c \
 	utils_env_getters.c \
-	utils_infos.c
+	utils_infos.c \
+	free.c \
+	free_commands.c
 
 SIGNALS_FILES = sigint.c \
 	sigquit.c

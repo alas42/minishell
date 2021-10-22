@@ -6,7 +6,7 @@
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 13:28:05 by avogt             #+#    #+#             */
-/*   Updated: 2021/10/05 13:34:45 by avogt            ###   ########.fr       */
+/*   Updated: 2021/10/22 15:22:52 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,6 @@ void	free_tokens(t_infos *info)
 	info->tokens = NULL;
 }
 
-
 void	free_red_tokens(t_cmd *com)
 {
 	t_token	*temp;
@@ -85,58 +84,3 @@ void	free_red_tokens(t_cmd *com)
 	}
 	com->redirection = NULL;
 }
-
-void    free_cmnds(t_infos *info)
-{
-	t_cmd  *com;
-	t_cmd  *temp_com;
-
-	if (info->commands == NULL)
-		return ;
-	com = info->commands;
-	while (com->next != NULL)
-	{
-		temp_com = ft_lstlast_cmd(info->commands);
-		if (temp_com->arg)
-			free_doub_char(temp_com->arg);
-	 	free_red_tokens(temp_com);
-		if (temp_com->name_infile)
-			free(temp_com->name_infile);		
-		if (temp_com->name_outfile)
-			free(temp_com->name_outfile);
-		temp_com->prev->next = NULL;
-		free(temp_com);
-	}
-	if (com)
-	{
-		if (com->arg)
-			free_doub_char(com->arg);
-		free_red_tokens(com);
-		if (com->name_infile)
-			free(com->name_infile);
-		if (com->name_outfile)
-			free(com->name_outfile);
-		free(com);
-		info->commands = NULL;
-	}
-}
-
-/*
-
-	//Not closing the fd in cmnd yet. Add this in free_cmnd or where you need to close the last file_fd of commands
-
-		if (temp_com->fd_outfile > 0)
-		{
-			i = close(temp_com->fd_outfile);
-			if (i < 0)
-				printf("error in closing file [%s]\n", temp_com->name_outfile)
-		}
-		if (temp_com->fd_infile > 0)
-		{
-			i = close(temp_com->fd_infile);
-			if (i < 0)
-				printf("error in closing file [%s]\n", temp_com->name_infile)
-		}
-
-
-*/
