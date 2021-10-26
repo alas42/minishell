@@ -33,7 +33,7 @@ PARSING_FILES = parsing_init.c \
 	token_utils.c \
 	dollar_handler.c \
 	redirections.c \
-	
+
 UTILS_FILES = utils_cmds.c \
 	utils_env.c \
 	utils_paths.c \

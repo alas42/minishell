@@ -16,11 +16,11 @@
 # include <sys/types.h>
 # include <sys/stat.h>
 # include <sys/wait.h>
+# include <stdio.h>
 # include <unistd.h>
 # include <fcntl.h>
 # include <string.h>
 # include <stdlib.h>
-# include <stdio.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <errno.h>
@@ -156,6 +156,7 @@ void		parse_infile(t_infos *info);
 //token_handler_utils.c
 char		**ft_split(char *str, char c);
 void		free_doub_char(char **str);
+char		*join_double_char(char **args);
 
 //dollar_parser.c
 void		get_dollar(t_infos *info);
@@ -165,6 +166,7 @@ void    	update_dollar_type(t_infos *info, int pos);
 
 //dollar_handler.c
 void    	expand_dollar(t_infos *info);
+char    *check_dollar_arg(t_infos *info, char *arg);
 
 //quotes_handler.c
 void		check_quotes(t_infos *info);
@@ -187,6 +189,7 @@ void		red_lst_add_back(t_cmd *cmd, t_token *new);
 
 //token_to_cmd_utils.c
 char		*merge_content(char *str, char *content, int space);
+char		*remove_last_space(char *str);
 void		fill_cmd_info(t_infos *info);
 void		fill_red_pos(t_cmd *cmd);
 int			check_builtin(char *str);

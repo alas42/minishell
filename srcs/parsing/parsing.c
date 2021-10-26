@@ -40,31 +40,18 @@ void    start_parsing(t_infos *info)
 	add_to_struct(info);
 	if (info->tokens == NULL)
 		return ;
-	get_dollar(info);   
+
+	get_dollar(info);
 	check_quotes(info);
-	merge_same(info);   
+	merge_same(info);
 	get_dollar_prev(info);
+	expand_dollar(info);
+	merge_same(info);
 	remove_space_tokens(info);
 	parse_outfile(info);
 	parse_infile(info);
-
-	// printf("--------------PRINTING ALL TOKENS AT THE END END-------------------\n\n\n\n");
-	// print_token_list(info->tokens);
-	// printf("----------------END OF TOKENS-----------------\n\n\n\n");
-	expand_dollar(info);
-	// printf("--------------PRINTING ALL TOKENS AT THE END END-------------------\n\n\n\n");
-	// print_token_list(info->tokens);
-	// printf("----------------END OF TOKENS-----------------\n\n\n\n");
-
 	move_to_cmd(info);
 	handle_redirections(info);
-	// printf("--------------PRINTING CMDS-------------------\n\n\n\n");
-	// print_cmnds(info);
-	// printf("--------------END OF CMDS-------------------\n\n\n\n");
-	// printf("--------------PRINTING ALL TOKENS AT THE END END-------------------\n\n\n\n");
-	// print_token_list(info->tokens);
-	// printf("----------------END OF TOKENS-----------------\n\n\n\n");
-
 }
 
 
@@ -79,9 +66,9 @@ void    start_parsing(t_infos *info)
 	add_to_struct(info);
 	if (info->tokens == NULL)
 		return ;
-	get_dollar(info);   
+	get_dollar(info);
 	check_quotes(info);
-	merge_same(info);   
+	merge_same(info);
 	get_dollar_prev(info);
 	remove_space_tokens(info);
 	parse_outfile(info);

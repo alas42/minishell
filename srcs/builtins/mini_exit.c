@@ -69,7 +69,8 @@ int	mini_exit(t_infos *infos, t_cmd *cmd)
 	if (exit_code == -2)
 		return (1);
 	free_infos(infos);
-	rl_clear_history();
+	clear_history();
+	//rl_clear_history();
 	if (exit_code == -1)
 		exit(1);
 	exit(exit_code);
