@@ -37,6 +37,7 @@ int	ft_isallspace(char *line)
 	}
 	return (0);
 }
+
 char	*remove_space_digit(char *line, char c)
 {
 	if (c == 's')

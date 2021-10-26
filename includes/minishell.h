@@ -6,7 +6,7 @@
 /*   By: yassharm <yassharm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 13:57:49 by avogt             #+#    #+#             */
-/*   Updated: 2021/10/21 23:46:19 by yassharm         ###   ########.fr       */
+/*   Updated: 2021/10/25 19:59:02 by yassharm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@
 # include <signal.h>
 # include <term.h>
 # include "libft.h"
-
 //#include <editline/readline.h>
 //#include <editline/history.h>
 
@@ -151,33 +150,47 @@ char		*remove_space_digit(char *line, char c);
 int			ft_isallspace(char *line);
 
 //token_handler.c
-void		handle_output_red(t_infos *info);
-void		handle_input_red(t_infos *info);
+void		parse_outfile(t_infos *info);
+void		parse_infile(t_infos *info);
 
 //token_handler_utils.c
 char		**ft_split(char *str, char c);
 void		free_doub_char(char **str);
 
+//dollar_parser.c
+void		get_dollar(t_infos *info);
+void		get_dollar_prev(t_infos *info);
+void    	update_dollar_type(t_infos *info, int pos);
+
+
 //dollar_handler.c
 void    	expand_dollar(t_infos *info);
-void		get_dollar(t_infos *info);
-void    	update_dollar_type(t_infos *info, int pos);
-void		get_dollar_prev(t_infos *info);
 
 //quotes_handler.c
 void		check_quotes(t_infos *info);
+
+//quotes_handler_utils.c
+void    	update_token_type(t_infos *info, char *from, char *to);
+int 	    check_dollar(char *content);
+char    	*update_quotes_content(t_token *temp);
 
 //token_utils.c
 void		*cmnd_init(void);
 void		cmd_lst_add_back(t_cmd *cmd, t_infos *info);
 
 //redirections.c
-void	handle_redirections(t_infos *info);
+void		handle_redirections(t_infos *info);
 
 //token_to_cmd.c
 void		move_to_cmd(t_infos *info);
-char		*merge_content(char *str, char *content, int space);
 void		red_lst_add_back(t_cmd *cmd, t_token *new);
+
+//token_to_cmd_utils.c
+char		*merge_content(char *str, char *content, int space);
+void		fill_cmd_info(t_infos *info);
+void		fill_red_pos(t_cmd *cmd);
+int			check_builtin(char *str);
+
 
 //print_temp.c Temp Function to be removed later
 void		print_info(t_infos *info);
@@ -260,7 +273,6 @@ int			mini_env(t_infos *infos, t_cmd *cmd);
 int			mini_exit(t_infos *infos, t_cmd *cmd);
 int			mini_pwd(t_infos *infos, t_cmd *cmd );
 int			solo_builtin(t_infos *infos, t_cmd *cmd);
-
 /*
 ** SIGNALS
 */

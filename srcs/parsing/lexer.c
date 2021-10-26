@@ -26,7 +26,6 @@ t_token     *join_tokens(t_token *tokens)
 	second = tokens->next;
 	temp = second->content;
 	i = ft_isallspace(tokens->content);
-		//second->content = ft_strjoin("", temp);
 	if (i == 0)
 		second->content = ft_strdup(temp);
 	else

@@ -1,6 +1,5 @@
 #include "../includes/minishell.h"
 
-
 void    free_doub_char(char **str)
 {
 	int i;

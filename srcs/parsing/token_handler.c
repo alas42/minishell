@@ -31,7 +31,7 @@ void    get_infile(t_token *temp)
 	}
 }
 
-void    handle_output_red(t_infos *info)
+void    parse_outfile(t_infos *info)
 {
 	t_token *temp;
 
@@ -59,7 +59,7 @@ void    handle_output_red(t_infos *info)
 	}
 }
 
-void    handle_input_red(t_infos *info)
+void    parse_infile(t_infos *info)
 {
 	t_token *temp;
 
@@ -86,5 +86,3 @@ void    handle_input_red(t_infos *info)
 		temp = temp->next;
 	}
 }
-//echo "hello $world" 'this $ $,m' | wc -l | ls -l | << grep 'a' >> outfile
-

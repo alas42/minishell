@@ -1,28 +1,5 @@
 #include "../includes/minishell.h"
 
-char	*merge_content(char *str, char *content, int space)
-{
-	char	*temp;
-
-	temp = NULL;
-	if (str)
-	{
-   		temp = ft_strdup(str);
-		free(str);
-	}
-	str = ft_strjoin(temp, content);
-	if (temp)
-		free(temp);
-	if (space == 1)
-	{
-		temp = ft_strdup(str);
-		free(str);
-		str = ft_strjoin(temp, " ");
-		free(temp);
-	}
-	return (str);
-}
-
 void	fill_redirections(t_token *tokens, t_cmd *cmd)
 {
 	t_token *temp;
@@ -60,20 +37,9 @@ char	**get_cmd_args(t_infos *info, int start, int end)
 		tokens = tokens->next;
 	}
 	join_str[ft_strlen(join_str) - 1] = '\0';
-	// printf("joined str is [%s] len is [%d]\n", join_str, ft_strlen(join_str));
-	// i = 0;
 	args = ft_split(join_str, ' ');
-	// while (args[i])
-	// {
-		// printf("arg[%d] is [%s]\n", i, args[i]);
-		// i++;
-	// }
 	free(join_str);
 	return (args);
-	// args = NULL;
-	// args = (char **)malloc(sizeof(char *) * (counter + 1));
-	// if (args == NULL)
-	// 	printf("Error in malloc in get_cmd_args\n");
 }
 
 void	fill_cmd(t_infos *info, int start, int end, t_cmd *cmd)
@@ -101,69 +67,6 @@ void	fill_cmd(t_infos *info, int start, int end, t_cmd *cmd)
 	cmd_lst_add_back(cmd, info);
 }
 
-int		check_builtin(char *str)
-{
-	if (str == NULL)
-		return (0);
-	if (!(ft_strcmp(str, "unset")) || !(ft_strcmp(str, "echo"))
-		|| !(ft_strcmp(str, "cd")) || !(ft_strcmp(str, "env"))
-		|| !(ft_strcmp(str, "exit")) || !(ft_strcmp(str, "export"))
-		|| !(ft_strcmp(str, "pwd")))
-		return (1);
-	return (0);
-}
-
-void	fill_red_pos(t_cmd *cmd)
-{
-	t_token *red;
-	int		i;
-
-	i = 1;
-	red = cmd->redirection;
-	if (red == NULL)
-		return;
-	while (red)
-	{
-		red->pos = i;
-		red = red->next;
-		i++;
-	}
-	return;
-}
-void	fill_cmd_info(t_infos *info)
-{
-	t_cmd *temp;
-	int		i;
-
-	i = 0;
-	temp = info->commands;
-	while(temp)
-	{
-		temp->index = i;
-		fill_red_pos(temp);
-		if (temp->arg != NULL)
-			temp->builtin = check_builtin(temp->arg[0]);
-		else
-			temp->builtin = 0;
-		if (i == 0)
-		{
-			temp->pipe_in = 0;
-		}
-		if (temp->next != NULL)
-		{
-			temp->pipe_out = 1;
-			temp->next->pipe_in = 1;
-			info->nb_pipe = info->nb_pipe + 1;
-		}
-		else
-			temp->pipe_out = 0;
-		temp = temp->next;
-		i++;
-	}
-	info->nb_cmd = i;	
-}
-
-//above ft_split_char divides everything with space as a deliminator. echo "hello world" -> [echo, hello, world] should be ->[echo , hello world]
 void	move_to_cmd(t_infos *info)
 {
 	t_token *token;

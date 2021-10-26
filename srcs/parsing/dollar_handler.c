@@ -41,6 +41,33 @@ char    *get_dollar_value(t_infos *info, char *str)
 	return (ret);
 }
 
+char	*check_dollar_ret_val(char *value)
+{
+	char 	**temp;
+	int		i;
+	int		len;
+
+	i = -1;
+	// printf("value before [%s]\n", value);
+
+	temp = ft_split(value, ' ');
+	free(value);
+	value = ft_strdup("");
+	while(temp[++i])
+	{
+		if (ft_isallspace(temp[i]))
+			value = merge_content(value, temp[i], 1);
+	}
+	// printf("value after [%s]\n", value);
+	len = ft_strlen(value);
+	if (len > 0)
+		value[len - 1] = '\0';
+	if (len == 0)
+		value[len] = '\0';
+	free_doub_char(temp);
+	return (value);
+}
+
 // echo "$one$two$three"
 char    *check_dollar_arg(t_infos *info, char *arg)
 {
@@ -55,6 +82,7 @@ char    *check_dollar_arg(t_infos *info, char *arg)
 	while (temp_args[i])
 	{
 		value = get_dollar_value(info, temp_args[i]);
+		value = check_dollar_ret_val(value);
 		content = merge_content(content, value, 0);
 		free(value);
 		i++;
@@ -81,6 +109,7 @@ void    expand_dollar(t_infos *info)
 		if (!(ft_strcmp(token->type, "dollar")))
 		{
 			ret_val = check_dollar_arg(info, token->content);
+			// printf("ret_val in type dollar [%s]\n", ret_val);
 			free(token->content);
 			token->content = ft_strdup(ret_val);
 			free(ret_val);
@@ -100,6 +129,7 @@ void    expand_dollar(t_infos *info)
 					if (arg[i][j] == '$')
 					{
 						ret_val = check_dollar_arg(info, arg[i]);
+						// printf("ret_val in type literal_dollar [%s]\n", ret_val);
 						token->content =  merge_content(token->content, ret_val, 1);
 						free(ret_val);
 						counter = 1;
@@ -120,58 +150,3 @@ void    expand_dollar(t_infos *info)
 	}
 }
 
-void    get_dollar_prev(t_infos *info)
-{
-	t_token *token;
-
-	token = info->tokens;
-	while(token)
-	{
-		if (!(ft_strcmp(token->type, "dollar")))
-		{
-			if(token->prev != NULL && !(ft_strcmp(token->prev->type, "literal")))
-				merge_tokens(info, token->prev->pos, 1);
-		}
-		token = token->next;
-	}
-}
-
-void    update_dollar_type(t_infos *info, int pos)
-{
-	t_token *temp;
-	int     i;
-
-	i = 0;
-	temp = info->tokens;
-	while (i < pos)
-	{
-		temp = temp->next;
-		i++;
-	}
-	free(temp->type);
-	temp->type = ft_strdup("dollar");
-}
-
-void    get_dollar(t_infos *info)
-{
-	t_token *temp;
-	int     i;
-
-	i = 0;
-	temp = info->tokens;
-	while (temp && (ft_strcmp(temp->type, "pipe")))
-	{
-		if (ft_strcmp(temp->type, "dollar") == 0)
-		{
-			if (temp->next != NULL && !(ft_strcmp(temp->next->type, "literal")))
-			{
-				merge_tokens(info, i, 1);
-				update_dollar_type(info, i);
-				temp = info->tokens;
-				i = 0;
-			}
-		}
-		i++;
-		temp = temp->next;
-	}
-}
