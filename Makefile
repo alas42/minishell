@@ -23,9 +23,12 @@ PARSING_FILES = parsing_init.c \
 	parsing.c \
 	lexer.c \
 	print_temp.c \
+	dollar_parser.c \
 	token_handler.c \
 	quotes_handler.c \
+	quotes_utils.c \
 	token_to_cmd.c \
+	token_to_cmd_utils.c \
 	token_handler_utils.c \
 	token_utils.c \
 	dollar_handler.c \

@@ -1,6 +1,5 @@
 #include "../includes/minishell.h"
 
-
 //Function to initialize the t_cmnd node
 void	*cmnd_init(void)
 {
@@ -63,4 +62,3 @@ void	red_lst_add_back(t_cmd *cmd, t_token *new)
 	new->prev = ls;
 	ls->next = new;
 }
-
