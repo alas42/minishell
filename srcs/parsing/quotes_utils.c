@@ -1,29 +1,31 @@
 #include "../includes/minishell.h"
 
-//Remove the first and last char from content '' ""
-char    *update_quotes_content(t_token *temp)
+/*
+** Remove the first and last char from content '' ""
+*/
+char	*update_quotes_content(t_token *temp)
 {
-	char    *str;
-	int     len;
-	int     i;
-	i = 0;
+	char	*str;
+	int		len;
+	int		i;
 
+	i = 0;
 	len = ft_strlen(temp->content);
 	str = (char *)malloc(sizeof(char) * len);
-	while(i < len - 2)
+	while (i < len - 2)
 	{
-		str[i] = temp->content[i+1];
+		str[i] = temp->content[i + 1];
 		i++;
 	}
 	str[i] = '\0';
 	free(temp->content);
-	return(str);
+	return (str);
 }
 
-int     check_dollar(char *content)
+int	check_dollar(char *content)
 {
-	int     i;
-	int     len;
+	int		i;
+	int		len;
 
 	i = 0;
 	len = ft_strlen(content);
@@ -36,11 +38,13 @@ int     check_dollar(char *content)
 	return (0);
 }
 
-//Update the type of token
-void    update_token_type(t_infos *info, char *from, char *to)
+/*
+** Update the type of token
+*/
+void	update_token_type(t_infos *info, char *from, char *to)
 {
-	t_token *temp;
-	int     i;
+	t_token	*temp;
+	int		i;
 
 	i = -1;
 	temp = info->tokens;
@@ -56,9 +60,8 @@ void    update_token_type(t_infos *info, char *from, char *to)
 			else
 				temp->type = ft_strdup("literal_dollar");
 			temp->content = update_quotes_content(temp);
-			break;
+			break ;
 		}
 		temp = temp->next;
 	}
 }
-

@@ -1,13 +1,13 @@
 #include "../includes/minishell.h"
 
-char    *get_dollar_value(t_infos *info, char *str)
+char	*get_dollar_value(t_infos *info, char *str)
 {
-	int     i;
-	int     j;
-	int     counter;
-	char    *ret;
-	int     size;
-	char    *temp;
+	int		i;
+	int		j;
+	int		counter;
+	char	*ret;
+	int		size;
+	char	*temp;
 
 	ret = NULL;
 	temp = ft_strjoin(str, "=");
@@ -25,7 +25,7 @@ char    *get_dollar_value(t_infos *info, char *str)
 				j++;
 			counter = 0;
 			j++;
-			while(info->envs[i][j])
+			while (info->envs[i][j])
 			{
 				ret[counter] = info->envs[i][j];
 				j++;
@@ -43,22 +43,19 @@ char    *get_dollar_value(t_infos *info, char *str)
 
 char	*check_dollar_ret_val(char *value)
 {
-	char 	**temp;
+	char	**temp;
 	int		i;
 	int		len;
 
 	i = -1;
-	// printf("value before [%s]\n", value);
-
 	temp = ft_split(value, ' ');
 	free(value);
 	value = ft_strdup("");
-	while(temp[++i])
+	while (temp[++i])
 	{
 		if (ft_isallspace(temp[i]))
 			value = merge_content(value, temp[i], 1);
 	}
-	// printf("value after [%s]\n", value);
 	len = ft_strlen(value);
 	if (len > 0)
 		value[len - 1] = '\0';
@@ -68,13 +65,12 @@ char	*check_dollar_ret_val(char *value)
 	return (value);
 }
 
-// echo "$one$two$three"
-char    *check_dollar_arg(t_infos *info, char *arg)
+char	*check_dollar_arg(t_infos *info, char *arg)
 {
-	char    **temp_args;
-	char    *value;
-	char    *content;
-	int     i;
+	char	**temp_args;
+	char	*value;
+	char	*content;
+	int		i;
 
 	i = 1;
 	temp_args = ft_split(arg, '$');
@@ -87,19 +83,19 @@ char    *check_dollar_arg(t_infos *info, char *arg)
 		free(value);
 		i++;
 	}
-	free_doub_char(temp_args);    
-	return(content);
+	free_doub_char(temp_args);
+	return (content);
 }
 
-void    expand_dollar(t_infos *info)
+void	expand_dollar(t_infos *info)
 {
-	t_token     *token;
-	char        **arg;
-	char        *ret_val;
-	int         i;
-	int         j;
-	int         counter;
-	
+	t_token	*token;
+	char	**arg;
+	char	*ret_val;
+	int		i;
+	int		j;
+	int		counter;
+
 	i = 0;
 	counter = 0;
 	token = info->tokens;
@@ -109,7 +105,6 @@ void    expand_dollar(t_infos *info)
 		if (!(ft_strcmp(token->type, "dollar")))
 		{
 			ret_val = check_dollar_arg(info, token->content);
-			// printf("ret_val in type dollar [%s]\n", ret_val);
 			free(token->content);
 			token->content = ft_strdup(ret_val);
 			free(ret_val);
@@ -121,7 +116,7 @@ void    expand_dollar(t_infos *info)
 			arg = ft_split(token->content, ' ');
 			free(token->content);
 			token->content = ft_strdup("");
-			while(arg[i])
+			while (arg[i])
 			{
 				j = 0;
 				while (arg[i][j])
@@ -129,11 +124,10 @@ void    expand_dollar(t_infos *info)
 					if (arg[i][j] == '$')
 					{
 						ret_val = check_dollar_arg(info, arg[i]);
-						// printf("ret_val in type literal_dollar [%s]\n", ret_val);
-						token->content =  merge_content(token->content, ret_val, 1);
+						token->content = merge_content(token->content, ret_val, 1);
 						free(ret_val);
 						counter = 1;
-						break;
+						break ;
 					}
 					j++;
 				}
@@ -149,4 +143,3 @@ void    expand_dollar(t_infos *info)
 		token = token->next;
 	}
 }
-

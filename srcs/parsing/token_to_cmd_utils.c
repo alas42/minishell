@@ -7,7 +7,7 @@ char	*merge_content(char *str, char *content, int space)
 	temp = NULL;
 	if (str)
 	{
-   		temp = ft_strdup(str);
+		temp = ft_strdup(str);
 		free(str);
 	}
 	str = ft_strjoin(temp, content);
@@ -23,7 +23,7 @@ char	*merge_content(char *str, char *content, int space)
 	return (str);
 }
 
-int		check_builtin(char *str)
+int	check_builtin(char *str)
 {
 	if (str == NULL)
 		return (0);
@@ -37,7 +37,7 @@ int		check_builtin(char *str)
 
 void	fill_red_pos(t_cmd *cmd)
 {
-	t_token *red;
+	t_token	*red;
 	int		i;
 
 	i = 1;
@@ -47,24 +47,24 @@ void	fill_red_pos(t_cmd *cmd)
 		cmd->builtin = 0;
 	red = cmd->redirection;
 	if (red == NULL)
-		return;
+		return ;
 	while (red)
 	{
 		red->pos = i;
 		red = red->next;
 		i++;
 	}
-	return;
+	return ;
 }
 
 void	fill_cmd_info(t_infos *info)
 {
-	t_cmd *temp;
+	t_cmd	*temp;
 	int		i;
 
 	i = 0;
 	temp = info->commands;
-	while(temp)
+	while (temp)
 	{
 		temp->index = i;
 		fill_red_pos(temp);
@@ -81,5 +81,5 @@ void	fill_cmd_info(t_infos *info)
 		temp = temp->next;
 		i++;
 	}
-	info->nb_cmd = i;	
+	info->nb_cmd = i;
 }

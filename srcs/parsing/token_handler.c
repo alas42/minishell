@@ -1,6 +1,6 @@
 #include "../includes/minishell.h"
 
-void    get_outfile(t_token *temp)
+void	get_outfile(t_token *temp)
 {
 	if (ft_strcmp(temp->next->type, "literal"))
 	{
@@ -14,7 +14,7 @@ void    get_outfile(t_token *temp)
 	}
 }
 
-void    get_infile(t_token *temp)
+void	get_infile(t_token *temp)
 {
 	if (ft_strcmp(temp->next->type, "literal"))
 	{
@@ -31,18 +31,18 @@ void    get_infile(t_token *temp)
 	}
 }
 
-void    parse_outfile(t_infos *info)
+void	parse_outfile(t_infos *info)
 {
-	t_token *temp;
+	t_token	*temp;
 
 	temp = info->tokens;
 	while (temp)
 	{
-	   if (!(ft_strcmp(temp->type, "output_red")))
-		{          
+		if (!(ft_strcmp(temp->type, "output_red")))
+		{
 			if (ft_strlen(temp->content) > 2)
 				printf("error - invalid character after >>\n");
-			else if (ft_strlen(temp->content)== 2)
+			else if (ft_strlen(temp->content) == 2)
 			{
 				free(temp->type);
 				temp->type = ft_strdup("double_output_red");
@@ -51,7 +51,7 @@ void    parse_outfile(t_infos *info)
 			{
 				printf("bash: syntax error near unexpected token `newline`\n");
 				printf("Error in handle output no outfile\n");
-				return;
+				return ;
 			}
 			get_outfile(temp);
 		}
@@ -59,9 +59,9 @@ void    parse_outfile(t_infos *info)
 	}
 }
 
-void    parse_infile(t_infos *info)
+void	parse_infile(t_infos *info)
 {
-	t_token *temp;
+	t_token	*temp;
 
 	temp = info->tokens;
 	while (temp)
@@ -79,7 +79,7 @@ void    parse_infile(t_infos *info)
 			{
 				printf("bash: syntax error near unexpected token `newline'");
 				printf("Error in hanfle output no outfile\n");
-				return;
+				return ;
 			}
 			get_infile(temp);
 		}

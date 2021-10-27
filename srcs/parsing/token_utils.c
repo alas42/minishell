@@ -1,9 +1,11 @@
 #include "../includes/minishell.h"
 
-//Function to initialize the t_cmnd node
+/*
+** Function to initialize the t_cmnd node
+*/
 void	*cmnd_init(void)
 {
-	t_cmd 	*cmd;
+	t_cmd	*cmd;
 
 	cmd = (t_cmd *)malloc(sizeof(t_cmd));
 	if (cmd == NULL)
@@ -24,30 +26,35 @@ void	*cmnd_init(void)
 	return (cmd);
 }
 
-//Function to add the t_cmnd in (t_info)info->commands
+/*
+** Function to add the t_cmnd in (t_info)info->commands
+*/
 void	cmd_lst_add_back(t_cmd *cmd, t_infos *info)
 {
-	t_cmd *ls;
+	t_cmd	*ls;
 
 	if (cmd == NULL)
-		return;
+		return ;
 	if (info->commands)
 		ls = info->commands;
 	else
 	{
 		info->commands = cmd;
-		return;
+		return ;
 	}
-	while(ls->next)
+	while (ls->next)
 		ls = ls->next;
 	cmd->prev = ls;
 	ls->next = cmd;
 }
 
-//For adding the info->commands->redirection node (t_token) in info->commands
+/*
+** For adding the info->commands->redirection node (t_token) in info->commands
+*/
 void	red_lst_add_back(t_cmd *cmd, t_token *new)
 {
 	t_token	*ls;
+
 	if (new == NULL)
 		return ;
 	if (cmd->redirection)
