@@ -69,3 +69,18 @@ void	red_lst_add_back(t_cmd *cmd, t_token *new)
 	new->prev = ls;
 	ls->next = new;
 }
+
+/*
+** returns the last element of t_token slinklist
+*/
+t_token	*ft_lstlast_token(t_token *lst)
+{
+	t_token	*p;
+
+	p = lst;
+	if (lst == NULL)
+		return (NULL);
+	while (p->next != NULL)
+		p = p->next;
+	return (p);
+}

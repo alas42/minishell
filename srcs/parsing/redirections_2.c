@@ -3,28 +3,27 @@
 void	handle_redirections(t_infos *info)
 {
 	t_cmd	*cmd;
-	t_token	*red;
+	t_token	*r;
 
 	cmd = info->commands;
 	while (cmd)
 	{
-		red = cmd->redirection;
-		while (red)
+		r = cmd->redirection;
+		while (r)
 		{
-			if ((!(ft_strcmp(red->type, "output_red"))
-					|| !(ft_strcmp(red->type, "double_output_red")))
-					&& red->next != NULL
-					&& (!ft_strcmp(red->next->type, "outfile")))
-				handle_outfile(red->next->content, red->type, cmd);
-			else if (!(ft_strcmp(red->type, "input_red")))
+			if ((!(ft_strcmp(r->type, "output_red"))
+					|| !(ft_strcmp(r->type, "double_output_red")))
+				&& r->next != NULL && (!ft_strcmp(r->next->type, "outfile")))
+				handle_outfile(r->next->content, r->type, cmd);
+			else if (!(ft_strcmp(r->type, "input_red")))
 			{
-				if (red->next != NULL
-					&& (!ft_strcmp(red->next->type, "infile")))
-					handle_infile(red->next->content, red->type, cmd, red->pos);
+				if (r->next != NULL
+					&& (!ft_strcmp(r->next->type, "infile")))
+					handle_infile(r->next->content, r->type, cmd, r->pos);
 			}
-			else if (!(ft_strcmp(red->type, "here_doc")))
-				handle_here_doc(cmd, red->pos);
-			red = red->next;
+			else if (!(ft_strcmp(r->type, "here_doc")))
+				handle_here_doc(cmd, r->pos);
+			r = r->next;
 		}
 		cmd = cmd->next;
 	}

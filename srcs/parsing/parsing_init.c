@@ -69,21 +69,6 @@ void	lst_add_back(t_infos *info, t_token *new)
 }
 
 /*
-** returns the last element of t_token slinklist
-*/
-t_token	*ft_lstlast_token(t_token *lst)
-{
-	t_token	*p;
-
-	p = lst;
-	if (lst == NULL)
-		return (NULL);
-	while (p->next != NULL)
-		p = p->next;
-	return (p);
-}
-
-/*
 ** returns the last element of t_cmnd linklist
 */
 t_cmd	*ft_lstlast_cmd(t_cmd *lst)
