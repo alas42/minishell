@@ -77,7 +77,6 @@ int	mini_cd(t_infos *infos, t_cmd *cmd)
 		path = get_value(infos, "HOME");
 	else
 		path = ft_strdup(cmd->arg[1]);
-	ft_putendl_fd(path, STDERR_FILENO);
 	if (!old_path || !path)
 		return (1);
 	if (mini_chdir(path, old_path))

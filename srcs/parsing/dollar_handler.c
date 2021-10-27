@@ -98,7 +98,6 @@ char	*join_double_char(char **args)
 	char 	*temp;
 
 	i = -1;
-	printf("\n");
 	temp = ft_strdup("");
 	while(args[++i])
 		temp = merge_content(temp, args[i], 1);

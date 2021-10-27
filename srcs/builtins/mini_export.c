@@ -113,7 +113,6 @@ static void	mini_export_end(t_infos *infos, char **key_value, char *str)
 
 int	mini_export(t_infos *infos, t_cmd *cmd)
 {
-	int		ret_find_path;
 	char	**key_value_tab;
 	char	*str_to_add;
 

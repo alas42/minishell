@@ -12,8 +12,8 @@ int    check_last_input_red(t_cmd *cmd, int pos)
 	while (red)
 	{
 		if (!(ft_strcmp(red->type, "here_doc")) || !(ft_strcmp(red->type, "input_red")))
-			return (red->pos);       
-		red = red->next;     
+			return (red->pos);
+		red = red->next;
 	}
 	return (0);
 }
@@ -35,6 +35,45 @@ void    here_doc_exec(char *str)
 	}
 }
 
+int		fd_write(int fd, char *line)
+{
+	int		i;
+	int		nl;
+
+	nl = 10;
+	i = 0;
+	while(line[i])
+	{
+		write(fd, &line[i], 1);
+		i++;
+	}
+	write(fd, &nl, 1);
+	return (i);
+}
+
+void	last_here_doc(t_cmd *cmd, char *str)
+{
+	char 	*line;
+	int		i;
+	int		ret;
+
+	cmd->fd_infile = open("here_doc_f", O_TRUNC | O_WRONLY | O_CREAT, 0644);
+	printf("file descriptor is cmd->fd_infile [%d] str[%s]\n", cmd->fd_infile, str);
+	i = -1;
+	while ((i = get_next_line(1, &line)) > 0)
+	{
+		if (!(ft_strcmp(line, str)))
+		{
+			free(line);
+			break;
+		}
+		ret = fd_write(cmd->fd_infile, line);
+		printf("wrote [%d] char\n", ret);
+		free(line);
+	}
+	printf("ending\n");
+}
+
 void    handle_here_doc(t_cmd *cmd, int pos)
 {
 	t_token     *red;
@@ -42,6 +81,7 @@ void    handle_here_doc(t_cmd *cmd, int pos)
 	int         i;
 
 	i = 0;
+	ret = -1;
 	ret = check_last_input_red(cmd, pos);
 	red = cmd->redirection;
 	while(i++ < pos && red)
@@ -56,11 +96,10 @@ void    handle_here_doc(t_cmd *cmd, int pos)
 			if (ret < 0)
 				printf("error in closing the file_des [%d] \n", cmd->fd_infile);
 		}
-		cmd->fd_infile = 1;                   
-		printf("handle it in execution\n");
-		return ;	
+		last_here_doc(cmd, red->content);
+		return ;
 	}
-	here_doc_exec(red->content);
+	//here_doc_exec(red->content);
 }
 
 void    handle_infile(char *infile, char *type, t_cmd *cmd, int pos)
@@ -117,13 +156,13 @@ void	handle_redirections(t_infos *info)
 		while (red)
 		{
 			if ((!(ft_strcmp(red->type, "output_red"))
-			|| !(ft_strcmp(red->type, "double_output_red"))) 
+			|| !(ft_strcmp(red->type, "double_output_red")))
 			&& red->next != NULL && (!ft_strcmp(red->next->type, "outfile")))
-					handle_outfile(red->next->content, red->type, cmd);              
+					handle_outfile(red->next->content, red->type, cmd);
 			else if (!(ft_strcmp(red->type, "input_red")))
 			{
 				if (red->next != NULL && (!ft_strcmp(red->next->type, "infile")))
-					handle_infile(red->next->content, red->type, cmd, red->pos);              
+					handle_infile(red->next->content, red->type, cmd, red->pos);
 			}
 			else if (!(ft_strcmp(red->type, "here_doc")))
 				handle_here_doc(cmd, red->pos);
