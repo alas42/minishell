@@ -1,4 +1,136 @@
 
+char	*merge_content(char *str, char *content, int space)
+{
+	char	*temp;
+
+	temp = NULL;
+	if (space == 1)
+	{
+		if (str)
+		{
+   			temp = ft_strdup(str);
+			free(str);
+			str = ft_strjoin(temp, " ");
+			free(temp);
+		}
+	}
+	if (str)
+	{
+   		temp = ft_strdup(str);
+		free(str);
+	}
+	str = ft_strjoin(temp, content);
+	if (temp)
+		free(temp);
+	return (str);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//void    expand_dollar(t_infos *info)
+//{
+//	t_token *token;
+
+//	token = info->tokens;
+//	while(token)
+//	{
+//		if (!(ft_strcmp(token->type, "dollar")))
+//		{
+//			printf("token->content [%s]\n", token->content);
+//		}
+//		token = token->next;
+//	}
+//}
+
+
+//void    expand_dollar(t_infos *info)
+//{
+//	t_token     *token;
+//	char        **arg;
+//	char        *ret_val;
+//	int         i;
+//	int         j;
+//	int         counter;
+
+//	i = 0;
+//	counter = 0;
+//	token = info->tokens;
+//	ret_val = NULL;
+//	while (token)
+//	{
+//		if (!(ft_strcmp(token->type, "lldollar")))
+//		{
+//			ret_val = check_dollar_arg(info, token->content);
+//			// printf("ret_val in type dollar [%s]\n", ret_val);
+//			free(token->content);
+//			token->content = ft_strdup(ret_val);
+//			free(ret_val);
+//			free(token->type);
+//			token->type = ft_strdup("literal");
+//		}
+//		if (!(ft_strcmp(token->type, "dollar")))
+//		{
+//			//printf("content - [%s]\n", token->content);
+//			arg = ft_split(token->content, ' ');
+//			free(token->content);
+//			token->content = ft_strdup("");
+//			while(arg[i])
+//			{
+//				j = 0;
+//				while (arg[i][j])
+//				{
+//					if (arg[i][j] == '$')
+//					{
+//						ret_val = check_dollar_arg(info, arg[i]);
+//						// printf("ret_val in type literal_dollar [%s]\n", ret_val);
+//						token->content =  merge_content(token->content, ret_val, 1);
+//						free(ret_val);
+//						counter = 1;
+//						break;
+//					}
+//					j++;
+//				}
+//				if (counter == 0)
+//					token->content = merge_content(token->content, arg[i], 1);
+//				counter = 0;
+//				i++;
+//			}
+//			free(token->type);
+//			token->type = ft_strdup("literal");
+//			free_doub_char(arg);
+//		}
+//		token = token->next;
+//	}
+//}
+
+
+
+
+
+
+
+
+
+
+
 // void    check_quotes(t_infos *info)
 // {
 // 	t_token *token;
@@ -6,7 +138,7 @@
 
 // 	close = -2;
 // 	token = info->tokens;
-  
+
 // 	while(token)
 // 	{
 // 		if (!(ft_strcmp(token->type, "double_quote")))

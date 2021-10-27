@@ -58,3 +58,36 @@ void    get_dollar(t_infos *info)
 		temp = temp->next;
 	}
 }
+
+void	expand_dollar(t_infos *info)
+{
+	t_token	*token;
+	char	**temp_args;
+	char	*ret;
+	int		i;
+
+	token = info->tokens;
+	temp_args = NULL;
+	ret = NULL;
+	while(token)
+	{
+		if (!(ft_strcmp(token->type, "literal_dollar")) ||
+		!(ft_strcmp(token->type, "dollar")))
+		{
+			temp_args = ft_split(token->content, ' ');
+			i = -1;
+			while(temp_args[++i])
+			{
+				ret = check_dollar_arg(info, temp_args[i]);
+				free(temp_args[i]);
+				temp_args[i] = ret;
+			}
+			free(token->content);
+			token->content = join_double_char(temp_args);
+			free(token->type);
+			token->type = ft_strdup("literal");
+			free_doub_char(temp_args);
+		}
+		token = token->next;
+	}
+}

@@ -36,7 +36,8 @@ void	free_infos(t_infos *infos)
 	if (infos->tokens)
 		free_tokens(infos);
 	free(infos);
-	rl_clear_history();
+	clear_history();
+	//rl_clear_history();
 }
 
 void	free_tokens(t_infos *info)

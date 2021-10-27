@@ -1,5 +1,21 @@
 #include "../includes/minishell.h"
 
+char	*remove_last_space(char *str)
+{
+	int		len;
+
+	len = ft_strlen(str);
+	if (len == 0)
+		str[len] = '\0';
+	else if (len > 0)
+	{
+		if (str[len -1] != ' ')
+			return (str);
+		str[len - 1] = '\0';
+	}
+	return (str);
+}
+
 char	*merge_content(char *str, char *content, int space)
 {
 	char	*temp;
@@ -81,5 +97,5 @@ void	fill_cmd_info(t_infos *info)
 		temp = temp->next;
 		i++;
 	}
-	info->nb_cmd = i;	
+	info->nb_cmd = i;
 }

@@ -48,8 +48,6 @@ char	*check_dollar_ret_val(char *value)
 	int		len;
 
 	i = -1;
-	// printf("value before [%s]\n", value);
-
 	temp = ft_split(value, ' ');
 	free(value);
 	value = ft_strdup("");
@@ -58,7 +56,6 @@ char	*check_dollar_ret_val(char *value)
 		if (ft_isallspace(temp[i]))
 			value = merge_content(value, temp[i], 1);
 	}
-	// printf("value after [%s]\n", value);
 	len = ft_strlen(value);
 	if (len > 0)
 		value[len - 1] = '\0';
@@ -87,66 +84,29 @@ char    *check_dollar_arg(t_infos *info, char *arg)
 		free(value);
 		i++;
 	}
-	free_doub_char(temp_args);    
+	free_doub_char(temp_args);
 	return(content);
 }
 
-void    expand_dollar(t_infos *info)
+/*
+echo "$a"$b"this$a hekk"wow$b
+*/
+
+char	*join_double_char(char **args)
 {
-	t_token     *token;
-	char        **arg;
-	char        *ret_val;
-	int         i;
-	int         j;
-	int         counter;
-	
-	i = 0;
-	counter = 0;
-	token = info->tokens;
-	ret_val = NULL;
-	while (token)
-	{
-		if (!(ft_strcmp(token->type, "dollar")))
-		{
-			ret_val = check_dollar_arg(info, token->content);
-			// printf("ret_val in type dollar [%s]\n", ret_val);
-			free(token->content);
-			token->content = ft_strdup(ret_val);
-			free(ret_val);
-			free(token->type);
-			token->type = ft_strdup("literal");
-		}
-		else if (!(ft_strcmp(token->type, "literal_dollar")))
-		{
-			arg = ft_split(token->content, ' ');
-			free(token->content);
-			token->content = ft_strdup("");
-			while(arg[i])
-			{
-				j = 0;
-				while (arg[i][j])
-				{
-					if (arg[i][j] == '$')
-					{
-						ret_val = check_dollar_arg(info, arg[i]);
-						// printf("ret_val in type literal_dollar [%s]\n", ret_val);
-						token->content =  merge_content(token->content, ret_val, 1);
-						free(ret_val);
-						counter = 1;
-						break;
-					}
-					j++;
-				}
-				if (counter == 0)
-					token->content = merge_content(token->content, arg[i], 1);
-				counter = 0;
-				i++;
-			}
-			free(token->type);
-			token->type = ft_strdup("literal");
-			free_doub_char(arg);
-		}
-		token = token->next;
-	}
+	int		i;
+	char 	*temp;
+
+	i = -1;
+	printf("\n");
+	temp = ft_strdup("");
+	while(args[++i])
+		temp = merge_content(temp, args[i], 1);
+	temp = remove_last_space(temp);
+	return(temp);
 }
+
+
+
+
 
