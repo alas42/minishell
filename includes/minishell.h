@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yassharm <yassharm@student.42.fr>          +#+  +:+       +#+        */
+/*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 13:57:49 by avogt             #+#    #+#             */
 /*   Updated: 2021/10/25 19:59:02 by yassharm         ###   ########.fr       */
@@ -234,7 +234,7 @@ int			add_layer_shlvl(t_infos *infos);
 void		print_env_tab(t_infos *infos);
 char		**add_env_tab(char **envs, char *key_value_str);
 int			change_line_env_tab(t_infos *infos, char *key, char *value);
-char		**remove_env_tab(t_infos *infos, char *key);
+int			remove_env_tab(t_infos *infos, char *key);
 char		*create_pair_key_value(char *key, char *value);
 /*
 ** Returns the index from the environment variable to_find in the tab
@@ -285,6 +285,8 @@ void		sigquit_handler(int signal);
 void		print_error(int state, t_infos *infos);
 void		print_bash_error(int state, t_cmd *cmd);
 
-void		minishell(t_infos *infos, int int_mode);
+void		minishell(t_infos *infos, int int_mode, char *argv);
+int			check_valid_identifier(char *arg);
+char		*join_args(t_cmd *cmd, t_infos *infos);
 
 #endif

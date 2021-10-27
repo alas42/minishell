@@ -6,7 +6,7 @@
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 13:37:09 by avogt             #+#    #+#             */
-/*   Updated: 2021/10/22 15:18:43 by avogt            ###   ########.fr       */
+/*   Updated: 2021/10/22 15:52:11 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	clear_infos(t_infos *infos)
 {
 	infos->first_cmd = NULL;
-	free(infos->line);
+	//free(infos->line);
 	free_tokens(infos);
 	free_cmnds(infos);
 }

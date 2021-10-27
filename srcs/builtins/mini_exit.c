@@ -6,7 +6,7 @@
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 13:19:42 by avogt             #+#    #+#             */
-/*   Updated: 2021/10/22 15:12:59 by avogt            ###   ########.fr       */
+/*   Updated: 2021/10/22 16:42:01 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ static int	ft_atoi_exit_code(const char *str)
 		result_tmp = (result_tmp * 10) + (*str++ - '0');
 	if (*str != '\0' && !ft_isspace(*str))
 		return (-1);
-	return ((unsigned char)result_tmp * sign);
+	return ((unsigned char)(result_tmp * sign));
 }
 
 int	mini_exit(t_infos *infos, t_cmd *cmd)
@@ -71,6 +71,6 @@ int	mini_exit(t_infos *infos, t_cmd *cmd)
 	free_infos(infos);
 	rl_clear_history();
 	if (exit_code == -1)
-		exit(1);
+		exit(2);
 	exit(exit_code);
 }

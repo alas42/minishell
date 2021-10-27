@@ -6,7 +6,7 @@
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 13:21:00 by avogt             #+#    #+#             */
-/*   Updated: 2021/10/20 18:39:35 by avogt            ###   ########.fr       */
+/*   Updated: 2021/10/22 16:30:54 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ static void	child_process(t_infos *infos, t_cmd *cmd)
 {
 	int	ret;
 
-	ret = 0;
+	ret = -1;
 	if (child_fds(infos, cmd))
 	{
 		print_error(E_CLOSE, infos);
@@ -68,6 +68,8 @@ static void	child_process(t_infos *infos, t_cmd *cmd)
 	if (cmd->builtin)
 	{
 		ret = choose_builtin(infos, cmd);
+		if (ret > -1)
+			return ;
 	}
 	if (!cmd->builtin || ret == -1)
 	{
