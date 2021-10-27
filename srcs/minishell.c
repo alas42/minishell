@@ -6,7 +6,7 @@
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 13:38:06 by avogt             #+#    #+#             */
-/*   Updated: 2021/10/27 12:31:17 by avogt            ###   ########.fr       */
+/*   Updated: 2021/10/27 12:40:33 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,13 +28,13 @@ int	exec_cmds(t_infos *infos)
 	return (1);
 }
 
-void	minishell(t_infos *infos, int int_mode, char *argv)
+void	minishell(t_infos *infos, int int_mode)
 {
 	while (int_mode)
 	{
 		if (int_mode == 1)
 		{
-			infos->line = ft_strdup(argv);
+			infos->line = readline("$ ");
 			if (!infos->line)
 			{
 				ft_putendl_fd("exit", STDOUT_FILENO);
@@ -65,7 +65,7 @@ int	main(int ac, char **av, char **envp)
 	signal(SIGINT, sigint_handler);
 	signal(SIGQUIT, sigquit_handler);
 	int_mode = isatty(STDIN_FILENO);
-	minishell(infos, int_mode, av[2]);
+	minishell(infos, int_mode);
 	free_infos(infos);
 	return (0);
 	(void)ac;
