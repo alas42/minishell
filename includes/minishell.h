@@ -79,7 +79,7 @@ typedef struct s_cmd
 	int				pipe_out;
 	int				fd_infile;
 	int				fd_outfile;
-	int				here_doc_count;
+	int				here_doc;
 	char			*name_infile;
 	char			*name_outfile;
 	char			**arg;

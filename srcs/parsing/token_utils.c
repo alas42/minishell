@@ -17,6 +17,7 @@ void	*cmnd_init(void)
 	cmd->process = -1;
 	cmd->fd_infile = -1;
 	cmd->fd_outfile = -1;
+	cmd->here_doc = 0;
 	cmd->name_infile = NULL;
 	cmd->name_outfile = NULL;
 	cmd->next = NULL;
@@ -43,6 +44,7 @@ void	cmd_lst_add_back(t_cmd *cmd, t_infos *info)
 	cmd->prev = ls;
 	ls->next = cmd;
 }
+
 
 //For adding the info->commands->redirection node (t_token) in info->commands
 void	red_lst_add_back(t_cmd *cmd, t_token *new)
