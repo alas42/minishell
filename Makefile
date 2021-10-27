@@ -36,6 +36,7 @@ UTILS_FILES = utils_cmds.c \
 	utils_paths.c \
 	utils_env_getters.c \
 	utils_infos.c \
+	utils_builtins.c \
 	free.c \
 	free_commands.c
 

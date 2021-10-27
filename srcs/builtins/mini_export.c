@@ -6,7 +6,7 @@
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 13:19:31 by avogt             #+#    #+#             */
-/*   Updated: 2021/10/22 12:45:34 by avogt            ###   ########.fr       */
+/*   Updated: 2021/10/27 12:16:10 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,28 +95,26 @@ void	print_export(t_infos *infos)
 	print_asci_order(infos, number_env, order);
 }
 
-static char	*join_args(t_cmd *cmd, t_infos *infos)
+static int	check_tab_identifier(char **key_value_tab, char *str)
 {
-	char	*final_str;
-	int		total_len;
-	int		i;
+	int	ret;
 
-	i = 0;
-	total_len = 1;
-	while (cmd->arg[++i])
-		total_len += ft_strlen(cmd->arg[i]);
-	final_str = malloc(sizeof(char) * (total_len + i - 1));
-	if (!final_str)
-		print_error(E_MALLOC, infos);
-	final_str[0] = '\0';
-	i = 0;
-	while (cmd->arg[++i])
+	ret = 0;
+	if (!key_value_tab)
+		ret = 1;
+	else if (!ft_strncmp(str, "=", 1))
+		ret = 1;
+	else if (check_valid_identifier(key_value_tab[0]))
+		ret = 1;
+	if (ret == 1)
 	{
-		if (i != 1)
-			final_str = ft_strcat(final_str, " ");
-		final_str = ft_strcat(final_str, cmd->arg[i]);
+		ft_putstr_fd("minishell: export: « ", STDERR_FILENO);
+		ft_putstr_fd(str, STDERR_FILENO);
+		ft_putendl_fd(" » : identifiant non valable", STDERR_FILENO);
+		ft_free_tab_ptr(key_value_tab);
+		free(str);
 	}
-	return (final_str);
+	return (ret);
 }
 
 int	mini_export(t_infos *infos, t_cmd *cmd)
@@ -133,16 +131,20 @@ int	mini_export(t_infos *infos, t_cmd *cmd)
 		return (0);
 	}
 	key_value_tab = ft_split_char(cmd->arg[1], '=');
-	ret_find_path = find_pos_key(infos, key_value_tab[0]);
 	str_to_add = join_args(cmd, infos);
-	if (ret_find_path > -1)
+	if (!check_tab_identifier(key_value_tab, str_to_add))
 	{
-		free(infos->envs[ret_find_path]);
-		infos->envs[ret_find_path] = ft_strdup(str_to_add);
+		ret_find_path = find_pos_key(infos, key_value_tab[0]);
+		if (ret_find_path > -1)
+		{
+			free(infos->envs[ret_find_path]);
+			infos->envs[ret_find_path] = ft_strdup(str_to_add);
+		}
+		else
+			infos->envs = add_env_tab(infos->envs, str_to_add);
+		ft_free_tab_ptr(key_value_tab);
+		free(str_to_add);
+		return (0);
 	}
-	else
-		infos->envs = add_env_tab(infos->envs, str_to_add);
-	ft_free_tab_ptr(key_value_tab);
-	free(str_to_add);
-	return (0);
+	return (1);
 }
