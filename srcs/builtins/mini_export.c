@@ -6,7 +6,7 @@
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 13:19:31 by avogt             #+#    #+#             */
-/*   Updated: 2021/10/27 12:30:18 by avogt            ###   ########.fr       */
+/*   Updated: 2021/10/27 12:53:40 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,26 +95,20 @@ void	print_export(t_infos *infos)
 	print_asci_order(infos, number_env, order);
 }
 
-static int	check_tab_identifier(char **key_value_tab, char *str)
+static void	mini_export_end(t_infos *infos, char **key_value, char *str)
 {
-	int	ret;
+	int	ret_find_path;
 
-	ret = 0;
-	if (!key_value_tab)
-		ret = 1;
-	else if (!ft_strncmp(str, "=", 1))
-		ret = 1;
-	else if (check_valid_identifier(key_value_tab[0]))
-		ret = 1;
-	if (ret == 1)
+	ret_find_path = find_pos_key(infos, key_value[0]);
+	if (ret_find_path > -1)
 	{
-		ft_putstr_fd("minishell: export: « ", STDERR_FILENO);
-		ft_putstr_fd(str, STDERR_FILENO);
-		ft_putendl_fd(" » : identifiant non valable", STDERR_FILENO);
-		ft_free_tab_ptr(key_value_tab);
-		free(str);
+		free(infos->envs[ret_find_path]);
+		infos->envs[ret_find_path] = ft_strdup(str);
 	}
-	return (ret);
+	else
+		infos->envs = add_env_tab(infos->envs, str);
+	ft_free_tab_ptr(key_value);
+	free(str);
 }
 
 int	mini_export(t_infos *infos, t_cmd *cmd)
@@ -134,16 +128,7 @@ int	mini_export(t_infos *infos, t_cmd *cmd)
 	str_to_add = join_args(cmd, infos);
 	if (!check_tab_identifier(key_value_tab, str_to_add))
 	{
-		ret_find_path = find_pos_key(infos, key_value_tab[0]);
-		if (ret_find_path > -1)
-		{
-			free(infos->envs[ret_find_path]);
-			infos->envs[ret_find_path] = ft_strdup(str_to_add);
-		}
-		else
-			infos->envs = add_env_tab(infos->envs, str_to_add);
-		ft_free_tab_ptr(key_value_tab);
-		free(str_to_add);
+		mini_export_end(infos, key_value_tab, str_to_add);
 		return (0);
 	}
 	return (1);

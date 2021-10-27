@@ -6,7 +6,7 @@
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/22 19:06:10 by avogt             #+#    #+#             */
-/*   Updated: 2021/10/22 19:30:49 by avogt            ###   ########.fr       */
+/*   Updated: 2021/10/27 12:49:58 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,28 @@ int	check_valid_identifier(char *arg)
 		i++;
 	}
 	return (0);
+}
+
+int	check_tab_identifier(char **key_value_tab, char *str)
+{
+	int	ret;
+
+	ret = 0;
+	if (!key_value_tab)
+		ret = 1;
+	else if (!ft_strncmp(str, "=", 1))
+		ret = 1;
+	else if (check_valid_identifier(key_value_tab[0]))
+		ret = 1;
+	if (ret == 1)
+	{
+		ft_putstr_fd("minishell: export: « ", STDERR_FILENO);
+		ft_putstr_fd(str, STDERR_FILENO);
+		ft_putendl_fd(" » : identifiant non valable", STDERR_FILENO);
+		ft_free_tab_ptr(key_value_tab);
+		free(str);
+	}
+	return (ret);
 }
 
 char	*join_args(t_cmd *cmd, t_infos *infos)

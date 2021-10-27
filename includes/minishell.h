@@ -6,7 +6,7 @@
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 13:57:49 by avogt             #+#    #+#             */
-/*   Updated: 2021/10/27 12:39:41 by avogt            ###   ########.fr       */
+/*   Updated: 2021/10/27 12:50:09 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -287,6 +287,7 @@ void		print_bash_error(int state, t_cmd *cmd);
 
 void		minishell(t_infos *infos, int int_mode);
 int			check_valid_identifier(char *arg);
+int			check_tab_identifier(char **key_value_tab, char *str);
 char		*join_args(t_cmd *cmd, t_infos *infos);
 
 #endif

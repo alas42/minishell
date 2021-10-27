@@ -6,7 +6,7 @@
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 13:19:58 by avogt             #+#    #+#             */
-/*   Updated: 2021/10/22 17:56:44 by avogt            ###   ########.fr       */
+/*   Updated: 2021/10/27 12:49:02 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,8 @@ static int	mini_chdir(char	*path, char *oldpath)
 		{
 			ft_putstr_fd("minishell: cd: ", STDERR_FILENO);
 			ft_putstr_fd(path, STDERR_FILENO);
-			ft_putendl_fd(": Aucun fichier ou dossier de ce type", STDERR_FILENO);
+			ft_putendl_fd(": Aucun fichier ou dossier de ce type",
+				STDERR_FILENO);
 		}
 		free(path);
 		free(oldpath);
