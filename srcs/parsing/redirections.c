@@ -58,7 +58,6 @@ void	last_here_doc(t_cmd *cmd, char *str)
 	int		ret;
 
 	cmd->fd_infile = open("here_doc_f", O_TRUNC | O_WRONLY | O_CREAT, 0644);
-	printf("file descriptor is cmd->fd_infile [%d] str[%s]\n", cmd->fd_infile, str);
 	i = -1;
 	while ((i = get_next_line(1, &line)) > 0)
 	{
@@ -68,10 +67,14 @@ void	last_here_doc(t_cmd *cmd, char *str)
 			break;
 		}
 		ret = fd_write(cmd->fd_infile, line);
-		printf("wrote [%d] char\n", ret);
+		(void)ret;
 		free(line);
 	}
-	printf("ending\n");
+	i = close(cmd->fd_infile);
+	if (i < 0)
+		printf("Error in closing file\n");
+	cmd->fd_infile = open("here_doc_f", O_RDONLY, 0644);
+	cmd->here_doc = 1;
 }
 
 void    handle_here_doc(t_cmd *cmd, int pos)
@@ -99,7 +102,7 @@ void    handle_here_doc(t_cmd *cmd, int pos)
 		last_here_doc(cmd, red->content);
 		return ;
 	}
-	//here_doc_exec(red->content);
+	here_doc_exec(red->content);
 }
 
 void    handle_infile(char *infile, char *type, t_cmd *cmd, int pos)

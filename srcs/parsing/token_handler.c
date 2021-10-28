@@ -75,10 +75,9 @@ void    parse_infile(t_infos *info)
 				free(temp->type);
 				temp->type = ft_strdup("here_doc");
 			}
-			 if (temp->next == NULL)
+			if (temp->next == NULL)
 			{
 				printf("bash: syntax error near unexpected token `newline'");
-				printf("Error in hanfle output no outfile\n");
 				return;
 			}
 			get_infile(temp);
