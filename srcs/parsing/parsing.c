@@ -76,11 +76,6 @@ void    start_parsing(t_infos *info)
 	parse_infile(info);
 	move_to_cmd(info);
 	handle_redirections(info);
-
-	// printf("--------------PRINTING CMDS-------------------\n\n\n\n");
-	// print_cmnds(info);
-	// printf("--------------END OF CMDS-------------------\n\n\n\n");
-
 }
 
 

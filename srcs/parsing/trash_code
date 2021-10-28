@@ -1,29 +1,79 @@
 
-char	*merge_content(char *str, char *content, int space)
-{
-	char	*temp;
 
-	temp = NULL;
-	if (space == 1)
-	{
-		if (str)
-		{
-   			temp = ft_strdup(str);
-			free(str);
-			str = ft_strjoin(temp, " ");
-			free(temp);
-		}
-	}
-	if (str)
-	{
-   		temp = ft_strdup(str);
-		free(str);
-	}
-	str = ft_strjoin(temp, content);
-	if (temp)
-		free(temp);
-	return (str);
-}
+
+//IMPORTANT
+
+// char	**get_cmd_args(t_infos *info, int start, int end)
+// {
+// 	int		i;
+// 	t_token	*tokens;
+// 	int		counter;
+// 	char	**args;
+// 	char	*join_str;
+
+// 	i = -1;
+// 	counter = 0;
+// 	tokens = info->tokens;
+// 	join_str = ft_strdup("");
+// 	while(++i < start)
+// 		tokens = tokens->next;
+// 	while(i++ <= end && tokens != NULL)
+// 	{
+// 		if (!(ft_strcmp(tokens->type, "literal")))
+// 		{
+// 			printf("token->content [%s]\n", tokens->content);
+// 			join_str = merge_content(join_str, tokens->content, 1);
+// 			counter++;
+// 		}
+// 		tokens = tokens->next;
+// 	}
+// 	printf("counter is [%d]\n", counter);
+
+// 	join_str[ft_strlen(join_str) - 1] = '\0';
+// 	args = ft_split(join_str, ' ');
+// 	free(join_str);
+// 	return (args);
+// }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// char	*merge_content(char *str, char *content, int space)
+// {
+// 	char	*temp;
+
+// 	temp = NULL;
+// 	if (space == 1)
+// 	{
+// 		if (str)
+// 		{
+//    			temp = ft_strdup(str);
+// 			free(str);
+// 			str = ft_strjoin(temp, " ");
+// 			free(temp);
+// 		}
+// 	}
+// 	if (str)
+// 	{
+//    		temp = ft_strdup(str);
+// 		free(str);
+// 	}
+// 	str = ft_strjoin(temp, content);
+// 	if (temp)
+// 		free(temp);
+// 	return (str);
+// }
 
 
 
