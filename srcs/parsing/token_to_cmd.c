@@ -13,32 +13,53 @@ void	fill_redirections(t_token *tokens, t_cmd *cmd)
 	temp = NULL;
 }
 
-char	**get_cmd_args(t_infos *info, int start, int end)
+int		get_cmd_args_num(t_infos *info, int start, int end)
 {
+	t_token *tokens;
 	int		i;
-	t_token	*tokens;
-	int		counter;
-	char	**args;
-	char	*join_str;
+	int 	counter;
 
+	tokens =info->tokens;
 	i = -1;
 	counter = 0;
-	tokens = info->tokens;
-	join_str = ft_strdup("");
+	while(++i < start)
+		tokens = tokens->next;
+	while(i++ <= end && tokens != NULL)
+	{
+		if (!(ft_strcmp(tokens->type, "literal")))
+			counter++;
+		tokens = tokens->next;
+	}
+	return (counter);
+}
+
+char	**get_cmd_args(t_infos *info, int start, int end)
+{
+	t_token *tokens;
+	int		i;
+	int 	counter;
+	char	**args;
+	int		j;
+
+	i = -1;
+	j = 0;
+	tokens =info->tokens;
+	counter = get_cmd_args_num(info, start, end);
+	args = (char **)malloc(sizeof(char *) * (counter + 1));
+	if (args == NULL)
+		printf("malloc error\n");
 	while(++i < start)
 		tokens = tokens->next;
 	while(i++ <= end && tokens != NULL)
 	{
 		if (!(ft_strcmp(tokens->type, "literal")))
 		{
-			join_str = merge_content(join_str, tokens->content, 1);
-			counter++;
+			args[j] = ft_strdup(tokens->content);
+			j++;
 		}
 		tokens = tokens->next;
 	}
-	join_str[ft_strlen(join_str) - 1] = '\0';
-	args = ft_split(join_str, ' ');
-	free(join_str);
+	args[j] = NULL;
 	return (args);
 }
 
