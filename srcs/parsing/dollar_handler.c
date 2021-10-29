@@ -29,14 +29,14 @@ char	*join_double_char(char **args)
 	return(temp);
 }
 
-char	*get_word(char *word, int size, int start, int end)
+char	*get_word(char *word, int size, int start, int end, t_infos *info)
 {
 	char *str;
 	int		i;
 
 	str = (char *)malloc(sizeof(char) * size);
 	if (str == NULL)
-		printf("Malloc error\n");
+		print_parsing_error(0, info);
 	if (end < 0)
 		end = ft_strlen(word);
 	i = 0;
@@ -66,8 +66,8 @@ char	*check_special_char(t_infos *info, char *content, char *word)
 		i++;
 	}
 	j = (ft_strlen(word) - i) + 1;
-	dollar = get_word(word, i + 1, 0, i);
-	rest = get_word(word, j, i, -1);
+	dollar = get_word(word, i + 1, 0, i, info);
+	rest = get_word(word, j, i, -1, info);
 	value = get_dollar_value(info, dollar);
 	value = check_dollar_ret_val(value);
 	value = merge_content(value, rest, 0);
@@ -87,11 +87,11 @@ char	*handle_question(t_infos *info, char *content, char *word)
 
 	dollar = (char *)malloc(sizeof(char) * 2);
 	if (dollar == NULL)
-		printf("Malloc Error\n");
+		print_parsing_error(0, info);
 	dollar[0] = word[0];
 	dollar[1] = '\0';
 	j = ft_strlen(word);
-	rest = get_word(word, j, 1, -1);
+	rest = get_word(word, j, 1, -1, info);
 	if (dollar[0] == '?')
 		value = get_exit_code(info);
 	else

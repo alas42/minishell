@@ -29,10 +29,7 @@ t_token  *token_init()
 
 	data = (t_token *)malloc(sizeof(t_token));
 	if (data == NULL)
-	{
-		printf("malloc error in token_init\n");
 		return (NULL);
-	}
 	data->content = NULL;
 	data->type = NULL;
 	data->pos = -1;
@@ -85,8 +82,8 @@ void    add_to_struct(t_infos *info)
 	{
 		new = token_init();
 		if (new == NULL)
-			printf("ERROR in add struct\n");
-		new->content = char_to_str(info->line[i]);
+			print_parsing_error(0, info);
+		new->content = char_to_str(info->line[i], info);
 		new->pos = i;
 		get_token_type(new, info, i);
 		lst_add_back(info, new);

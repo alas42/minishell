@@ -1,12 +1,9 @@
 #include "../includes/minishell.h"
 
-void    get_outfile(t_token *temp)
+void    get_outfile(t_token *temp, t_infos *info)
 {
 	if (ft_strcmp(temp->next->type, "literal"))
-	{
-		printf("Unexpected token near output red\n");
-		printf("get_output_file file name missing\n");
-	}
+		print_parsing_error(7, info);
 	else
 	{
 		free(temp->next->type);
@@ -14,13 +11,10 @@ void    get_outfile(t_token *temp)
 	}
 }
 
-void    get_infile(t_token *temp)
+void    get_infile(t_token *temp, t_infos *info)
 {
 	if (ft_strcmp(temp->next->type, "literal"))
-	{
-		printf("Unexpected token near output red\n");
-		printf("get_input_file file name or here_doc word missing\n");
-	}
+		print_parsing_error(6, info);
 	else
 	{
 		free(temp->next->type);
@@ -41,7 +35,7 @@ void    parse_outfile(t_infos *info)
 	   if (!(ft_strcmp(temp->type, "output_red")))
 		{          
 			if (ft_strlen(temp->content) > 2)
-				printf("error - invalid character after >>\n");
+				print_parsing_error(3, info);
 			else if (ft_strlen(temp->content)== 2)
 			{
 				free(temp->type);
@@ -49,11 +43,10 @@ void    parse_outfile(t_infos *info)
 			}
 			if (temp->next == NULL)
 			{
-				printf("bash: syntax error near unexpected token `newline`\n");
-				printf("Error in handle output no outfile\n");
+				print_parsing_error(5, info);
 				return;
 			}
-			get_outfile(temp);
+			get_outfile(temp, info);
 		}
 		temp = temp->next;
 	}
@@ -69,7 +62,7 @@ void    parse_infile(t_infos *info)
 		if (!(ft_strcmp(temp->type, "input_red")))
 		{
 			if (ft_strlen(temp->content) > 2)
-				printf("error - invalid character after << ");
+				print_parsing_error(4, info);
 			else if (ft_strlen(temp->content) == 2)
 			{
 				free(temp->type);
@@ -77,10 +70,10 @@ void    parse_infile(t_infos *info)
 			}
 			if (temp->next == NULL)
 			{
-				printf("bash: syntax error near unexpected token `newline'");
+				print_parsing_error(5, info);
 				return;
 			}
-			get_infile(temp);
+			get_infile(temp, info);
 		}
 		temp = temp->next;
 	}

@@ -1,7 +1,7 @@
 #include "../includes/minishell.h"
 
 //Remove the first and last char from content '' ""
-char    *update_quotes_content(t_token *temp)
+char    *update_quotes_content(t_token *temp, t_infos *info)
 {
 	char    *str;
 	int     len;
@@ -10,6 +10,11 @@ char    *update_quotes_content(t_token *temp)
 
 	len = ft_strlen(temp->content);
 	str = (char *)malloc(sizeof(char) * len);
+	if (str == NULL)
+	{
+		print_parsing_error(0, info);
+		return (NULL);
+	}
 	while(i < len - 2)
 	{
 		str[i] = temp->content[i+1];
@@ -55,7 +60,7 @@ void    update_token_type(t_infos *info, char *from, char *to)
 				temp->type = ft_strdup(to);
 			else
 				temp->type = ft_strdup("literal_dollar");
-			temp->content = update_quotes_content(temp);
+			temp->content = update_quotes_content(temp, info);
 			break;
 		}
 		temp = temp->next;

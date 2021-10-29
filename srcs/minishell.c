@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
+/*   By: yassharm <yassharm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 13:38:06 by avogt             #+#    #+#             */
-/*   Updated: 2021/10/29 17:54:50 by avogt            ###   ########.fr       */
+/*   Updated: 2021/10/30 01:32:25 by yassharm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,10 +47,12 @@ void	minishell(t_infos *infos, int int_mode)
 				infos->first_cmd = infos->commands;
 				if (infos->line)
 					add_history(infos->line);
-				if (infos->nb_cmd > 1
-					|| solo_builtin(infos, infos->first_cmd) == -1)
+				if (infos->parse_error == 0 &&
+					(infos->nb_cmd > 1
+					|| solo_builtin(infos, infos->first_cmd) == -1))
 					exec_cmds(infos);
 			}
+			infos->parse_error = 0;
 		}
 		clear_infos(infos);
 		int_mode = isatty(STDIN_FILENO);

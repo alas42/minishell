@@ -6,7 +6,7 @@
 /*   By: yassharm <yassharm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 13:57:49 by avogt             #+#    #+#             */
-/*   Updated: 2021/10/29 21:31:34 by yassharm         ###   ########.fr       */
+/*   Updated: 2021/10/30 01:44:25 by yassharm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,7 @@ typedef struct s_infos
 	char			*line;
 	char			**paths;
 	int				pos_path;
+	int				parse_error;
 	struct s_token	*tokens;
 	struct s_cmd	*commands;
 	struct s_cmd	*first_cmd;
@@ -143,7 +144,7 @@ void		update_tokens_pos(t_infos *info);
 //parsing_utils.c
 int			ft_strncmp(const char *s1, const char *s2, size_t n);
 int			ft_isspace_isdigit(char c, char d);
-char		*char_to_str(char c);
+char		*char_to_str(char c, t_infos *info);
 char		*remove_space_digit(char *line, char c);
 int			ft_isallspace(char *line);
 
@@ -153,7 +154,7 @@ void    	update_dollar_type(t_infos *info, int pos);
 void		get_dollar_prev(t_infos *info);
 
 //dollar_expander.c (expand dollar above 25)
-char		*get_dollar_value_help(int size, char *env);
+char		*get_dollar_value_help(int size, char *env, t_infos *info);
 char		*get_dollar_value(t_infos *info, char *str);
 char    	*check_dollar_arg(t_infos *info, char *arg);
 void    	expand_dollar(t_infos *info);
@@ -161,7 +162,7 @@ void    	expand_dollar(t_infos *info);
 //dollar_handler.c
 int			is_all_numdigit(char *str);
 char		*join_double_char(char **args);
-char		*get_word(char *word, int size, int start, int end);
+char		*get_word(char *word, int size, int start, int end, t_infos *info);
 char		*check_special_char(t_infos *info, char *content, char *word);
 char		*check_dollar_ret_val(char *value);
 char		*handle_question(t_infos *info, char *content, char *word);
@@ -175,7 +176,7 @@ int    		handle_single_quote(t_token *token, t_infos *info);
 void		check_quotes(t_infos *info);
 
 //quotes_utils.c
-char    	*update_quotes_content(t_token *temp);
+char    	*update_quotes_content(t_token *temp, t_infos *info);
 int     	check_dollar(char *content);
 void    	update_token_type(t_infos *info, char *from, char *to);
 
@@ -184,9 +185,9 @@ int			here_doc_exec(char *str);
 void		here_doc_ctrl_c(int status);
 int			check_for_ctrl_c(void);
 int			last_here_doc(t_cmd *cmd, char *str);
-int			handle_here_doc(t_cmd *cmd, int pos);
-void    	handle_infile(char *infile, char *type, t_cmd *cmd, int pos);
-void    	handle_outfile(char *outfile, char *type, t_cmd *cmd);
+int			handle_here_doc(t_cmd *cmd, int pos, t_infos *info);
+void    	handle_infile(char *infile, t_cmd *cmd, int pos, t_infos *info);
+void    	handle_outfile(char *outfile, char *type, t_cmd *cmd, t_infos *info);
 void		handle_redirections(t_infos *info);
 
 
@@ -195,8 +196,8 @@ int    		check_last_input_red(t_cmd *cmd, int pos);
 int			fd_write(int fd, char *line);
 
 //files_parser.c
-void    	get_outfile(t_token *temp);
-void    	get_infile(t_token *temp);
+void    	get_outfile(t_token *temp, t_infos *info);
+void    	get_infile(t_token *temp, t_infos *info);
 void		parse_outfile(t_infos *info);
 void		parse_infile(t_infos *info);
 
@@ -212,7 +213,7 @@ void		cmd_lst_add_back(t_cmd *cmd, t_infos *info);
 void		*cmnd_init(void);
 
 //token_to_cmd.c
-void		fill_redirections(t_token *tokens, t_cmd *cmd);
+void		fill_redirections(t_token *tokens, t_cmd *cmd, t_infos *info);
 int			get_cmd_args_num(t_infos *info, int start, int end);
 char		**get_cmd_args(t_infos *info, int start, int end);
 void		fill_cmd(t_infos *info, int start, int end, t_cmd *cmd);
@@ -321,6 +322,7 @@ void		set_signals(void);
 */
 void		print_error(int state, t_infos *infos);
 void		print_bash_error(int state, t_cmd *cmd);
+void		print_parsing_error(int state, t_infos *infos);
 
 void		minishell(t_infos *infos, int int_mode);
 int			check_valid_identifier(char *arg);
