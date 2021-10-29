@@ -103,5 +103,3 @@ void    check_quotes(t_infos *info)
 		token = token->next;
 	}
 }
-//echo "$hello" '$hello' $hello
-//Need to do something about the errors and handling their return code

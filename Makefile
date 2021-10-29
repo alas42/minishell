@@ -19,20 +19,22 @@ EXEC_FILES = exec_cmds.c \
 	parent_fds.c
 
 PARSING_FILES = parsing_init.c \
-	parsing_utils.c \
 	parsing.c \
 	lexer.c \
-	print_temp.c \
-	dollar_parser.c \
-	token_handler.c \
+	libft_utils.c \
+	parsing_utils.c \
 	quotes_handler.c \
 	quotes_utils.c \
+	dollar_parser.c \
+	dollar_handler.c \
+	dollar_expander.c \
+	files_parser.c \
+	commands_init.c \
 	token_to_cmd.c \
 	token_to_cmd_utils.c \
-	token_handler_utils.c \
-	token_utils.c \
-	dollar_handler.c \
 	redirections.c \
+	redirections_utils.c \
+	print_temp.c \
 
 UTILS_FILES = utils_cmds.c \
 	utils_env.c \
