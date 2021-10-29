@@ -1,5 +1,20 @@
 #include "../includes/minishell.h"
 
+int		is_all_numdigit(char *str)
+{
+	int		i;
+
+	i = 0;
+	while(str[i])
+	{
+		if (!(ft_isalpha(str[i])) && !(ft_isdigit(str[i])))
+			return (i);
+		i++;
+	}
+	return (0);
+}
+
+
 char    *get_dollar_value(t_infos *info, char *str)
 {
 	int     i;
@@ -65,6 +80,67 @@ char	*check_dollar_ret_val(char *value)
 	return (value);
 }
 
+
+char	*get_word(char *word, int size, int start, int end)
+{
+	// printf("word [%s]\n", word);
+	// printf("size [%d]\n", size);
+	// printf("start [%d]\n", start);
+	// printf("end [%d]\n", end);
+
+	char *str;
+	int		i;
+
+	str = (char *)malloc(sizeof(char) * size);
+	if (str == NULL)
+		printf("Malloc error\n");
+	if (end < 0)
+		end = ft_strlen(word);
+	i = 0;
+	while(start < end)
+	{
+		str[i] = word[start];
+		start++;
+		i++;
+	}
+	str[i] = '\0';
+	return (str);
+
+}
+/*
+echo "hello prev$USER'this_should_print hello"
+*/
+
+char	*check_special_char(t_infos *info, char *content, char *word)
+{
+	char	*dollar;
+	char	*rest;
+	char	*value;
+	int		i;
+	int		j;
+
+	(void)info;
+	i = 0;
+	while(word[i])
+	{
+		if (!(ft_isalpha(word[i])) && !(ft_isdigit(word[i])))
+			break;
+		i++;
+	}
+	j = (ft_strlen(word) - i) + 1;
+	dollar = get_word(word, i + 1, 0, i);
+	rest = get_word(word, j, i, -1);
+	value = get_dollar_value(info, dollar);
+	value = check_dollar_ret_val(value);
+	value = merge_content(value, rest, 0);
+	free(rest);
+	content = merge_content(content, value, 0);
+	free(value);
+	free(dollar);
+	return (content);
+}
+
+
 // echo "$one$two$three"
 char    *check_dollar_arg(t_infos *info, char *arg)
 {
@@ -72,16 +148,26 @@ char    *check_dollar_arg(t_infos *info, char *arg)
 	char    *value;
 	char    *content;
 	int     i;
+	int		ret;
 
+	ret = -1;
 	i = 1;
 	temp_args = ft_split(arg, '$');
 	content = ft_strdup(temp_args[0]);
 	while (temp_args[i])
 	{
-		value = get_dollar_value(info, temp_args[i]);
-		value = check_dollar_ret_val(value);
-		content = merge_content(content, value, 0);
-		free(value);
+		ret = is_all_numdigit(temp_args[i]);
+		if (ret == 0)
+		{
+			value = get_dollar_value(info, temp_args[i]);
+			value = check_dollar_ret_val(value);
+			content = merge_content(content, value, 0);
+			free(value);
+		}
+		else
+		{
+			content = check_special_char(info, content, temp_args[i]);
+		}
 		i++;
 	}
 	free_doub_char(temp_args);

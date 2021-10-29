@@ -39,8 +39,10 @@ void    get_dollar(t_infos *info)
 {
 	t_token *temp;
 	int     i;
+	int		counter;
 
 	i = 0;
+	counter = 0;
 	temp = info->tokens;
 	while (temp && (ft_strcmp(temp->type, "pipe")))
 	{
@@ -49,13 +51,19 @@ void    get_dollar(t_infos *info)
 			if (temp->next != NULL && !(ft_strcmp(temp->next->type, "literal")))
 			{
 				merge_tokens(info, i, 1);
-				update_dollar_type(info, i);
+				update_dollar_type(info, i);				
 				temp = info->tokens;
+				counter = 1;
 				i = 0;
 			}
 		}
-		i++;
-		temp = temp->next;
+		if (counter == 1)
+			counter = 0;
+		else
+		{
+			i++;
+			temp = temp->next;
+		}
 	}
 }
 
@@ -91,3 +99,16 @@ void	expand_dollar(t_infos *info)
 		token = token->next;
 	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+// echo "$" should we print $

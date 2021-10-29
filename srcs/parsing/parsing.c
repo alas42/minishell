@@ -65,11 +65,30 @@ void    start_parsing(t_infos *info)
 	if (info->tokens == NULL)
 		return ;
 	get_dollar(info);
+	// printf("--------------BEFORE CHECK QUOTES------------------\n\n\n\n");
+	// print_token_list(info->tokens);
+	// printf("----------------END OF TOKENS-----------------\n\n\n\n");
+
 	check_quotes(info);
-	merge_same(info);
+
+	// printf("--------------AFTER CHECK QUOTES-------------------\n\n\n\n");
+	// print_token_list(info->tokens);
+	// printf("----------------END OF TOKENS-----------------\n\n\n\n");
+
+	// merge_same(info);
 	get_dollar_prev(info);
 	// parse_here_doc(info);
+
+
+	// printf("--------------AFTER MERGESAME AND GET DOLLAR PREV. BEFORE EXPASION-------------------\n\n\n\n");
+	// print_token_list(info->tokens);
+	// printf("----------------END OF TOKENS-----------------\n\n\n\n");
+
 	expand_dollar(info);
+	// printf("--------------AFTER EXPANSION-------------------\n\n\n\n");
+	// print_token_list(info->tokens);
+	// printf("----------------END OF TOKENS-----------------\n\n\n\n");
+
 	merge_same(info);
 	remove_space_tokens(info);
 	parse_outfile(info);
@@ -124,7 +143,16 @@ hello line 2
 $one
 //stops
 
+ECHO CASES TO HANDLE
+echo $123
+	my 	- []
+	bash - [23]
 
+echo $USER$12USER$USER=4$USER12
+	my 		- yassharmyassharm=4
+	bash	- yassharm2USERyassharm=4
 
-
+echo $USER $USER9999 $USER8888 $USER7777 "$USER"
+	my [yassharm    yassharm]
+	bash [yassharm yassharm]
 */
