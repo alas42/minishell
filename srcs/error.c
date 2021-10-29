@@ -6,7 +6,7 @@
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 13:27:46 by avogt             #+#    #+#             */
-/*   Updated: 2021/10/13 18:31:21 by avogt            ###   ########.fr       */
+/*   Updated: 2021/10/28 22:27:14 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,15 @@ void	print_error(int state, t_infos *infos)
 		ft_putendl_fd("Dup2 error", STDERR_FILENO);
 	else if (state == E_EXECVE)
 		ft_putendl_fd("Execve error", STDERR_FILENO);
+	infos->last_return_code = 1;
+	free_infos(infos);
+	exit(1);
+}
+
+void	print_parsing_error(int state, t_infos *infos)
+{
+	if (state == 1)
+		ft_putendl_fd("Cannot find a closing quote (single)", STDERR_FILENO);
 	infos->last_return_code = 1;
 	free_infos(infos);
 	exit(1);

@@ -6,7 +6,7 @@
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 13:38:06 by avogt             #+#    #+#             */
-/*   Updated: 2021/10/27 12:40:33 by avogt            ###   ########.fr       */
+/*   Updated: 2021/10/29 17:54:50 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ void	minishell(t_infos *infos, int int_mode)
 {
 	while (int_mode)
 	{
+		set_signals();
 		if (int_mode == 1)
 		{
 			infos->line = readline("$ ");
@@ -62,8 +63,6 @@ int	main(int ac, char **av, char **envp)
 	t_infos	*infos;
 
 	infos = init_infos(envp);
-	signal(SIGINT, sigint_handler);
-	signal(SIGQUIT, sigquit_handler);
 	int_mode = isatty(STDIN_FILENO);
 	minishell(infos, int_mode);
 	free_infos(infos);

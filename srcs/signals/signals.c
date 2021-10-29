@@ -1,38 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sigint.c                                           :+:      :+:    :+:   */
+/*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/10/05 13:22:52 by avogt             #+#    #+#             */
-/*   Updated: 2021/10/29 17:25:38 by avogt            ###   ########.fr       */
+/*   Created: 2021/10/29 11:24:30 by avogt             #+#    #+#             */
+/*   Updated: 2021/10/29 14:54:59 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void	set_not_global_but_static(int status)
+void	ignore_signals(void)
 {
-	*get_not_global_but_static() = status;
+	signal(SIGTRAP, SIG_IGN);
+	signal(SIGSEGV, SIG_IGN);
+	signal(SIGTERM, SIG_IGN);
+	signal(SIGBUS, SIG_IGN);
+	signal(SIGABRT, SIG_IGN);
+	signal(SIGWINCH, SIG_IGN);
 }
 
-int	*get_not_global_but_static(void)
+void	ignore_all_signals(void)
 {
-	static int	exit_code = 0;
-
-	return (&exit_code);
+	ignore_signals();
+	signal(SIGINT, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
 }
 
-void	sigint_handler(int status)
+void	set_signals(void)
 {
-	int	code;
-
-	code = 130;
-	set_not_global_but_static(code);
-	(void)status;
-	ft_putchar_fd('\n', STDOUT_FILENO);
-	rl_on_new_line();
-	rl_replace_line("", 0);
-	rl_redisplay();
+	signal(SIGINT, sigint_handler);
+	signal(SIGQUIT, sigquit_handler);
+	ignore_signals();
 }

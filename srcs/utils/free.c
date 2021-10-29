@@ -6,7 +6,7 @@
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 13:28:05 by avogt             #+#    #+#             */
-/*   Updated: 2021/10/22 15:22:52 by avogt            ###   ########.fr       */
+/*   Updated: 2021/10/28 22:34:40 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ void	free_infos(t_infos *infos)
 		ft_free_tab_ptr(infos->paths);
 	if (infos->envs)
 		ft_free_tab_ptr(infos->envs);
+	if (infos->first_cmd)
+		free_cmnds(infos);
 	if (infos->tokens)
 		free_tokens(infos);
 	free(infos);
