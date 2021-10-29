@@ -44,7 +44,8 @@ UTILS_FILES = utils_cmds.c \
 	free_commands.c
 
 SIGNALS_FILES = sigint.c \
-	sigquit.c
+	sigquit.c \
+	signals.c
 
 PARSING_FOLDER = parsing
 UTILS_FOLDER = utils

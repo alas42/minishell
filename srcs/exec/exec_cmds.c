@@ -6,7 +6,7 @@
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 13:21:00 by avogt             #+#    #+#             */
-/*   Updated: 2021/10/22 16:30:54 by avogt            ###   ########.fr       */
+/*   Updated: 2021/10/29 14:50:13 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,9 +62,7 @@ static void	child_process(t_infos *infos, t_cmd *cmd)
 
 	ret = -1;
 	if (child_fds(infos, cmd))
-	{
 		print_error(E_CLOSE, infos);
-	}
 	if (cmd->builtin)
 	{
 		ret = choose_builtin(infos, cmd);
@@ -73,6 +71,7 @@ static void	child_process(t_infos *infos, t_cmd *cmd)
 	}
 	if (!cmd->builtin || ret == -1)
 	{
+		signal(SIGQUIT, SIG_DFL);
 		execve(cmd->arg[0], cmd->arg, infos->envs);
 	}
 	if (!ft_exists(cmd->arg[0]))
@@ -85,17 +84,19 @@ static void	parent_process(t_infos *infos, t_cmd *cmd)
 {
 	int	status;
 
+	ignore_all_signals();
 	if (parent_fds(infos, cmd))
-	{
 		print_error(E_CLOSE, infos);
-	}
 	infos->index_cmd = infos->index_cmd + 1;
 	loop_through_cmds(infos);
 	wait(&status);
 	if (WIFEXITED(status))
 		infos->last_return_code = WEXITSTATUS(status);
 	else if (WIFSIGNALED(status))
+	{
+		ft_putchar_fd('\n', STDERR_FILENO);
 		infos->last_return_code = WTERMSIG(status) + 128;
+	}
 	else
 		infos->last_return_code = 1;
 }

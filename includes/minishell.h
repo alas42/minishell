@@ -6,7 +6,7 @@
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 13:57:49 by avogt             #+#    #+#             */
-/*   Updated: 2021/10/27 12:50:09 by avogt            ###   ########.fr       */
+/*   Updated: 2021/10/29 17:21:08 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,6 @@ typedef struct s_infos
 */
 void		free_infos(t_infos *infos);
 void		free_tokens(t_infos *info);
-void		free_cmd_list(t_infos *infos);
 void		ft_free_tab_ptr(char **ptr);
 void		free_env_list(t_infos *infos);
 void		free_red_tokens(t_cmd *com);
@@ -182,6 +181,13 @@ void		cmd_lst_add_back(t_cmd *cmd, t_infos *info);
 
 //redirections.c
 void		handle_redirections(t_infos *info);
+void		handle_outfile(char *outfile, char *type, t_cmd *cmd);
+void		handle_infile(char *infile, char *type, t_cmd *cmd, int pos);
+int			handle_here_doc(t_cmd *cmd, int pos);
+int			last_here_doc(t_cmd *cmd, char *str);
+int			fd_write(int fd, char *line);
+int			here_doc_exec(char *str);
+int   		check_last_input_red(t_cmd *cmd, int pos);
 
 //token_to_cmd.c
 void		move_to_cmd(t_infos *info);
@@ -281,6 +287,9 @@ int			solo_builtin(t_infos *infos, t_cmd *cmd);
 */
 void		sigint_handler(int status);
 void		sigquit_handler(int signal);
+void		ignore_signals(void);
+void		ignore_all_signals(void);
+void		set_signals(void);
 
 /*
 ** Error
@@ -292,5 +301,8 @@ void		minishell(t_infos *infos, int int_mode);
 int			check_valid_identifier(char *arg);
 int			check_tab_identifier(char **key_value_tab, char *str);
 char		*join_args(t_cmd *cmd, t_infos *infos);
+
+int			*get_not_global_but_static(void);
+void		set_not_global_but_static(int status);
 
 #endif
