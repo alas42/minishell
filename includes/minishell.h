@@ -6,7 +6,7 @@
 /*   By: yassharm <yassharm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 13:57:49 by avogt             #+#    #+#             */
-/*   Updated: 2021/10/29 20:05:38 by yassharm         ###   ########.fr       */
+/*   Updated: 2021/10/29 21:31:34 by yassharm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,6 +164,8 @@ char		*join_double_char(char **args);
 char		*get_word(char *word, int size, int start, int end);
 char		*check_special_char(t_infos *info, char *content, char *word);
 char		*check_dollar_ret_val(char *value);
+char		*handle_question(t_infos *info, char *content, char *word);
+
 
 //quotes_handler.c
 int    		closing_quote_helper(t_token *temp, int mode);

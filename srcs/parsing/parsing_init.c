@@ -16,8 +16,6 @@ void    get_token_type(t_token *new, t_infos *info, int i)
 		new->type = ft_strdup("double_quote");
 	else if (info->line[i] == '$')
 		new->type = ft_strdup("dollar");
-	else if (info->line[i] == '?')
-		new->type = ft_strdup("question");
 	else if (ft_isspace_isdigit(info->line[i], 's'))
 		new->type = ft_strdup("space");
 	else

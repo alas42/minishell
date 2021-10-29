@@ -66,9 +66,6 @@ void    start_parsing(t_infos *info)
 		return ;
 	get_dollar(info);
 	check_quotes(info);
-	// merge_same(info);
-	get_dollar_prev(info);
-	// parse_here_doc(info);
 	expand_dollar(info);
 	merge_same(info);
 	remove_space_tokens(info);
@@ -96,6 +93,7 @@ void    start_parsing(t_infos *info)
 	check_quotes(info);
 	merge_same(info);
 	get_dollar_prev(info);
+	parse_here_doc(info);
 	expand_dollar(info);
 	merge_same(info);
 	remove_space_tokens(info);
