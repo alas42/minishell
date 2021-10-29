@@ -18,31 +18,14 @@ int    check_last_input_red(t_cmd *cmd, int pos)
 	return (0);
 }
 
-void    here_doc_exec(char *str)
+int	fd_write(int fd, char *line)
 {
-	char    *line;
-	int     i;
-
-	i = -1;
-	while ((i = get_next_line(1, &line)) > 0)
-	{
-		if (!(ft_strcmp(line, str)))
-		{
-			free(line);
-			break;
-		}
-		free(line);
-	}
-}
-
-int		fd_write(int fd, char *line)
-{
-	int		i;
-	int		nl;
+	int	i;
+	int	nl;
 
 	nl = 10;
 	i = 0;
-	while(line[i])
+	while (line[i])
 	{
 		write(fd, &line[i], 1);
 		i++;

@@ -6,7 +6,7 @@
 /*   By: yassharm <yassharm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 13:57:49 by avogt             #+#    #+#             */
-/*   Updated: 2021/10/29 19:38:36 by yassharm         ###   ########.fr       */
+/*   Updated: 2021/10/29 20:05:38 by yassharm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,22 +178,18 @@ int     	check_dollar(char *content);
 void    	update_token_type(t_infos *info, char *from, char *to);
 
 //redirections.c
-void		last_here_doc(t_cmd *cmd, char *str);
-void    	handle_here_doc(t_cmd *cmd, int pos);
+int			here_doc_exec(char *str);
+void		here_doc_ctrl_c(int status);
+int			check_for_ctrl_c(void);
+int			last_here_doc(t_cmd *cmd, char *str);
+int			handle_here_doc(t_cmd *cmd, int pos);
 void    	handle_infile(char *infile, char *type, t_cmd *cmd, int pos);
 void    	handle_outfile(char *outfile, char *type, t_cmd *cmd);
 void		handle_redirections(t_infos *info);
-void		handle_outfile(char *outfile, char *type, t_cmd *cmd);
-void		handle_infile(char *infile, char *type, t_cmd *cmd, int pos);
-int			handle_here_doc(t_cmd *cmd, int pos);
-int			last_here_doc(t_cmd *cmd, char *str);
-int			fd_write(int fd, char *line);
-int			here_doc_exec(char *str);
-int   		check_last_input_red(t_cmd *cmd, int pos);
+
 
 //redirections_utils.c
 int    		check_last_input_red(t_cmd *cmd, int pos);
-void    	here_doc_exec(char *str);
 int			fd_write(int fd, char *line);
 
 //files_parser.c

@@ -12,23 +12,6 @@ static void	set_interruption(int status)
 	*get_interruption() = status;
 }
 
-int	check_last_input_red(t_cmd *cmd, int pos)
-{
-	t_token	*red;
-	int		i;
-
-	i = 0;
-	red = cmd->redirection;
-	while (i++ < pos)
-		red = red->next;
-	while (red)
-	{
-		if (!(ft_strcmp(red->type, "here_doc")) || !(ft_strcmp(red->type, "input_red")))
-			return (red->pos);
-		red = red->next;
-	}
-	return (0);
-}
 
 int	here_doc_exec(char *str)
 {
@@ -55,22 +38,6 @@ int	here_doc_exec(char *str)
 		free(line);
 	}
 	return (1);
-}
-
-int	fd_write(int fd, char *line)
-{
-	int	i;
-	int	nl;
-
-	nl = 10;
-	i = 0;
-	while (line[i])
-	{
-		write(fd, &line[i], 1);
-		i++;
-	}
-	write(fd, &nl, 1);
-	return (i);
 }
 
 void	here_doc_ctrl_c(int status)
