@@ -1,6 +1,6 @@
 #include "../includes/minishell.h"
 
-char	*get_dollar_value_help(int size, char *env)
+char	*get_dollar_value_help(int size, char *env, t_infos *info)
 {
 	int		j;
 	int		i;
@@ -8,7 +8,7 @@ char	*get_dollar_value_help(int size, char *env)
 
 	ret = (char *)malloc(sizeof(char) * (size + 1));
 	if (ret == NULL)
-		printf("malloc error in get dolalr value\n");
+		print_parsing_error(0, info);
 	j = 0;
 	while (env[j] != '=' || env[j] == '\0')
 		j++;
@@ -39,7 +39,7 @@ char    *get_dollar_value(t_infos *info, char *str)
 		if (!(ft_strncmp(temp, info->envs[i], ft_strlen(temp))))
 		{
 			size = ft_strlen(info->envs[i]) - ft_strlen(temp);
-			ret = get_dollar_value_help(size, info->envs[i]);
+			ret = get_dollar_value_help(size, info->envs[i], info);
 		}
 		i++;
 	}

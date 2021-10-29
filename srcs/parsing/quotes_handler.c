@@ -48,7 +48,7 @@ int    handle_double_quote(t_token *token, t_infos *info)
     close = check_closing_quote(info, token->pos, 2);
     if (close < 0)
     {
-        printf("error cannot find closing double quote\n");
+        print_parsing_error(2, info);
         return (0);
     }
     else
@@ -67,7 +67,7 @@ int    handle_single_quote(t_token *token, t_infos *info)
 	close = check_closing_quote(info, token->pos, 1);
 	if (close < 0)
     {
-		printf("error cannot find closing single quote\n");
+        print_parsing_error(1, info);
         return (0);
     }
 	else

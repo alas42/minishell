@@ -1,12 +1,12 @@
 #include "../includes/minishell.h"
 
-void	fill_redirections(t_token *tokens, t_cmd *cmd)
+void	fill_redirections(t_token *tokens, t_cmd *cmd, t_infos *info)
 {
 	t_token *temp;
 
 	temp = token_init();
 	if (temp == NULL)
-		printf("initialization error in token (redirection cmnd)\n");
+		print_parsing_error(0, info);
 	temp->content = ft_strdup(tokens->content);
 	temp->type = ft_strdup(tokens->type);
 	red_lst_add_back(cmd, temp);
@@ -47,7 +47,7 @@ char	**get_cmd_args(t_infos *info, int start, int end)
 	counter = get_cmd_args_num(info, start, end);
 	args = (char **)malloc(sizeof(char *) * (counter + 1));
 	if (args == NULL)
-		printf("malloc error\n");
+		print_parsing_error(0, info);
 	while(++i < start)
 		tokens = tokens->next;
 	while(i++ <= end && tokens != NULL)
@@ -82,7 +82,7 @@ void	fill_cmd(t_infos *info, int start, int end, t_cmd *cmd)
 	while (i++ <= end && tokens != NULL)
 	{
 		if ((ft_strcmp(tokens->type, "literal")))
-			fill_redirections(tokens, cmd);
+			fill_redirections(tokens, cmd, info);
 		tokens = tokens->next;
 	}
 	cmd_lst_add_back(cmd, info);
@@ -102,7 +102,7 @@ void	move_to_cmd(t_infos *info)
 		{
 			cmd = cmnd_init();
 			if (cmd == NULL)
-				printf("error in cmd init return \n");
+				print_parsing_error(0, info);
 			fill_cmd(info, start, token->pos - 1, cmd);
 			start = token->pos + 1;
 			cmd = NULL;
@@ -111,7 +111,7 @@ void	move_to_cmd(t_infos *info)
 	}
 	cmd = cmnd_init();
 	if (cmd == NULL)
-		printf("error in cmd init return \n");
+		print_parsing_error(0, info);
 	fill_cmd(info, start, ft_lstlast_token(info->tokens)->pos, cmd);
 	fill_cmd_info(info);
 }

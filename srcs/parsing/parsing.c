@@ -35,30 +35,6 @@ void    remove_space_tokens(t_infos *info)
 	remove_last_space_tokens(temp);
 }
 
-void	parse_here_doc(t_infos *info)
-{
-	t_token *token;
-
-	token = info->tokens;
-	while (token)
-	{
-		if (!(ft_strcmp(token->type, "input_red")) && ft_strlen(token->content) == 2)
-		{
-			free(token->type);
-			token->type = ft_strdup("here_doc");
-			if (token->next && (!(ft_strcmp(token->next->type, "space"))))
-				token = token->next;
-			if (token->next && (!(ft_strcmp(token->next->type, "literal"))
-			|| !(ft_strcmp(token->next->type, "dollar"))))
-			{
-				free(token->next->type);
-				token->next->type = ft_strdup("here_doc_word");
-			}
-		}
-		token = token->next;
-	}
-}
-
 void    start_parsing(t_infos *info)
 {
 	add_to_struct(info);
@@ -83,9 +59,6 @@ void    start_parsing(t_infos *info)
 	printf("--------------PRINTING ALL TOKENS AT THE END END-------------------\n\n\n\n");
 	print_token_list(info->tokens);
 	printf("----------------END OF TOKENS-----------------\n\n\n\n");
-
-
-
 */
 
 /*

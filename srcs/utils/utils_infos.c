@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_infos.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
+/*   By: yassharm <yassharm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 13:37:09 by avogt             #+#    #+#             */
-/*   Updated: 2021/10/29 18:00:50 by avogt            ###   ########.fr       */
+/*   Updated: 2021/10/30 00:35:01 by yassharm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ t_infos	*init_infos(char **envp)
 	line_envp = get_line(infos, infos->pos_path);
 	infos->paths = ft_split_char(line_envp, ':');
 	add_layer_shlvl(infos);
+	infos->parse_error = 0;
 	infos->nb_cmd = 0;
 	infos->tokens = NULL;
 	infos->last_return_code = 0;
