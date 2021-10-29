@@ -5,10 +5,12 @@ int		is_all_numdigit(char *str)
 	int		i;
 
 	i = 0;
+	if (ft_isdigit(str[0]) || str[0] == '?')
+		return (2);
 	while(str[i])
 	{
 		if (!(ft_isalpha(str[i])) && !(ft_isdigit(str[i])))
-			return (i);
+			return (1);
 		i++;
 	}
 	return (0);
@@ -76,6 +78,34 @@ char	*check_special_char(t_infos *info, char *content, char *word)
 	return (content);
 }
 
+char	*handle_question(t_infos *info, char *content, char *word)
+{
+	char	*dollar;
+	char	*rest;
+	char	*value;
+	int		j;
+
+	dollar = (char *)malloc(sizeof(char) * 2);
+	if (dollar == NULL)
+		printf("Malloc Error\n");
+	dollar[0] = word[0];
+	dollar[1] = '\0';
+	j = ft_strlen(word);
+	rest = get_word(word, j, 1, -1);
+	if (dollar[0] == '?')
+		value = get_exit_code(info);
+	else
+	{
+		value = get_dollar_value(info, dollar);
+		value = check_dollar_ret_val(value);
+	}
+	value = merge_content(value, rest, 0);
+	free(rest);
+	content = merge_content(content, value, 0);
+	free(value);
+	free(dollar);
+	return (content);
+}
 
 char	*check_dollar_ret_val(char *value)
 {

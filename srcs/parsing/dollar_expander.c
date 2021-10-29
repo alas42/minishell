@@ -68,8 +68,10 @@ char    *check_dollar_arg(t_infos *info, char *arg)
 			content = merge_content(content, value, 0);
 			free(value);
 		}
-		else
+		else if (is_all_numdigit(temp_args[i]) == 1)
 			content = check_special_char(info, content, temp_args[i]);
+		else
+			content = handle_question(info, content, temp_args[i]);
 		i++;
 	}
 	free_doub_char(temp_args);

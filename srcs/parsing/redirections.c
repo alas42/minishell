@@ -28,7 +28,7 @@ int	here_doc_exec(char *str)
 			ft_putendl_fd(" << here-doc >> ended with EOF", STDERR_FILENO);
 			break ;
 		}
-		printf("%d\n", *get_not_global_but_static());
+		// printf("%d\n", *get_not_global_but_static());
 		if (*get_not_global_but_static() == 130)
 		{
 			return (0);
