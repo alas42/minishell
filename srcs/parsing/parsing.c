@@ -66,7 +66,7 @@ void    start_parsing(t_infos *info)
 		return ;
 	get_dollar(info);
 	check_quotes(info);
-	merge_same(info);
+	// merge_same(info);
 	get_dollar_prev(info);
 	// parse_here_doc(info);
 	expand_dollar(info);
@@ -124,7 +124,25 @@ hello line 2
 $one
 //stops
 
+// echo "$" should we print $
 
+ECHO CASES TO HANDLE
+echo $123
+	my 	- []
+	bash - [23]
 
+echo $USER$12USER$USER=4$USER12
+	my 		- yassharmyassharm=4
+	bash	- yassharm2USERyassharm=4
+
+echo $USER $USER9999 $USER8888 $USER7777 "$USER"
+	my [yassharm    yassharm]
+	bash [yassharm yassharm]
+
+CD CASES TO HANDLE
+
+cd ''
+	my - [cd "space"]
+	bash - [cd]
 
 */

@@ -1,5 +1,18 @@
 #include "../includes/minishell.h"
 
+//returns the last element of t_cmnd linklist
+t_cmd	*ft_lstlast_cmd(t_cmd *lst)
+{
+	t_cmd	*p;
+
+	p = lst;
+	if (lst == NULL)
+		return (NULL);
+	while (p->next != NULL)
+		p = p->next;
+	return (p);
+}
+
 //Function to initialize the t_cmnd node
 void	*cmnd_init(void)
 {

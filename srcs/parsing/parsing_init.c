@@ -75,19 +75,6 @@ t_token	*ft_lstlast_token(t_token *lst)
 	return (p);
 }
 
-//returns the last element of t_cmnd linklist
-t_cmd	*ft_lstlast_cmd(t_cmd *lst)
-{
-	t_cmd	*p;
-
-	p = lst;
-	if (lst == NULL)
-		return (NULL);
-	while (p->next != NULL)
-		p = p->next;
-	return (p);
-}
-
 //step1
 //add node of token linklist splitting the initial received line. everychracter of line is a node in info->token linklist
 void    add_to_struct(t_infos *info)
