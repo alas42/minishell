@@ -6,11 +6,25 @@
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/22 19:06:10 by avogt             #+#    #+#             */
-/*   Updated: 2021/10/27 12:49:58 by avogt            ###   ########.fr       */
+/*   Updated: 2021/10/30 13:28:37 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+
+static int	ft_isalphadigit(int c)
+{
+	int	char_c;
+
+	char_c = c;
+	if (char_c > 47 && char_c < 58)
+		return (1);
+	if (char_c > 64 && char_c < 91)
+		return (1);
+	else if (char_c > 96 && char_c < 123)
+		return (1);
+	return (0);
+}
 
 int	check_valid_identifier(char *arg)
 {
@@ -19,8 +33,16 @@ int	check_valid_identifier(char *arg)
 	i = 0;
 	while (arg[i] != '\0')
 	{
-		if (!ft_isalpha(arg[i]) && !(arg[i] == '_'))
-			return (1);
+		if (i == 0)
+		{
+			if (!ft_isalpha(arg[i]) && !(arg[i] == '_'))
+				return (1);
+		}
+		else
+		{
+			if (!ft_isalphadigit(arg[i]) && !(arg[i] == '_'))
+				return (1);
+		}
 		i++;
 	}
 	return (0);

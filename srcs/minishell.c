@@ -6,7 +6,7 @@
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 13:38:06 by avogt             #+#    #+#             */
-/*   Updated: 2021/10/30 12:20:53 by avogt            ###   ########.fr       */
+/*   Updated: 2021/10/30 13:29:28 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,17 +17,14 @@ int	exec_cmds(t_infos *infos)
 	int		stdout_save;
 	int		stdin_save;
 
-	if (infos->first_cmd->arg[0])
-	{
-		check_paths(infos);
-		stdout_save = dup(STDOUT_FILENO);
-		stdin_save = dup(STDIN_FILENO);
-		loop_through_cmds(infos);
-		dup2(stdin_save, STDIN_FILENO);
-		dup2(stdout_save, STDOUT_FILENO);
-		close(stdin_save);
-		close(stdout_save);
-	}
+	check_paths(infos);
+	stdout_save = dup(STDOUT_FILENO);
+	stdin_save = dup(STDIN_FILENO);
+	loop_through_cmds(infos);
+	dup2(stdin_save, STDIN_FILENO);
+	dup2(stdout_save, STDOUT_FILENO);
+	close(stdin_save);
+	close(stdout_save);
 	return (1);
 }
 
