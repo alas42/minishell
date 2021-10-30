@@ -6,7 +6,7 @@
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 13:27:46 by avogt             #+#    #+#             */
-/*   Updated: 2021/10/30 12:28:39 by avogt            ###   ########.fr       */
+/*   Updated: 2021/10/30 17:47:46 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,23 @@ void	print_parsing_error(int state, t_infos *infos)
 	set_error_code(1);
 }
 
-void	print_bash_error(int state, t_cmd *cmd)
+static void	free_chars_bash_error(char *s, char *s1, char *s2, char *s3)
+{
+	free(s);
+	free(s1);
+	free(s2);
+	free(s3);
+}
+
+static void	close_child_fd_error(t_cmd *cmd)
+{
+	if (cmd->fd_infile > -1)
+		close(cmd->fd_infile);
+	if (cmd->fd_outfile > -1)
+		close(cmd->fd_outfile);
+}
+
+void	print_bash_error(int state, t_cmd *cmd, t_infos *infos)
 {
 	char	*m;
 	char	*cmd_name;
@@ -77,14 +93,14 @@ void	print_bash_error(int state, t_cmd *cmd)
 	char	*tmp;
 	int		len;
 
-	m = "minishell: \0";
+	m = ft_strdup("minishell: ");
 	cmd_name = ft_strdup(cmd->arg[0]);
 	if (state == 127)
-		message = " : command not found\0";
+		message = ft_strdup(" : command not found");
 	else if (state == 126)
-		message = " : command cannot be invoked\0";
+		message = ft_strdup(" : command cannot be invoked");
 	else
-		message = " : error\0";
+		message = ft_strdup(" : error");
 	len = ft_strlen(m) + ft_strlen(cmd_name) + ft_strlen(message);
 	tmp = (char *)malloc(sizeof(char) * (len + 1));
 	tmp[0] = '\0';
@@ -92,7 +108,7 @@ void	print_bash_error(int state, t_cmd *cmd)
 	tmp = ft_strcat(tmp, cmd_name);
 	tmp = ft_strcat(tmp, message);
 	ft_putendl_fd(tmp, STDERR_FILENO);
-	free(cmd_name);
-	free(tmp);
+	free_chars_bash_error(m, cmd_name, message, tmp);
+	close_child_fd_error(cmd);
 	exit(state);
 }

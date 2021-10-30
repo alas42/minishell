@@ -6,7 +6,7 @@
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 13:57:49 by avogt             #+#    #+#             */
-/*   Updated: 2021/10/30 14:40:30 by avogt            ###   ########.fr       */
+/*   Updated: 2021/10/30 15:36:23 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -354,7 +354,7 @@ void		set_signals(void);
 ** Error
 */
 void		print_error(int state, t_infos *infos);
-void		print_bash_error(int state, t_cmd *cmd);
+void		print_bash_error(int state, t_cmd *cmd, t_infos *infos);
 void		print_parsing_error(int state, t_infos *infos);
 
 void		minishell(t_infos *infos, int int_mode);

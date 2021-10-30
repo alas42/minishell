@@ -6,7 +6,7 @@
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 13:23:35 by avogt             #+#    #+#             */
-/*   Updated: 2021/10/05 13:25:43 by avogt            ###   ########.fr       */
+/*   Updated: 2021/10/30 14:41:30 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@
 ** Maybe I will change it to a integer as second param
 **
 */
-
 t_cmd	*get_cmd(t_infos *infos)
 {
 	int		i;

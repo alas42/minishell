@@ -6,7 +6,7 @@
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 13:23:28 by avogt             #+#    #+#             */
-/*   Updated: 2021/10/05 13:27:28 by avogt            ###   ########.fr       */
+/*   Updated: 2021/10/30 14:55:28 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,21 @@ int	find_pos_key(t_infos *infos, char *to_find)
 	return (-1);
 }
 
+static int	is_arg_rel_abs(t_cmd *cmd)
+{
+	int	len;
+
+	len = ft_strlen(cmd->arg[0]);
+	if (len > 0)
+	{
+		if (!ft_strncmp(cmd->arg[0], "./", 2))
+			return (1);
+		else if (!ft_strncmp(cmd->arg[0], "/", 1))
+			return (1);
+	}
+	return (0);
+}
+
 void	check_paths(t_infos *infos)
 {
 	int		i;
@@ -90,14 +105,15 @@ void	check_paths(t_infos *infos)
 	{
 		i = -1;
 		ret_path = 0;
-		while (infos->paths[++i])
-		{
-			if (ret_path != 1)
-				ret_path = add_path(cmd->arg, infos->paths[i],
-						ft_strlen(infos->paths[i]));
-			if (ret_path == -1)
-				print_error(E_MALLOC, infos);
-		}
+		if (!is_arg_rel_abs(cmd))
+			while (infos->paths[++i])
+			{
+				if (ret_path != 1)
+					ret_path = add_path(cmd->arg, infos->paths[i],
+							ft_strlen(infos->paths[i]));
+				if (ret_path == -1)
+					print_error(E_MALLOC, infos);
+			}
 		cmd = cmd->next;
 	}
 }
