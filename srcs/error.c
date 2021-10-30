@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yassharm <yassharm@student.42.fr>          +#+  +:+       +#+        */
+/*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 13:27:46 by avogt             #+#    #+#             */
-/*   Updated: 2021/10/30 17:32:55 by yassharm         ###   ########.fr       */
+/*   Updated: 2021/10/30 21:26:20 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ void	print_pipe_error(int state, t_infos *infos)
 	else if (state == 3)
 		print_stderr("minishell: syntax error near unexpected token `<'");
 	else if (state == 4)
-		print_stderr("minishell: syntax error near unexpected token `newline`");	
+		print_stderr("minishell: syntax error near unexpected token `newline`");
 	infos->parse_error = 1;
 	set_error_code(2);
 }
@@ -83,14 +83,14 @@ void	print_bash_error(int state, t_cmd *cmd)
 	char	*tmp;
 	int		len;
 
-	m = "minishell: \0";
+	m = ft_strdup("minishell: ");
 	cmd_name = ft_strdup(cmd->arg[0]);
 	if (state == 127)
-		message = " : command not found\0";
+		message = ft_strdup(" : command not found");
 	else if (state == 126)
-		message = " : command cannot be invoked\0";
+		message = ft_strdup(" : command cannot be invoked");
 	else
-		message = " : error\0";
+		message = ft_strdup(" : error");
 	len = ft_strlen(m) + ft_strlen(cmd_name) + ft_strlen(message);
 	tmp = (char *)malloc(sizeof(char) * (len + 1));
 	tmp[0] = '\0';
@@ -98,7 +98,7 @@ void	print_bash_error(int state, t_cmd *cmd)
 	tmp = ft_strcat(tmp, cmd_name);
 	tmp = ft_strcat(tmp, message);
 	ft_putendl_fd(tmp, STDERR_FILENO);
-	free(cmd_name);
-	free(tmp);
+	free_chars_bash_error(m, cmd_name, message, tmp);
+	close_child_fd_error(cmd);
 	exit(state);
 }

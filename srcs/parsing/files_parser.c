@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   files_parser.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/10/30 21:29:03 by avogt             #+#    #+#             */
+/*   Updated: 2021/10/30 21:29:04 by avogt            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/minishell.h"
 
 void	get_outfile(t_token *temp, t_infos *info)
@@ -44,7 +56,7 @@ void	parse_outfile(t_infos *info)
 		{
 			if (ft_strlen(temp->content) > 2)
 				print_pipe_error(2, info);
-			else if (ft_strlen(temp->content)== 2)
+			else if (ft_strlen(temp->content) == 2)
 			{
 				free(temp->type);
 				temp->type = ft_strdup("double_output_red");

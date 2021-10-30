@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parsing.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/10/30 21:28:28 by avogt             #+#    #+#             */
+/*   Updated: 2021/10/30 21:28:30 by avogt            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/minishell.h"
 
 void	remove_last_space_tokens(t_token *temp)
@@ -35,9 +47,9 @@ void	remove_space_tokens(t_infos *info)
 	remove_last_space_tokens(temp);
 }
 
-void	check_pipe_error(t_infos * info)
+void	check_pipe_error(t_infos *info)
 {
-	t_token *token;
+	t_token	*token;
 
 	token = info->tokens;
 	while (token)
@@ -50,7 +62,6 @@ void	check_pipe_error(t_infos * info)
 				token->type = ft_strdup("space");
 			}
 		}
-		
 		if (!(ft_strcmp(token->type, "pipe")))
 		{
 			if (ft_strlen(token->content) > 1 || token->pos == 0
@@ -63,7 +74,7 @@ void	check_pipe_error(t_infos * info)
 	}
 }
 
-void  start_parsing(t_infos *info)
+void	start_parsing(t_infos *info)
 {
 	add_to_struct(info);
 	if (info->tokens == NULL)

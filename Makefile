@@ -45,7 +45,8 @@ UTILS_FILES = utils_cmds.c \
 	utils_infos.c \
 	utils_builtins.c \
 	free.c \
-	free_commands.c
+	free_commands.c \
+	utils_error.c
 
 SIGNALS_FILES = sigint.c \
 	sigquit.c \
