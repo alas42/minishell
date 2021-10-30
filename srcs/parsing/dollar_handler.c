@@ -36,7 +36,7 @@ char	*get_word(char *word, int size, int start, int end, t_infos *info)
 
 	str = (char *)malloc(sizeof(char) * size);
 	if (str == NULL)
-		print_parsing_error(0, info);
+		print_error(E_MALLOC, info);
 	if (end < 0)
 		end = ft_strlen(word);
 	i = 0;
@@ -87,13 +87,13 @@ char	*handle_question(t_infos *info, char *content, char *word)
 
 	dollar = (char *)malloc(sizeof(char) * 2);
 	if (dollar == NULL)
-		print_parsing_error(0, info);
+		print_error(E_MALLOC, info);
 	dollar[0] = word[0];
 	dollar[1] = '\0';
 	j = ft_strlen(word);
 	rest = get_word(word, j, 1, -1, info);
 	if (dollar[0] == '?')
-		value = get_exit_code(info);
+		value = get_exit_code();
 	else
 	{
 		value = get_dollar_value(info, dollar);

@@ -12,7 +12,7 @@ char    *update_quotes_content(t_token *temp, t_infos *info)
 	str = (char *)malloc(sizeof(char) * len);
 	if (str == NULL)
 	{
-		print_parsing_error(0, info);
+		print_error(E_MALLOC, info);
 		return (NULL);
 	}
 	while(i < len - 2)

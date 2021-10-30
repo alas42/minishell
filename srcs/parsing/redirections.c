@@ -1,107 +1,10 @@
 #include "../includes/minishell.h"
 
-static int	*get_interruption(void)
-{
-	static int	status = 0;
-
-	return (&status);
-}
-
-static void	set_interruption(int status)
-{
-	*get_interruption() = status;
-}
-
-
-int	here_doc_exec(char *str)
-{
-	char	*line;
-	int		stop;
-
-	stop = 0;
-	while (!stop)
-	{
-		line = readline("> ");
-		if (!line)
-		{
-			ft_putstr_fd("minishell: warning :", STDERR_FILENO);
-			ft_putendl_fd(" << here-doc >> ended with EOF", STDERR_FILENO);
-			break ;
-		}
-		// printf("%d\n", *get_not_global_but_static());
-		if (*get_not_global_but_static() == 130)
-		{
-			return (0);
-		}
-		if (!(ft_strcmp(line, str)))
-			stop = 1;
-		free(line);
-	}
-	return (1);
-}
-
-void	here_doc_ctrl_c(int status)
-{
-	int	code;
-
-	code = 130;
-	set_not_global_but_static(code);
-	set_interruption(1);
-	(void)status;
-}
-
-int	check_for_ctrl_c(void)
-{
-	if (*get_interruption() == 1 && rl_done == 0)
-		rl_done = 1;
-	else
-		rl_done = 0;
-	return (0);
-}
-
-int	last_here_doc(t_cmd *cmd, char *str)
-{
-	char	*line;
-	int		stop;
-
-	stop = 0;
-	set_interruption(0);
-	cmd->fd_infile = open("here_doc_f", O_TRUNC | O_WRONLY | O_CREAT, 0644);
-	signal(SIGINT, here_doc_ctrl_c);
-	rl_done = 0;
-	while (!stop)
-	{
-		rl_event_hook = check_for_ctrl_c;
-		line = readline("> ");
-		if (*get_interruption() == 1)
-		{
-			rl_event_hook = NULL;
-			return (0);
-		}
-		if (!line)
-		{
-			ft_putstr_fd("minishell: warning :", STDERR_FILENO);
-			ft_putendl_fd(" << here-doc >> ended with EOF", STDERR_FILENO);
-			break ;
-		}
-		if (!(ft_strcmp(line, str)))
-			stop = 1;
-		else
-			fd_write(cmd->fd_infile, line);
-		free(line);
-	}
-	rl_event_hook = NULL;
-	close(cmd->fd_infile);
-	cmd->fd_infile = open("here_doc_f", O_RDONLY, 0644);
-	cmd->here_doc = 1;
-	return (1);
-}
-
 int	handle_here_doc(t_cmd *cmd, int pos, t_infos *info)
 {
-	t_token     *red;
-	int         ret;
-	int         i;
+	t_token	*red;
+	int		ret;
+	int		i;
 
 	i = 0;
 	ret = -1;
@@ -124,9 +27,9 @@ int	handle_here_doc(t_cmd *cmd, int pos, t_infos *info)
 	return (here_doc_exec(red->content));
 }
 
-void    handle_infile(char *infile, t_cmd *cmd, int pos, t_infos *info)
+void	handle_infile(char *infile, t_cmd *cmd, int pos, t_infos *info)
 {
-	int i;
+	int	i;
 
 	i = -1;
 	if (cmd->fd_infile > 0)
@@ -144,9 +47,9 @@ void    handle_infile(char *infile, t_cmd *cmd, int pos, t_infos *info)
 	cmd->name_infile = ft_strdup(infile);
 }
 
-void    handle_outfile(char *outfile, char *type, t_cmd *cmd, t_infos *info)
+void	handle_outfile(char *outfile, char *type, t_cmd *cmd, t_infos *info)
 {
-	int i;
+	int	i;
 
 	i = -1;
 	if (cmd->fd_outfile > 0)
@@ -166,35 +69,45 @@ void    handle_outfile(char *outfile, char *type, t_cmd *cmd, t_infos *info)
 	cmd->name_outfile = ft_strdup(outfile);
 }
 
+int	check_redirections(t_token *red, t_cmd *cmd, t_infos *info)
+{
+	if ((!(ft_strcmp(red->type, "output_red"))
+			|| !(ft_strcmp(red->type, "double_output_red")))
+		&& red->next != NULL && !ft_strcmp(red->next->type, "outfile"))
+		handle_outfile(red->next->content, red->type, cmd, info);
+	else if (!(ft_strcmp(red->type, "input_red")))
+	{
+		if (red->next != NULL && !ft_strcmp(red->next->type, "infile"))
+			handle_infile(red->next->content, cmd, red->pos, info);
+	}
+	else if (!(ft_strcmp(red->type, "here_doc")))
+	{
+		if (!handle_here_doc(cmd, red->pos, info))
+		{
+			free_tokens(info);
+			info->tokens = NULL;
+			free_cmnds(info);
+			info->commands = NULL;
+			info->first_cmd = NULL;
+			return (0);
+		}
+	}
+	return (1);
+}
+
 void	handle_redirections(t_infos *info)
 {
 	t_cmd	*cmd;
-	t_token *red;
+	t_token	*red;
 
 	cmd = info->commands;
-	while(cmd)
+	while (cmd)
 	{
 		red = cmd->redirection;
 		while (red)
 		{
-			if ((!(ft_strcmp(red->type, "output_red"))
-			|| !(ft_strcmp(red->type, "double_output_red")))
-			&& red->next != NULL && (!ft_strcmp(red->next->type, "outfile")))
-					handle_outfile(red->next->content, red->type, cmd, info);
-			else if (!(ft_strcmp(red->type, "input_red")))
-			{
-				if (red->next != NULL && (!ft_strcmp(red->next->type, "infile")))
-					handle_infile(red->next->content, cmd, red->pos, info);
-			}
-			else if (!(ft_strcmp(red->type, "here_doc")))
-			{
-				if (!handle_here_doc(cmd, red->pos, info))
-				{
-					free_tokens(info);
-					info->tokens = NULL;
-					return ;
-				}
-			}
+			if (!check_redirections(red, cmd, info))
+				return ;
 			red = red->next;
 		}
 		cmd = cmd->next;

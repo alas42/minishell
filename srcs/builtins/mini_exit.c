@@ -6,7 +6,7 @@
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 13:19:42 by avogt             #+#    #+#             */
-/*   Updated: 2021/10/22 16:42:01 by avogt            ###   ########.fr       */
+/*   Updated: 2021/10/30 12:24:52 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ int	mini_exit(t_infos *infos, t_cmd *cmd)
 	if (cmd->arg[1])
 		exit_code = ft_atoi_exit_code(cmd->arg[1]);
 	else
-		exit_code = (unsigned char)infos->last_return_code;
+		exit_code = (unsigned char)*get_error_code();
 	if (exit_code != -1)
 	{
 		if (cmd->arg[1] && cmd->arg[2])
@@ -70,7 +70,6 @@ int	mini_exit(t_infos *infos, t_cmd *cmd)
 		return (1);
 	free_infos(infos);
 	clear_history();
-	//rl_clear_history();
 	if (exit_code == -1)
 		exit(2);
 	exit(exit_code);

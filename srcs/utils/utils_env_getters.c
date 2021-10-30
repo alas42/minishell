@@ -6,7 +6,7 @@
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 13:23:16 by avogt             #+#    #+#             */
-/*   Updated: 2021/10/12 16:23:21 by avogt            ###   ########.fr       */
+/*   Updated: 2021/10/30 11:07:09 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,17 +101,17 @@ char	**get_env_tab(char **envp)
 	return (envs);
 }
 
-char	*get_exit_code(t_infos *infos)
+char	*get_exit_code(void)
 {
 	char	*exit_code;
+	int		last_return_code;
 
-	if (infos->last_return_code > 255 || infos->last_return_code < 0)
+	last_return_code = *get_error_code();
+	if (last_return_code > 255 || last_return_code < 0)
 		exit_code = ft_itoa(255);
 	else
-		exit_code = ft_itoa(infos->last_return_code);
+		exit_code = ft_itoa(last_return_code);
 	if (!exit_code)
-	{
 		exit_code = ft_strdup("1");
-	}
 	return (exit_code);
 }

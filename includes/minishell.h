@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yassharm <yassharm@student.42.fr>          +#+  +:+       +#+        */
+/*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 13:57:49 by avogt             #+#    #+#             */
-/*   Updated: 2021/10/30 01:44:25 by yassharm         ###   ########.fr       */
+/*   Updated: 2021/10/30 12:31:39 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,6 @@ typedef struct s_infos
 	struct s_cmd	*first_cmd;
 	struct s_env	*first_env;
 	char			**envs;
-	int				last_return_code;
 }					t_infos;
 
 /*
@@ -184,6 +183,7 @@ void    	update_token_type(t_infos *info, char *from, char *to);
 int			here_doc_exec(char *str);
 void		here_doc_ctrl_c(int status);
 int			check_for_ctrl_c(void);
+int			check_redirections(t_token *red, t_cmd *cmd, t_infos *info);
 int			last_here_doc(t_cmd *cmd, char *str);
 int			handle_here_doc(t_cmd *cmd, int pos, t_infos *info);
 void    	handle_infile(char *infile, t_cmd *cmd, int pos, t_infos *info);
@@ -263,7 +263,7 @@ char		**get_env_tab(char **envp);
 char		*get_value(t_infos *infos, char *key);
 char		*get_key(t_infos *infos, int index);
 char		*get_line(t_infos *infos, int index);
-char		*get_exit_code(t_infos *infos);
+char		*get_exit_code(void);
 
 int			add_layer_shlvl(t_infos *infos);
 void		print_env_tab(t_infos *infos);
@@ -329,7 +329,9 @@ int			check_valid_identifier(char *arg);
 int			check_tab_identifier(char **key_value_tab, char *str);
 char		*join_args(t_cmd *cmd, t_infos *infos);
 
-int			*get_not_global_but_static(void);
-void		set_not_global_but_static(int status);
+int			*get_error_code(void);
+void		set_error_code(int status);
+int			*get_interruption(void);
+void		set_interruption(int status);
 
 #endif

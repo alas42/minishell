@@ -1,9 +1,9 @@
 #include "../includes/minishell.h"
 
-int    check_last_input_red(t_cmd *cmd, int pos)
+int	check_last_input_red(t_cmd *cmd, int pos)
 {
-	t_token *red;
-	int     i;
+	t_token	*red;
+	int		i;
 
 	i = 0;
 	red = cmd->redirection;
@@ -11,7 +11,8 @@ int    check_last_input_red(t_cmd *cmd, int pos)
 		red = red->next;
 	while (red)
 	{
-		if (!(ft_strcmp(red->type, "here_doc")) || !(ft_strcmp(red->type, "input_red")))
+		if (!(ft_strcmp(red->type, "here_doc"))
+			|| !(ft_strcmp(red->type, "input_red")))
 			return (red->pos);
 		red = red->next;
 	}

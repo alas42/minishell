@@ -91,7 +91,7 @@ char	*char_to_str(char c, t_infos *info)
 	str = (char *)malloc(sizeof(char) * 2);
 	if (str == NULL)
 	{
-		print_parsing_error(0, info);
+		print_error(E_MALLOC, info);
 		return (NULL);
 	}
 	str[0] = c;

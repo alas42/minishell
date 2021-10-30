@@ -6,7 +6,7 @@
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 13:28:05 by avogt             #+#    #+#             */
-/*   Updated: 2021/10/28 22:34:40 by avogt            ###   ########.fr       */
+/*   Updated: 2021/10/30 12:24:39 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ void	free_infos(t_infos *infos)
 		free_tokens(infos);
 	free(infos);
 	clear_history();
-	//rl_clear_history();
 }
 
 void	free_tokens(t_infos *info)

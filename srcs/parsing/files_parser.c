@@ -1,6 +1,6 @@
 #include "../includes/minishell.h"
 
-void    get_outfile(t_token *temp, t_infos *info)
+void	get_outfile(t_token *temp, t_infos *info)
 {
 	if (ft_strcmp(temp->next->type, "literal"))
 		print_parsing_error(7, info);
@@ -11,7 +11,7 @@ void    get_outfile(t_token *temp, t_infos *info)
 	}
 }
 
-void    get_infile(t_token *temp, t_infos *info)
+void	get_infile(t_token *temp, t_infos *info)
 {
 	if (ft_strcmp(temp->next->type, "literal"))
 		print_parsing_error(6, info);
@@ -25,9 +25,9 @@ void    get_infile(t_token *temp, t_infos *info)
 	}
 }
 
-void    parse_outfile(t_infos *info)
+void	parse_outfile(t_infos *info)
 {
-	t_token *temp;
+	t_token	*temp;
 
 	temp = info->tokens;
 	while (temp)
@@ -44,7 +44,7 @@ void    parse_outfile(t_infos *info)
 			if (temp->next == NULL)
 			{
 				print_parsing_error(5, info);
-				return;
+				return ;
 			}
 			get_outfile(temp, info);
 		}
@@ -52,9 +52,9 @@ void    parse_outfile(t_infos *info)
 	}
 }
 
-void    parse_infile(t_infos *info)
+void	parse_infile(t_infos *info)
 {
-	t_token *temp;
+	t_token	*temp;
 
 	temp = info->tokens;
 	while (temp)
@@ -71,7 +71,7 @@ void    parse_infile(t_infos *info)
 			if (temp->next == NULL)
 			{
 				print_parsing_error(5, info);
-				return;
+				return ;
 			}
 			get_infile(temp, info);
 		}

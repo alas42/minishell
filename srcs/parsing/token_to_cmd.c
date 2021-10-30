@@ -6,7 +6,7 @@ void	fill_redirections(t_token *tokens, t_cmd *cmd, t_infos *info)
 
 	temp = token_init();
 	if (temp == NULL)
-		print_parsing_error(0, info);
+		print_error(E_MALLOC, info);
 	temp->content = ft_strdup(tokens->content);
 	temp->type = ft_strdup(tokens->type);
 	red_lst_add_back(cmd, temp);
@@ -47,7 +47,7 @@ char	**get_cmd_args(t_infos *info, int start, int end)
 	counter = get_cmd_args_num(info, start, end);
 	args = (char **)malloc(sizeof(char *) * (counter + 1));
 	if (args == NULL)
-		print_parsing_error(0, info);
+		print_error(E_MALLOC, info);
 	while(++i < start)
 		tokens = tokens->next;
 	while(i++ <= end && tokens != NULL)
@@ -102,7 +102,7 @@ void	move_to_cmd(t_infos *info)
 		{
 			cmd = cmnd_init();
 			if (cmd == NULL)
-				print_parsing_error(0, info);
+				print_error(E_MALLOC, info);
 			fill_cmd(info, start, token->pos - 1, cmd);
 			start = token->pos + 1;
 			cmd = NULL;
@@ -111,7 +111,7 @@ void	move_to_cmd(t_infos *info)
 	}
 	cmd = cmnd_init();
 	if (cmd == NULL)
-		print_parsing_error(0, info);
+		print_error(E_MALLOC, info);
 	fill_cmd(info, start, ft_lstlast_token(info->tokens)->pos, cmd);
 	fill_cmd_info(info);
 }

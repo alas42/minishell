@@ -35,6 +35,8 @@ PARSING_FILES = parsing_init.c \
 	redirections.c \
 	redirections_utils.c \
 	print_temp.c \
+	here_doc.c \
+	here_doc_utils.c
 
 UTILS_FILES = utils_cmds.c \
 	utils_env.c \

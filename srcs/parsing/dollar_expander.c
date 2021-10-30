@@ -8,7 +8,7 @@ char	*get_dollar_value_help(int size, char *env, t_infos *info)
 
 	ret = (char *)malloc(sizeof(char) * (size + 1));
 	if (ret == NULL)
-		print_parsing_error(0, info);
+		print_error(E_MALLOC, info);
 	j = 0;
 	while (env[j] != '=' || env[j] == '\0')
 		j++;
@@ -88,8 +88,8 @@ void	expand_dollar(t_infos *info)
 	token = info->tokens;
 	while(token)
 	{
-		if (!(ft_strcmp(token->type, "literal_dollar")) ||
-		!(ft_strcmp(token->type, "dollar")))
+		if (!(ft_strcmp(token->type, "literal_dollar"))
+			|| !(ft_strcmp(token->type, "dollar")))
 		{
 			temp_args = ft_split(token->content, ' ');
 			i = -1;

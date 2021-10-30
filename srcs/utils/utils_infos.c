@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_infos.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yassharm <yassharm@student.42.fr>          +#+  +:+       +#+        */
+/*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 13:37:09 by avogt             #+#    #+#             */
-/*   Updated: 2021/10/30 00:35:01 by yassharm         ###   ########.fr       */
+/*   Updated: 2021/10/30 11:47:03 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	clear_infos(t_infos *infos)
 {
-	infos->first_cmd = NULL;
+	infos->parse_error = 0;
 	free(infos->line);
 	free_tokens(infos);
 	free_cmnds(infos);
@@ -25,6 +25,8 @@ void	reinit_infos(t_infos *infos)
 	infos->index_cmd = 0;
 	infos->nb_cmd = 0;
 	infos->nb_pipe = 0;
+	infos->first_cmd = NULL;
+	infos->commands = NULL;
 	start_parsing(infos);
 	signal(SIGINT, sigint_handler);
 }
@@ -47,7 +49,7 @@ t_infos	*init_infos(char **envp)
 	infos->parse_error = 0;
 	infos->nb_cmd = 0;
 	infos->tokens = NULL;
-	infos->last_return_code = 0;
+	set_error_code(0);
 	infos->nb_pipe = 0;
 	infos->index_cmd = 0;
 	infos->first_cmd = NULL;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yassharm <yassharm@student.42.fr>          +#+  +:+       +#+        */
+/*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 13:38:06 by avogt             #+#    #+#             */
-/*   Updated: 2021/10/30 01:32:25 by yassharm         ###   ########.fr       */
+/*   Updated: 2021/10/30 12:20:53 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,17 @@ int	exec_cmds(t_infos *infos)
 	int		stdout_save;
 	int		stdin_save;
 
-	check_paths(infos);
-	stdout_save = dup(STDOUT_FILENO);
-	stdin_save = dup(STDIN_FILENO);
-	loop_through_cmds(infos);
-	dup2(stdin_save, STDIN_FILENO);
-	dup2(stdout_save, STDOUT_FILENO);
-	close(stdin_save);
-	close(stdout_save);
+	if (infos->first_cmd->arg[0])
+	{
+		check_paths(infos);
+		stdout_save = dup(STDOUT_FILENO);
+		stdin_save = dup(STDIN_FILENO);
+		loop_through_cmds(infos);
+		dup2(stdin_save, STDIN_FILENO);
+		dup2(stdout_save, STDOUT_FILENO);
+		close(stdin_save);
+		close(stdout_save);
+	}
 	return (1);
 }
 
@@ -41,18 +44,16 @@ void	minishell(t_infos *infos, int int_mode)
 				ft_putendl_fd("exit", STDOUT_FILENO);
 				break ;
 			}
+			if (infos->line)
+				add_history(infos->line);
 			reinit_infos(infos);
-			if (infos->tokens)
+			if (infos->tokens && infos->parse_error == 0)
 			{
 				infos->first_cmd = infos->commands;
-				if (infos->line)
-					add_history(infos->line);
-				if (infos->parse_error == 0 &&
-					(infos->nb_cmd > 1
-					|| solo_builtin(infos, infos->first_cmd) == -1))
+				if (infos->nb_cmd > 1
+					|| solo_builtin(infos, infos->first_cmd) == -1)
 					exec_cmds(infos);
 			}
-			infos->parse_error = 0;
 		}
 		clear_infos(infos);
 		int_mode = isatty(STDIN_FILENO);

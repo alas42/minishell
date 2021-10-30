@@ -82,7 +82,7 @@ void    add_to_struct(t_infos *info)
 	{
 		new = token_init();
 		if (new == NULL)
-			print_parsing_error(0, info);
+			print_error(E_MALLOC, info);
 		new->content = char_to_str(info->line[i], info);
 		new->pos = i;
 		get_token_type(new, info, i);

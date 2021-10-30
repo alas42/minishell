@@ -6,7 +6,7 @@
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 14:15:59 by avogt             #+#    #+#             */
-/*   Updated: 2021/10/22 15:21:29 by avogt            ###   ########.fr       */
+/*   Updated: 2021/10/30 11:02:30 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ int	solo_builtin(t_infos *infos, t_cmd *cmd)
 	stdout_save = dup(STDOUT_FILENO);
 	stdin_save = dup(STDIN_FILENO);
 	dup_fd_builtin(infos, cmd);
-	infos->last_return_code = choose_builtin(infos, cmd);
+	set_error_code(choose_builtin(infos, cmd));
 	close_fd_builtin(infos, cmd);
 	dup2(stdin_save, STDIN_FILENO);
 	dup2(stdout_save, STDOUT_FILENO);
