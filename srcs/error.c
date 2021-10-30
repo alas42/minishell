@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
+/*   By: yassharm <yassharm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 13:27:46 by avogt             #+#    #+#             */
-/*   Updated: 2021/10/30 12:28:39 by avogt            ###   ########.fr       */
+/*   Updated: 2021/10/30 17:32:55 by yassharm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,16 +50,6 @@ void	print_parsing_error(int state, t_infos *infos)
 	else if (state == 2)
 		print_stderr("minishell: Cannot find a closing quote (double\")");
 	else if (state == 3)
-		print_stderr("minishell: Error - invalid character after >>");
-	else if (state == 4)
-		print_stderr("minishell: Error - invalid character after <<");
-	else if (state == 5)
-		print_stderr("minishell: syntax error near unexpected token `newline`");
-	else if (state == 6)
-		print_stderr("minishell: Unexpected token near redirection token '<'");
-	else if (state == 7)
-		print_stderr("minishell: Unexpected token near redirection token '>'");
-	else if (state == 8)
 		print_stderr("minishell: Error in closing the file");
 	else if (state == 9)
 		print_stderr("minishell: Error in Opening the infile");
@@ -67,6 +57,22 @@ void	print_parsing_error(int state, t_infos *infos)
 		print_stderr("minishell: Error in Opening the outfile");
 	infos->parse_error = 1;
 	set_error_code(1);
+}
+
+void	print_pipe_error(int state, t_infos *infos)
+{
+	if (infos->parse_error == 1)
+		return ;
+	if (state == 1)
+		print_stderr("minishell: syntax error near unexpected token `|'");
+	else if (state == 2)
+		print_stderr("minishell: syntax error near unexpected token `>'");
+	else if (state == 3)
+		print_stderr("minishell: syntax error near unexpected token `<'");
+	else if (state == 4)
+		print_stderr("minishell: syntax error near unexpected token `newline`");	
+	infos->parse_error = 1;
+	set_error_code(2);
 }
 
 void	print_bash_error(int state, t_cmd *cmd)

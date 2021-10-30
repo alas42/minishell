@@ -35,6 +35,34 @@ void    remove_space_tokens(t_infos *info)
 	remove_last_space_tokens(temp);
 }
 
+void	check_pipe_error(t_infos * info)
+{
+	t_token *token;
+
+	token = info->tokens;
+	while (token)
+	{
+		if (!(ft_strcmp(token->type, "literal")))
+		{
+			if (ft_strlen(token->content) == 0)
+			{
+				free(token->type);
+				token->type = ft_strdup("space");
+			}
+		}
+		
+		if (!(ft_strcmp(token->type, "pipe")))
+		{
+			if (ft_strlen(token->content) > 1 || token->pos == 0
+				|| token->next == NULL)
+				print_pipe_error(1, info);
+			if (token->next && !(ft_strcmp(token->next->type, "pipe")))
+				print_pipe_error(1, info);
+		}
+		token = token->next;
+	}
+}
+
 void    start_parsing(t_infos *info)
 {
 	add_to_struct(info);
@@ -47,6 +75,7 @@ void    start_parsing(t_infos *info)
 	remove_space_tokens(info);
 	parse_outfile(info);
 	parse_infile(info);
+	check_pipe_error(info);
 	move_to_cmd(info);
 	handle_redirections(info);
 }
