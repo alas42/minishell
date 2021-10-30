@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
+/*   By: yassharm <yassharm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 13:57:49 by avogt             #+#    #+#             */
-/*   Updated: 2021/10/30 14:40:30 by avogt            ###   ########.fr       */
+/*   Updated: 2021/10/30 15:42:12 by yassharm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -356,6 +356,7 @@ void		set_signals(void);
 void		print_error(int state, t_infos *infos);
 void		print_bash_error(int state, t_cmd *cmd);
 void		print_parsing_error(int state, t_infos *infos);
+void		print_pipe_error(int state, t_infos *info);
 
 void		minishell(t_infos *infos, int int_mode);
 int			check_valid_identifier(char *arg);

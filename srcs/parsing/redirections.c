@@ -20,7 +20,7 @@ int	handle_here_doc(t_cmd *cmd, int pos, t_infos *info)
 		{
 			ret = close(cmd->fd_infile);
 			if (ret < 0)
-				print_parsing_error(8, info);
+				print_parsing_error(3, info);
 		}
 		return (last_here_doc(cmd, red->content));
 	}
@@ -36,7 +36,7 @@ void	handle_infile(char *infile, t_cmd *cmd, int pos, t_infos *info)
 	{
 		i = close(cmd->fd_infile);
 		if (i < 0)
-			print_parsing_error(8, info);
+			print_parsing_error(3, info);
 	}
 	i = check_last_input_red(cmd, pos);
 	cmd->fd_infile = open(infile, O_RDONLY, 0644);
@@ -56,7 +56,7 @@ void	handle_outfile(char *outfile, char *type, t_cmd *cmd, t_infos *info)
 	{
 		i = close(cmd->fd_outfile);
 		if (i < 0)
-			print_parsing_error(8, info);
+			print_parsing_error(3, info);
 		if (cmd->name_outfile != NULL)
 			free(cmd->name_outfile);
 	}
