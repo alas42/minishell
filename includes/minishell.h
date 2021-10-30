@@ -30,9 +30,6 @@
 # include <term.h>
 # include "libft.h"
 
-//#include <editline/readline.h>
-//#include <editline/history.h>
-
 enum e_file_end
 {
 	READ,

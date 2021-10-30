@@ -40,8 +40,8 @@ void	parse_outfile(t_infos *info)
 	temp = info->tokens;
 	while (temp)
 	{
-	   if (!(ft_strcmp(temp->type, "output_red")))
-		{          
+		if (!(ft_strcmp(temp->type, "output_red")))
+		{
 			if (ft_strlen(temp->content) > 2)
 				print_pipe_error(2, info);
 			else if (ft_strlen(temp->content)== 2)

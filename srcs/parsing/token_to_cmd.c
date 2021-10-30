@@ -2,7 +2,7 @@
 
 void	fill_redirections(t_token *tokens, t_cmd *cmd, t_infos *info)
 {
-	t_token *temp;
+	t_token	*temp;
 
 	temp = token_init();
 	if (temp == NULL)
@@ -13,18 +13,18 @@ void	fill_redirections(t_token *tokens, t_cmd *cmd, t_infos *info)
 	temp = NULL;
 }
 
-int		get_cmd_args_num(t_infos *info, int start, int end)
+int	get_cmd_args_num(t_infos *info, int start, int end)
 {
-	t_token *tokens;
+	t_token	*tokens;
 	int		i;
-	int 	counter;
+	int		counter;
 
-	tokens =info->tokens;
+	tokens = info->tokens;
 	i = -1;
 	counter = 0;
-	while(++i < start)
+	while (++i < start)
 		tokens = tokens->next;
-	while(i++ <= end && tokens != NULL)
+	while (i++ <= end && tokens != NULL)
 	{
 		if (!(ft_strcmp(tokens->type, "literal")))
 			counter++;
@@ -35,28 +35,25 @@ int		get_cmd_args_num(t_infos *info, int start, int end)
 
 char	**get_cmd_args(t_infos *info, int start, int end)
 {
-	t_token *tokens;
+	t_token	*tokens;
 	int		i;
-	int 	counter;
+	int		counter;
 	char	**args;
 	int		j;
 
 	i = -1;
 	j = 0;
-	tokens =info->tokens;
+	tokens = info->tokens;
 	counter = get_cmd_args_num(info, start, end);
 	args = (char **)malloc(sizeof(char *) * (counter + 1));
 	if (args == NULL)
 		print_error(E_MALLOC, info);
-	while(++i < start)
+	while (++i < start)
 		tokens = tokens->next;
-	while(i++ <= end && tokens != NULL)
+	while (i++ <= end && tokens != NULL)
 	{
 		if (!(ft_strcmp(tokens->type, "literal")))
-		{
-			args[j] = ft_strdup(tokens->content);
-			j++;
-		}
+			args[j++] = ft_strdup(tokens->content);
 		tokens = tokens->next;
 	}
 	args[j] = NULL;
@@ -66,14 +63,14 @@ char	**get_cmd_args(t_infos *info, int start, int end)
 void	fill_cmd(t_infos *info, int start, int end, t_cmd *cmd)
 {
 	int		i;
-	t_token *tokens;
+	t_token	*tokens;
 
 	i = -1;
 	if (start < 0 || start > ft_lstlast_token(info->tokens)->pos
-	|| start > end || end < 0 || end > ft_lstlast_token(info->tokens)->pos)
+		|| start > end || end < 0 || end > ft_lstlast_token(info->tokens)->pos)
 	{
 		free(cmd);
-		return;
+		return ;
 	}
 	tokens = info->tokens;
 	while (++i < start)
@@ -90,7 +87,7 @@ void	fill_cmd(t_infos *info, int start, int end, t_cmd *cmd)
 
 void	move_to_cmd(t_infos *info)
 {
-	t_token *token;
+	t_token	*token;
 	int		start;
 	t_cmd	*cmd;
 
