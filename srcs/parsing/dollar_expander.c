@@ -14,7 +14,7 @@ char	*get_dollar_value_help(int size, char *env, t_infos *info)
 		j++;
 	j++;
 	i = 0;
-	while(env[j])
+	while (env[j])
 	{
 		ret[i] = env[j];
 		j++;
@@ -24,12 +24,12 @@ char	*get_dollar_value_help(int size, char *env, t_infos *info)
 	return (ret);
 }
 
-char    *get_dollar_value(t_infos *info, char *str)
+char	*get_dollar_value(t_infos *info, char *str)
 {
-	int     i;
-	char    *ret;
-	int     size;
-	char    *temp;
+	int		i;
+	char	*ret;
+	int		size;
+	char	*temp;
 
 	ret = NULL;
 	temp = ft_strjoin(str, "=");
@@ -49,12 +49,12 @@ char    *get_dollar_value(t_infos *info, char *str)
 	return (ret);
 }
 
-char    *check_dollar_arg(t_infos *info, char *arg)
+char	*check_dollar_arg(t_infos *info, char *arg)
 {
-	char    **temp_args;
-	char    *value;
-	char    *content;
-	int     i;
+	char	**temp_args;
+	char	*value;
+	char	*content;
+	int		i;
 
 	i = 1;
 	temp_args = ft_split(arg, '$');
@@ -75,7 +75,15 @@ char    *check_dollar_arg(t_infos *info, char *arg)
 		i++;
 	}
 	free_doub_char(temp_args);
-	return(content);
+	return (content);
+}
+
+static void	expand_dollar_free(t_token *token, char **temp_args)
+{
+	free(token->content);
+	token->content = join_double_char(temp_args);
+	free(token->type);
+	token->type = ft_strdup("literal");
 }
 
 void	expand_dollar(t_infos *info)
@@ -86,26 +94,22 @@ void	expand_dollar(t_infos *info)
 	int		i;
 
 	token = info->tokens;
-	while(token)
+	while (token)
 	{
 		if (!(ft_strcmp(token->type, "literal_dollar"))
 			|| !(ft_strcmp(token->type, "dollar")))
 		{
 			temp_args = ft_split(token->content, ' ');
 			i = -1;
-			while(temp_args[++i])
+			while (temp_args[++i])
 			{
 				ret = check_dollar_arg(info, temp_args[i]);
 				free(temp_args[i]);
 				temp_args[i] = ret;
 			}
-			free(token->content);
-			token->content = join_double_char(temp_args);
-			free(token->type);
-			token->type = ft_strdup("literal");
+			expand_dollar_free(token, temp_args);
 			free_doub_char(temp_args);
 		}
 		token = token->next;
 	}
 }
-

@@ -1,8 +1,24 @@
 #include "../includes/minishell.h"
 
-void    free_doub_char(char **str)
+int	is_all_numdigit(char *str)
 {
-	int i;
+	int	i;
+
+	i = 0;
+	if (ft_isdigit(str[0]) || str[0] == '?')
+		return (2);
+	while (str[i])
+	{
+		if (!(ft_isalpha(str[i])) && !(ft_isdigit(str[i])))
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
+void	free_doub_char(char **str)
+{
+	int	i;
 
 	i = 0;
 	while (str[i] != NULL)
@@ -16,8 +32,8 @@ void    free_doub_char(char **str)
 
 char	*ft_strndup(char *s1, size_t length)
 {
-	char		*p;
-	size_t		i;
+	char	*p;
+	size_t	i;
 
 	i = 0;
 	p = (char *)malloc((length + 1) * sizeof(char));
@@ -36,10 +52,10 @@ char	*ft_strndup(char *s1, size_t length)
 	return (p);
 }
 
-void    fill_result(char **result, char *str, int chunk, char c)
+void	fill_result(char **result, char *str, int chunk, char c)
 {
-	int i;
-	size_t len;
+	int		i;
+	size_t	len;
 
 	i = 0;
 	while (i < chunk)
@@ -54,11 +70,11 @@ void    fill_result(char **result, char *str, int chunk, char c)
 	result[i] = NULL;
 }
 
-char    **ft_split(char *str, char c)
+char	**ft_split(char *str, char c)
 {
-	char    **result;
-	int     chunk;
-	int     i;
+	char	**result;
+	int		chunk;
+	int		i;
 
 	i = -1;
 	if (str == NULL)

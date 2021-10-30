@@ -1,9 +1,7 @@
 #include "../includes/minishell.h"
 
-//fill the info->tokens->type by cmp character to defined token type
-void    get_token_type(t_token *new, t_infos *info, int i)
+void	get_token_type(t_token *new, t_infos *info, int i)
 {
-	// printf("gettokentype i is [%d]\n", i);
 	if (info->line[i] == '|')
 		new->type = ft_strdup("pipe");
 	else if (info->line[i] == '<')
@@ -22,10 +20,9 @@ void    get_token_type(t_token *new, t_infos *info, int i)
 		new->type = ft_strdup("literal");
 }
 
-//initialize an empty instance of t_token struct
-t_token  *token_init()
+t_token	*token_init(void)
 {
-	t_token  *data;
+	t_token	*data;
 
 	data = (t_token *)malloc(sizeof(t_token));
 	if (data == NULL)
@@ -38,10 +35,10 @@ t_token  *token_init()
 	return (data);
 }
 
-//adds the t_token instance in info->tokens link list
-void    lst_add_back(t_infos *info, t_token *new)
+void	lst_add_back(t_infos *info, t_token *new)
 {
 	t_token	*ls;
+
 	if (new == NULL)
 		return ;
 	if (info->tokens)
@@ -57,7 +54,6 @@ void    lst_add_back(t_infos *info, t_token *new)
 	ls->next = new;
 }
 
-//returns the last element of t_token slinklist
 t_token	*ft_lstlast_token(t_token *lst)
 {
 	t_token	*p;
@@ -70,12 +66,10 @@ t_token	*ft_lstlast_token(t_token *lst)
 	return (p);
 }
 
-//step1
-//add node of token linklist splitting the initial received line. everychracter of line is a node in info->token linklist
-void    add_to_struct(t_infos *info)
+void	add_to_struct(t_infos *info)
 {
-	int     i;
-	t_token *new;
+	int		i;
+	t_token	*new;
 
 	i = 0;
 	while (info->line[i] != '\0')

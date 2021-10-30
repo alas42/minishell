@@ -1,9 +1,9 @@
 #include "../includes/minishell.h"
 
-void    update_tokens_pos(t_infos *info)
+void	update_tokens_pos(t_infos *info)
 {
-	int     i;
-	t_token *temp;
+	int		i;
+	t_token	*temp;
 
 	temp = info->tokens;
 	i = 0;
@@ -15,12 +15,11 @@ void    update_tokens_pos(t_infos *info)
 	}
 }
 
-//merge first two node of token linklist
-t_token     *join_tokens(t_token *tokens)
+t_token	*join_tokens(t_token *tokens)
 {
-	t_token *second;
-	char    *temp;
-	int     i;
+	t_token	*second;
+	char	*temp;
+	int		i;
 
 	i = 1;
 	second = tokens->next;
@@ -40,16 +39,14 @@ t_token     *join_tokens(t_token *tokens)
 	return (tokens);
 }
 
-//This function merge two consecutive node at pos start till total times
-
-void    merge_tokens(t_infos *info, int start, int total)
+void	merge_tokens(t_infos *info, int start, int total)
 {
-	t_token *one;
-	int     i;
+	t_token	*one;
+	int		i;
 
 	i = 0;
 	if (total < 1)
-		return;
+		return ;
 	if (start == 0)
 	{
 		while (i++ < total)
@@ -67,17 +64,15 @@ void    merge_tokens(t_infos *info, int start, int total)
 		one = join_tokens(one);
 	lst_add_back(info, one);
 	update_tokens_pos(info);
-	return;
+	return ;
 }
 
-//step2
-//merge the same type of tokens together in one node
-void    merge_same(t_infos *info)
+void	merge_same(t_infos *info)
 {
-	t_token *temp;
-	char    *tmp_type;
-	int     j;
-	int     i;
+	t_token	*temp;
+	char	*tmp_type;
+	int		j;
+	int		i;
 
 	j = 0;
 	i = 0;
@@ -98,5 +93,5 @@ void    merge_same(t_infos *info)
 			j = 0;
 		}
 	}
-	merge_tokens(info, i, j-1);
+	merge_tokens(info, i, j - 1);
 }

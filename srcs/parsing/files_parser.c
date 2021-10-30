@@ -32,11 +32,11 @@ void	parse_outfile(t_infos *info)
 	temp = info->tokens;
 	while (temp)
 	{
-	   if (!(ft_strcmp(temp->type, "output_red")))
-		{          
+		if (!(ft_strcmp(temp->type, "output_red")))
+		{
 			if (ft_strlen(temp->content) > 2)
 				print_parsing_error(3, info);
-			else if (ft_strlen(temp->content)== 2)
+			else if (ft_strlen(temp->content) == 2)
 			{
 				free(temp->type);
 				temp->type = ft_strdup("double_output_red");

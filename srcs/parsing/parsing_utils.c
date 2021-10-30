@@ -26,7 +26,7 @@ int	ft_isspace_isdigit(char c, char d)
 
 int	ft_isallspace(char *line)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (line[i])
@@ -86,7 +86,7 @@ int	ft_strncmp(const char *s1, const char *s2, size_t n)
 
 char	*char_to_str(char c, t_infos *info)
 {
-	char *str;
+	char	*str;
 
 	str = (char *)malloc(sizeof(char) * 2);
 	if (str == NULL)
