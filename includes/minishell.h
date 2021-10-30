@@ -6,7 +6,7 @@
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 13:57:49 by avogt             #+#    #+#             */
-/*   Updated: 2021/10/30 12:31:39 by avogt            ###   ########.fr       */
+/*   Updated: 2021/10/30 12:46:39 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@
 # include <signal.h>
 # include <term.h>
 # include "libft.h"
+
 //#include <editline/readline.h>
 //#include <editline/history.h>
 
@@ -123,42 +124,56 @@ void		free_env_list(t_infos *infos);
 void		free_red_tokens(t_cmd *com);
 void		free_cmnds(t_infos *info);
 
-//parsing.c
+/*
+** parsing.c
+*/
 void		start_parsing(t_infos *info);
 void		free_cmnds(t_infos *info);
 
-//parsing_init.c 6 functions
+/*
+** parsing_init.c 6 functions
+*/
 void		get_token_type(t_token *new, t_infos *info, int i);
 t_token		*token_init(void);
 void		lst_add_back(t_infos *info, t_token *new);
 t_token		*ft_lstlast_token(t_token *lst);
 void		add_to_struct(t_infos *info);
 
-//lexer.c
+/*
+** lexer.c
+*/
 void		merge_same(t_infos *info);
 void		merge_tokens(t_infos *info, int start, int total);
 t_token		*join_tokens(t_token *tokens);
 void		update_tokens_pos(t_infos *info);
 
-//parsing_utils.c
+/*
+** parsing_utils.c
+*/
 int			ft_strncmp(const char *s1, const char *s2, size_t n);
 int			ft_isspace_isdigit(char c, char d);
 char		*char_to_str(char c, t_infos *info);
 char		*remove_space_digit(char *line, char c);
 int			ft_isallspace(char *line);
 
-//dollar_parser.c
+/*
+** dollar_parser.c
+*/
 void		get_dollar(t_infos *info);
-void    	update_dollar_type(t_infos *info, int pos);
+void		update_dollar_type(t_infos *info, int pos);
 void		get_dollar_prev(t_infos *info);
 
-//dollar_expander.c (expand dollar above 25)
+/*
+** dollar_expander.c (expand dollar above 25)
+*/
 char		*get_dollar_value_help(int size, char *env, t_infos *info);
 char		*get_dollar_value(t_infos *info, char *str);
-char    	*check_dollar_arg(t_infos *info, char *arg);
-void    	expand_dollar(t_infos *info);
+char		*check_dollar_arg(t_infos *info, char *arg);
+void		expand_dollar(t_infos *info);
 
-//dollar_handler.c
+/*
+** dollar_handler.c
+*/
 int			is_all_numdigit(char *str);
 char		*join_double_char(char **args);
 char		*get_word(char *word, int size, int start, int end, t_infos *info);
@@ -166,68 +181,86 @@ char		*check_special_char(t_infos *info, char *content, char *word);
 char		*check_dollar_ret_val(char *value);
 char		*handle_question(t_infos *info, char *content, char *word);
 
-
-//quotes_handler.c
-int    		closing_quote_helper(t_token *temp, int mode);
-int   		check_closing_quote(t_infos *info, int pos, int mode);
-int    		handle_double_quote(t_token *token, t_infos *info);
-int    		handle_single_quote(t_token *token, t_infos *info);
+/*
+** quotes_handler.c
+*/
+int			closing_quote_helper(t_token *temp, int mode);
+int			check_closing_quote(t_infos *info, int pos, int mode);
+int			handle_double_quote(t_token *token, t_infos *info);
+int			handle_single_quote(t_token *token, t_infos *info);
 void		check_quotes(t_infos *info);
 
-//quotes_utils.c
-char    	*update_quotes_content(t_token *temp, t_infos *info);
-int     	check_dollar(char *content);
-void    	update_token_type(t_infos *info, char *from, char *to);
+/*
+** quotes_utils.c
+*/
+char		*update_quotes_content(t_token *temp, t_infos *info);
+int			check_dollar(char *content);
+void		update_token_type(t_infos *info, char *from, char *to);
 
-//redirections.c
+/*
+** redirections.c
+*/
 int			here_doc_exec(char *str);
 void		here_doc_ctrl_c(int status);
 int			check_for_ctrl_c(void);
 int			check_redirections(t_token *red, t_cmd *cmd, t_infos *info);
 int			last_here_doc(t_cmd *cmd, char *str);
 int			handle_here_doc(t_cmd *cmd, int pos, t_infos *info);
-void    	handle_infile(char *infile, t_cmd *cmd, int pos, t_infos *info);
-void    	handle_outfile(char *outfile, char *type, t_cmd *cmd, t_infos *info);
+void		handle_infile(char *infile, t_cmd *cmd, int pos, t_infos *info);
+void		handle_outfile(char *outfile, char *type,
+				t_cmd *cmd, t_infos *info);
 void		handle_redirections(t_infos *info);
 
-
-//redirections_utils.c
-int    		check_last_input_red(t_cmd *cmd, int pos);
+/*
+** redirections_utils.c
+*/
+int			check_last_input_red(t_cmd *cmd, int pos);
 int			fd_write(int fd, char *line);
 
-//files_parser.c
-void    	get_outfile(t_token *temp, t_infos *info);
-void    	get_infile(t_token *temp, t_infos *info);
+/*
+** files_parser.c
+*/
+void		get_outfile(t_token *temp, t_infos *info);
+void		get_infile(t_token *temp, t_infos *info);
 void		parse_outfile(t_infos *info);
 void		parse_infile(t_infos *info);
 
-//libft_utils.c
+/*
+** libft_utils.c
+*/
 char		**ft_split(char *str, char c);
 void		free_doub_char(char **str);
 char		*join_double_char(char **args);
 
-//commands_init.c
+/*
+** commands_init.c
+*/
 t_cmd		*ft_lstlast_cmd(t_cmd *lst);
 void		red_lst_add_back(t_cmd *cmd, t_token *new);
 void		cmd_lst_add_back(t_cmd *cmd, t_infos *info);
 void		*cmnd_init(void);
 
-//token_to_cmd.c
+/*
+** token_to_cmd.c
+*/
 void		fill_redirections(t_token *tokens, t_cmd *cmd, t_infos *info);
 int			get_cmd_args_num(t_infos *info, int start, int end);
 char		**get_cmd_args(t_infos *info, int start, int end);
 void		fill_cmd(t_infos *info, int start, int end, t_cmd *cmd);
 void		move_to_cmd(t_infos *info);
 
-//token_to_cmd_utils.c
+/*
+** token_to_cmd_utils.c
+*/
 char		*remove_last_space(char *str);
 char		*merge_content(char *str, char *content, int space);
 int			check_builtin(char *str);
 void		fill_red_pos(t_cmd *cmd);
 void		fill_cmd_info(t_infos *info);
 
-
-//print_temp.c Temp Function to be removed later
+/*
+** print_temp.c Temp Function to be removed later
+*/
 void		print_info(t_infos *info);
 void		print_token_list(t_token *token);
 void		print_cmnd_single(t_cmd *cmd);
@@ -240,6 +273,7 @@ void		print_cmnds(t_infos *info);
 ** Clear the structures before another loop
 */
 void		clear_infos(t_infos *infos);
+
 /*
 ** Free some data from the infos structure before another loop
 */
@@ -271,6 +305,7 @@ char		**add_env_tab(char **envs, char *key_value_str);
 int			change_line_env_tab(t_infos *infos, char *key, char *value);
 int			remove_env_tab(t_infos *infos, char *key);
 char		*create_pair_key_value(char *key, char *value);
+
 /*
 ** Returns the index from the environment variable to_find in the tab
 */
@@ -308,6 +343,7 @@ int			mini_env(t_infos *infos, t_cmd *cmd);
 int			mini_exit(t_infos *infos, t_cmd *cmd);
 int			mini_pwd(t_infos *infos, t_cmd *cmd );
 int			solo_builtin(t_infos *infos, t_cmd *cmd);
+
 /*
 ** SIGNALS
 */
