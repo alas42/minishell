@@ -3,7 +3,11 @@
 void	get_outfile(t_token *temp, t_infos *info)
 {
 	if (ft_strcmp(temp->next->type, "literal"))
-		print_parsing_error(7, info);
+	{
+		if (!(ft_strcmp(temp->next->type, "pipe")))
+			print_pipe_error(1, info);
+		print_pipe_error(2, info);
+	}
 	else
 	{
 		free(temp->next->type);
@@ -14,7 +18,11 @@ void	get_outfile(t_token *temp, t_infos *info)
 void	get_infile(t_token *temp, t_infos *info)
 {
 	if (ft_strcmp(temp->next->type, "literal"))
-		print_parsing_error(6, info);
+	{
+		if (!(ft_strcmp(temp->next->type, "pipe")))
+			print_pipe_error(1, info);
+		print_pipe_error(3, info);
+	}
 	else
 	{
 		free(temp->next->type);
@@ -35,15 +43,15 @@ void	parse_outfile(t_infos *info)
 		if (!(ft_strcmp(temp->type, "output_red")))
 		{
 			if (ft_strlen(temp->content) > 2)
-				print_parsing_error(3, info);
-			else if (ft_strlen(temp->content) == 2)
+				print_pipe_error(2, info);
+			else if (ft_strlen(temp->content)== 2)
 			{
 				free(temp->type);
 				temp->type = ft_strdup("double_output_red");
 			}
 			if (temp->next == NULL)
 			{
-				print_parsing_error(5, info);
+				print_pipe_error(4, info);
 				return ;
 			}
 			get_outfile(temp, info);
@@ -62,7 +70,7 @@ void	parse_infile(t_infos *info)
 		if (!(ft_strcmp(temp->type, "input_red")))
 		{
 			if (ft_strlen(temp->content) > 2)
-				print_parsing_error(4, info);
+				print_pipe_error(3, info);
 			else if (ft_strlen(temp->content) == 2)
 			{
 				free(temp->type);
@@ -70,7 +78,7 @@ void	parse_infile(t_infos *info)
 			}
 			if (temp->next == NULL)
 			{
-				print_parsing_error(5, info);
+				print_pipe_error(4, info);
 				return ;
 			}
 			get_infile(temp, info);
