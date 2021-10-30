@@ -1,6 +1,5 @@
 #include "../../includes/minishell.h"
 
-//checks for space d = 's' digit = 'd' both = 'b'
 int	ft_isspace_isdigit(char c, char d)
 {
 	if (d == 's')

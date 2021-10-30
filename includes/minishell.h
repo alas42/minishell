@@ -6,7 +6,7 @@
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 13:57:49 by avogt             #+#    #+#             */
-/*   Updated: 2021/10/30 14:26:05 by avogt            ###   ########.fr       */
+/*   Updated: 2021/10/30 14:40:30 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,6 @@
 # include <signal.h>
 # include <term.h>
 # include "libft.h"
-
-//#include <editline/readline.h>
-//#include <editline/history.h>
 
 enum e_file_end
 {
