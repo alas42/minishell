@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   dollar_handler.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
+/*   By: yassharm <yassharm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/30 21:28:51 by avogt             #+#    #+#             */
-/*   Updated: 2021/10/30 21:28:52 by avogt            ###   ########.fr       */
+/*   Updated: 2021/10/31 12:51:53 by yassharm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,14 +25,14 @@ char	*join_double_char(char **args)
 	return (temp);
 }
 
-char	*get_word(char *word, int size, int start, int end, t_infos *info)
+char	*get_word(char *word, int size, int start, int end)
 {
 	char	*str;
 	int		i;
 
 	str = (char *)malloc(sizeof(char) * size);
 	if (str == NULL)
-		print_error(E_MALLOC, info);
+		return (NULL);
 	if (end < 0)
 		end = ft_strlen(word);
 	i = 0;
@@ -62,8 +62,8 @@ char	*check_special_char(t_infos *info, char *content, char *word)
 		i++;
 	}
 	j = (ft_strlen(word) - i) + 1;
-	dollar = get_word(word, i + 1, 0, i, info);
-	rest = get_word(word, j, i, -1, info);
+	dollar = get_word(word, i + 1, 0, i);
+	rest = get_word(word, j, i, -1);
 	value = get_dollar_value(info, dollar);
 	value = check_dollar_ret_val(value);
 	value = merge_content(value, rest, 0);
@@ -87,7 +87,7 @@ char	*handle_question(t_infos *info, char *content, char *word)
 	dollar[0] = word[0];
 	dollar[1] = '\0';
 	j = ft_strlen(word);
-	rest = get_word(word, j, 1, -1, info);
+	rest = get_word(word, j, 1, -1);
 	if (dollar[0] == '?')
 		value = get_exit_code();
 	else

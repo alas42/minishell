@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
+/*   By: yassharm <yassharm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/30 21:28:28 by avogt             #+#    #+#             */
-/*   Updated: 2021/10/30 21:28:30 by avogt            ###   ########.fr       */
+/*   Updated: 2021/10/31 13:56:30 by yassharm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,17 @@ void	remove_space_tokens(t_infos *info)
 
 	temp = info->tokens;
 	i = 0;
-	if (temp->next == NULL)
+	if (temp != NULL && temp->next == NULL)
+	{
+		if (!(ft_strncmp(temp->type, "space", 5)))
+		{
+			free(temp->content);
+			free(temp->type);
+			free(temp);
+			info->tokens = NULL;
+		}
 		return ;
+	}
 	while (temp && temp->next)
 	{
 		if (!(ft_strncmp(temp->type, "space", 5)))
@@ -71,7 +80,7 @@ void	check_pipe_error(t_infos *info)
 				print_pipe_error(1, info);
 		}
 		token = token->next;
-	}
+	}		
 }
 
 void	start_parsing(t_infos *info)
@@ -80,13 +89,18 @@ void	start_parsing(t_infos *info)
 	if (info->tokens == NULL)
 		return ;
 	get_dollar(info);
-	check_quotes(info);
+	check_quotes(info);	
 	expand_dollar(info);
 	merge_same(info);
 	remove_space_tokens(info);
+	if (info->tokens == NULL)
+		return;
 	parse_outfile(info);
 	parse_infile(info);
 	check_pipe_error(info);
+	remove_space_tokens(info);
+	if (info->tokens == NULL)
+		return;
 	move_to_cmd(info);
 	handle_redirections(info);
 }

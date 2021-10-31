@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
+/*   By: yassharm <yassharm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 13:57:49 by avogt             #+#    #+#             */
-/*   Updated: 2021/10/31 12:50:21 by avogt            ###   ########.fr       */
+/*   Updated: 2021/10/31 13:20:47 by yassharm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,7 +173,7 @@ void		expand_dollar(t_infos *info);
 */
 int			is_all_numdigit(char *str);
 char		*join_double_char(char **args);
-char		*get_word(char *word, int size, int start, int end, t_infos *info);
+char		*get_word(char *word, int size, int start, int end);
 char		*check_special_char(t_infos *info, char *content, char *word);
 char		*check_dollar_ret_val(char *value);
 char		*handle_question(t_infos *info, char *content, char *word);
