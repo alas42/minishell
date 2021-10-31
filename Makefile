@@ -47,7 +47,6 @@ PARSING_FILES = parsing_init.c \
 	token_to_cmd_utils.c \
 	redirections.c \
 	redirections_utils.c \
-	print_temp.c \
 	here_doc.c \
 	here_doc_utils.c
 
