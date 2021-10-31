@@ -36,9 +36,9 @@ void	set_interruption(int status)
 
 int	check_for_ctrl_c(void)
 {
-	if (*get_interruption() == 1 && rl_done == 0)
-		rl_done = 1;
-	else
-		rl_done = 0;
+	//if (*get_interruption() == 1 && rl_done == 0)
+		//rl_done = 1;
+	//else
+		//rl_done = 0;
 	return (0);
 }

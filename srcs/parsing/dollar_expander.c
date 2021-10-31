@@ -94,8 +94,16 @@ static void	expand_dollar_free(t_token *token, char **temp_args)
 {
 	free(token->content);
 	token->content = join_double_char(temp_args);
-	free(token->type);
-	token->type = ft_strdup("literal");
+	if (!(ft_strcmp(token->type, "dollar")))
+	{
+		free(token->type);
+		token->type = ft_strdup("literal_space");
+	}
+	else
+	{
+		free(token->type);
+		token->type = ft_strdup("literal");
+	}
 }
 
 void	expand_dollar(t_infos *info)
@@ -111,7 +119,9 @@ void	expand_dollar(t_infos *info)
 		if (!(ft_strcmp(token->type, "literal_dollar"))
 			|| !(ft_strcmp(token->type, "dollar")))
 		{
+			//printf("token->type[%s] token->content[%s]\n", token->type, token->content);
 			temp_args = ft_split(token->content, ' ');
+			//print_double_char(temp_args);
 			i = -1;
 			while (temp_args[++i])
 			{

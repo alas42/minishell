@@ -31,6 +31,53 @@ int	exec_cmds(t_infos *infos)
 	return (1);
 }
 
+//int	minishell(t_infos *infos, int int_mode, char *av)
+//{
+//	while (int_mode)
+//	{
+//		set_signals();
+//		if (int_mode == 1)
+//		{
+//			infos->line = ft_strdup(av);//readline("$ ");
+//			if (!infos->line)
+//			{
+//				ft_putendl_fd("exit", STDOUT_FILENO);
+//				break ;
+//			}
+//			if (infos->line)
+//				add_history(infos->line);
+//			reinit_infos(infos);
+//			if (infos->tokens && infos->parse_error == 0)
+//			{
+//				infos->first_cmd = infos->commands;
+//				if (infos->nb_cmd > 1
+//					|| solo_builtin(infos, infos->first_cmd) == -1)
+//					exec_cmds(infos);
+//			}
+//			return (*get_error_code());
+//		}
+//		clear_infos(infos);
+//		int_mode = isatty(STDIN_FILENO);
+//	}
+//	return (0);
+//}
+
+//int	main(int ac, char **av, char **envp)
+//{
+//	int		int_mode;
+//	t_infos	*infos;
+
+//	infos = init_infos(envp);
+//	int_mode = 1;//isatty(STDIN_FILENO);
+//	if (ac == 3 && !ft_strcmp(av[1], "-c"))
+//		exit(minishell(infos, int_mode, av[2]));
+//	free_infos(infos);
+//	return (0);
+//	(void)ac;
+//	(void)av;
+//}
+
+
 void	minishell(t_infos *infos, int int_mode)
 {
 	while (int_mode)

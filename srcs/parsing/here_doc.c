@@ -16,7 +16,7 @@ static int	init_here_doc_reading(t_cmd *cmd, int last)
 {
 	set_interruption(0);
 	signal(SIGINT, here_doc_ctrl_c);
-	rl_done = 0;
+	//rl_done = 0;
 	if (last && cmd)
 	{
 		cmd->fd_infile = open("heredoc",
@@ -47,11 +47,11 @@ int	here_doc_exec(char *str)
 	stop = init_here_doc_reading(NULL, 0);
 	while (!stop)
 	{
-		rl_event_hook = check_for_ctrl_c;
+		//rl_event_hook = check_for_ctrl_c;
 		line = readline("> ");
 		if (*get_interruption() == 1)
 		{
-			rl_event_hook = NULL;
+			//rl_event_hook = NULL;
 			return (0);
 		}
 		if (!line)
@@ -64,7 +64,7 @@ int	here_doc_exec(char *str)
 			stop = 1;
 		free(line);
 	}
-	rl_event_hook = NULL;
+	//rl_event_hook = NULL;
 	return (1);
 }
 
@@ -76,12 +76,12 @@ int	last_here_doc(t_cmd *cmd, char *str)
 	stop = init_here_doc_reading(cmd, 1);
 	while (!stop)
 	{
-		rl_event_hook = check_for_ctrl_c;
+		//rl_event_hook = check_for_ctrl_c;
 		line = readline("> ");
 		if (*get_interruption() == 1)
-			rl_event_hook = NULL;
-		if (rl_event_hook == NULL)
-			return (0);
+			//rl_event_hook = NULL;
+		//if (rl_event_hook == NULL)
+			//return (0);
 		if (!line)
 		{
 			print_here_doc_error();
@@ -93,6 +93,6 @@ int	last_here_doc(t_cmd *cmd, char *str)
 			fd_write(cmd->fd_infile, line);
 		free(line);
 	}
-	rl_event_hook = NULL;
+	//rl_event_hook = NULL;
 	return (end_here_doc_reading(cmd));
 }

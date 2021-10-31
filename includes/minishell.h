@@ -256,14 +256,6 @@ void		fill_red_pos(t_cmd *cmd);
 void		fill_cmd_info(t_infos *info);
 
 /*
-** print_temp.c Temp Function to be removed later
-*/
-void		print_info(t_infos *info);
-void		print_token_list(t_token *token);
-void		print_cmnd_single(t_cmd *cmd);
-void		print_cmnds(t_infos *info);
-
-/*
 ** UTILS FOR THE INFOS STRUCTURE
 */
 /*
@@ -362,6 +354,8 @@ void		print_parsing_error(int state, t_infos *infos);
 void		print_pipe_error(int state, t_infos *info);
 
 void		minishell(t_infos *infos, int int_mode);
+//int			minishell(t_infos *infos, int int_mode, char *av);
+
 int			check_valid_identifier(char *arg);
 int			check_tab_identifier(char **key_value_tab, char *str);
 char		*join_args(t_cmd *cmd, t_infos *infos);
@@ -370,5 +364,9 @@ int			*get_error_code(void);
 void		set_error_code(int status);
 int			*get_interruption(void);
 void		set_interruption(int status);
+
+//remove it
+void	print_double_char(char **arg);
+
 
 #endif
