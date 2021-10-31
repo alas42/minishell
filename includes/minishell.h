@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yassharm <yassharm@student.42.fr>          +#+  +:+       +#+        */
+/*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 13:57:49 by avogt             #+#    #+#             */
-/*   Updated: 2021/10/31 13:20:47 by yassharm         ###   ########.fr       */
+/*   Updated: 2021/10/31 22:55:06 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -370,5 +370,7 @@ int			*get_error_code(void);
 void		set_error_code(int status);
 int			*get_interruption(void);
 void		set_interruption(int status);
+int			is_a_directory(char *file_path);
+void		check_errors_executable(char *fpath, t_cmd *cmd, t_infos *infos);
 
 #endif

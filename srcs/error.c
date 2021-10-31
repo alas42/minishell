@@ -6,7 +6,7 @@
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 13:27:46 by avogt             #+#    #+#             */
-/*   Updated: 2021/10/31 12:48:20 by avogt            ###   ########.fr       */
+/*   Updated: 2021/10/31 21:09:59 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,10 +87,8 @@ void	print_bash_error(int state, t_cmd *cmd, t_infos *infos)
 	cmd_name = ft_strdup(cmd->arg[0]);
 	if (state == 127)
 		message = ft_strdup(" : command not found");
-	else if (state == 126)
-		message = ft_strdup(" : command cannot be invoked");
 	else
-		message = ft_strdup(" : error");
+		message = ft_strdup(" : command cannot be invoked");
 	len = ft_strlen(m) + ft_strlen(cmd_name) + ft_strlen(message);
 	tmp = (char *)malloc(sizeof(char) * (len + 1));
 	tmp[0] = '\0';
