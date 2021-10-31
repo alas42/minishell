@@ -6,22 +6,11 @@
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 13:23:28 by avogt             #+#    #+#             */
-/*   Updated: 2021/10/30 14:55:28 by avogt            ###   ########.fr       */
+/*   Updated: 2021/10/31 15:36:47 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-
-int	ft_exists(char *file_path)
-{
-	struct stat	file_info;
-	int			ret;
-
-	ret = stat(file_path, &file_info);
-	if (ret == 0)
-		return (1);
-	return (0);
-}
 
 int	add_path(char **arg, char *path, int len_path)
 {
@@ -92,28 +81,44 @@ static int	is_arg_rel_abs(t_cmd *cmd)
 	return (0);
 }
 
+static void	add_path_cmds(t_infos *infos, t_cmd *cmd, char **paths)
+{
+	int	i;
+	int	ret_path;
+
+	ret_path = 0;
+	i = 0;
+	if (!is_arg_rel_abs(cmd))
+	{
+		while (paths[++i])
+		{
+			if (ret_path != 1)
+				ret_path = add_path(cmd->arg, paths[i],
+						ft_strlen(paths[i]));
+			if (ret_path == -1)
+				print_error(E_MALLOC, infos);
+		}
+	}
+}
+
 void	check_paths(t_infos *infos)
 {
-	int		i;
-	int		ret_path;
 	t_cmd	*cmd;
+	int		pos_path;
+	char	*line_envp;
+	char	**paths;
 
-	if (!infos->paths)
+	pos_path = find_pos_key(infos, "PATH");
+	if (pos_path == -1)
 		return ;
+	line_envp = get_line(infos, pos_path);
+	paths = ft_split_char(line_envp, ':');
 	cmd = infos->first_cmd;
 	while (cmd)
 	{
-		i = -1;
-		ret_path = 0;
-		if (!is_arg_rel_abs(cmd))
-			while (infos->paths[++i])
-			{
-				if (ret_path != 1)
-					ret_path = add_path(cmd->arg, infos->paths[i],
-							ft_strlen(infos->paths[i]));
-				if (ret_path == -1)
-					print_error(E_MALLOC, infos);
-			}
+		add_path_cmds(infos, cmd, paths);
 		cmd = cmd->next;
 	}
+	ft_free_tab_ptr(paths);
+	free(line_envp);
 }

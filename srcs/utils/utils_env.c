@@ -6,7 +6,7 @@
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 13:23:23 by avogt             #+#    #+#             */
-/*   Updated: 2021/10/22 15:14:20 by avogt            ###   ########.fr       */
+/*   Updated: 2021/10/31 15:20:00 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,18 @@ int	change_line_env_tab(t_infos *infos, char *key, char *value)
 	{
 		key_value_str = create_pair_key_value(key, value);
 		if (!key_value_str)
-			return (0);
+			print_error(E_MALLOC, infos);
 		free(infos->envs[ret_find_path]);
-		infos->envs[ret_find_path] = key_value_str;
+		infos->envs[ret_find_path] = ft_strdup(key_value_str);
+		free(key_value_str);
+		return (1);
+	}
+	else
+	{
+		key_value_str = create_pair_key_value(key, value);
+		if (!key_value_str)
+			print_error(E_MALLOC, infos);
+		infos->envs = add_env_tab(infos->envs, key_value_str);
 		return (1);
 	}
 	return (0);

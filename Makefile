@@ -12,7 +12,8 @@ BUILTINS_FILES = mini_env.c \
 	mini_export.c \
 	mini_pwd.c \
 	mini_unset.c \
-	solo_builtin.c
+	solo_builtin.c \
+	utils_export.c
 
 EXEC_FILES = exec_cmds.c \
 	child_fds.c \
@@ -46,7 +47,8 @@ UTILS_FILES = utils_cmds.c \
 	utils_builtins.c \
 	free.c \
 	free_commands.c \
-	utils_error.c
+	utils_error.c \
+	utils_files.c
 
 SIGNALS_FILES = sigint.c \
 	sigquit.c \
