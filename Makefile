@@ -1,3 +1,15 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: avogt <avogt@student.42.fr>                +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2021/10/31 15:44:59 by avogt             #+#    #+#              #
+#    Updated: 2021/10/31 15:44:59 by avogt            ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
 export CPPFLAGS="-I/Users/$(USER)/.brew/opt/readline/include"
 export LDFLAGS="-L/Users/$(USER)/.brew/opt/readline/lib"
 
@@ -78,7 +90,9 @@ CC = gcc
 
 all: $(NAME)
 	@printf "Makefile starts\n"
+
 $(NAME): $(OBJS)
+	@touch heredoc
 	@make -s -C $(LIBFT)
 	@$(CC) $(CFLAGS) $(IFLAGS) $(SOURCES_FILES) -lreadline -lncurses -L ./libft -lft -o $(NAME)
 
@@ -92,6 +106,7 @@ clean:
 fclean: clean
 	@make -s -C $(LIBFT) fclean
 	@rm -f $(NAME)
+	@rm -f heredoc
 
 re: fclean all
 
