@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yassharm <yassharm@student.42.fr>          +#+  +:+       +#+        */
+/*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 13:27:46 by avogt             #+#    #+#             */
-/*   Updated: 2021/10/30 17:47:46 by avogt            ###   ########.fr       */
+/*   Updated: 2021/10/31 12:40:25 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ static void	close_child_fd_error(t_cmd *cmd)
 		close(cmd->fd_outfile);
 }
 
-void	print_pipe_error(int state, t_cmd *cmd, t_infos *infos)
+void	print_pipe_error(int state, t_infos *infos)
 {
 	if (infos->parse_error == 1)
 		return ;
@@ -91,7 +91,7 @@ void	print_pipe_error(int state, t_cmd *cmd, t_infos *infos)
 	set_error_code(2);
 }
 
-void	print_bash_error(int state, t_cmd *cmd)
+void	print_bash_error(int state, t_cmd *cmd, t_infos *infos)
 {
 	char	*m;
 	char	*cmd_name;
@@ -116,5 +116,6 @@ void	print_bash_error(int state, t_cmd *cmd)
 	ft_putendl_fd(tmp, STDERR_FILENO);
 	free_chars_bash_error(m, cmd_name, message, tmp);
 	close_child_fd_error(cmd);
+	free_infos(infos);
 	exit(state);
 }
