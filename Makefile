@@ -1,3 +1,15 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: avogt <avogt@student.42.fr>                +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2021/10/31 15:44:59 by avogt             #+#    #+#              #
+#    Updated: 2021/10/31 15:44:59 by avogt            ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
 export CPPFLAGS="-I/Users/$(USER)/.brew/opt/readline/include"
 export LDFLAGS="-L/Users/$(USER)/.brew/opt/readline/lib"
 
@@ -12,7 +24,8 @@ BUILTINS_FILES = mini_env.c \
 	mini_export.c \
 	mini_pwd.c \
 	mini_unset.c \
-	solo_builtin.c
+	solo_builtin.c \
+	utils_export.c
 
 EXEC_FILES = exec_cmds.c \
 	child_fds.c \
@@ -46,7 +59,8 @@ UTILS_FILES = utils_cmds.c \
 	utils_builtins.c \
 	free.c \
 	free_commands.c \
-	utils_error.c
+	utils_error.c \
+	utils_files.c
 
 SIGNALS_FILES = sigint.c \
 	sigquit.c \
@@ -76,7 +90,9 @@ CC = gcc
 
 all: $(NAME)
 	@printf "Makefile starts\n"
+
 $(NAME): $(OBJS)
+	@touch heredoc
 	@make -s -C $(LIBFT)
 	@$(CC) $(CFLAGS) $(IFLAGS) $(SOURCES_FILES) -lreadline -lncurses -L ./libft -lft -o $(NAME)
 
@@ -90,6 +106,7 @@ clean:
 fclean: clean
 	@make -s -C $(LIBFT) fclean
 	@rm -f $(NAME)
+	@rm -f heredoc
 
 re: fclean all
 

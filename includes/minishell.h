@@ -340,6 +340,7 @@ int			mini_env(t_infos *infos, t_cmd *cmd);
 int			mini_exit(t_infos *infos, t_cmd *cmd);
 int			mini_pwd(t_infos *infos, t_cmd *cmd );
 int			solo_builtin(t_infos *infos, t_cmd *cmd);
+int			print_line(t_infos *infos, int index);
 
 /*
 ** SIGNALS

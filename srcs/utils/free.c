@@ -6,7 +6,7 @@
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 13:28:05 by avogt             #+#    #+#             */
-/*   Updated: 2021/10/30 12:24:39 by avogt            ###   ########.fr       */
+/*   Updated: 2021/10/31 15:29:39 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,6 @@ void	free_infos(t_infos *infos)
 {
 	if (infos->line)
 		free(infos->line);
-	if (infos->paths)
-		ft_free_tab_ptr(infos->paths);
 	if (infos->envs)
 		ft_free_tab_ptr(infos->envs);
 	if (infos->first_cmd)

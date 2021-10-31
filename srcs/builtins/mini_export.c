@@ -6,39 +6,11 @@
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 13:19:31 by avogt             #+#    #+#             */
-/*   Updated: 2021/10/27 12:53:40 by avogt            ###   ########.fr       */
+/*   Updated: 2021/10/31 15:18:55 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-
-static int	print_line(t_infos *infos, int index)
-{
-	char	*key;
-	char	*value;
-	char	*final_str;
-
-	key = get_key(infos, index);
-	value = get_value(infos, key);
-	if (!key || !value)
-		return (0);
-	final_str = (char *)malloc(sizeof(char)
-			* (ft_strlen(key) + ft_strlen(value) + 11));
-	if (!final_str)
-		return (0);
-	final_str[0] = '\0';
-	final_str = ft_strcat(final_str, "export ");
-	final_str = ft_strcat(final_str, key);
-	final_str = ft_strcat(final_str, "=");
-	final_str = ft_strcat(final_str, "\"");
-	final_str = ft_strcat(final_str, value);
-	final_str = ft_strcat(final_str, "\"");
-	ft_putendl_fd(final_str, STDOUT_FILENO);
-	free(key);
-	free(value);
-	free(final_str);
-	return (1);
-}
 
 static int	print_asci_order(t_infos *infos, int num, int *order)
 {

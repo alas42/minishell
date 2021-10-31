@@ -6,7 +6,7 @@
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 14:15:59 by avogt             #+#    #+#             */
-/*   Updated: 2021/10/30 11:02:30 by avogt            ###   ########.fr       */
+/*   Updated: 2021/10/31 15:51:27 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,8 @@ int	solo_builtin(t_infos *infos, t_cmd *cmd)
 	int	stdout_save;
 	int	stdin_save;
 
+	if (!cmd)
+		return (-1);
 	if (is_it_builtin(cmd) == -1)
 		return (-1);
 	stdout_save = dup(STDOUT_FILENO);

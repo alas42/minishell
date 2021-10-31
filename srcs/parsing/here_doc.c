@@ -6,7 +6,7 @@
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/30 21:29:13 by avogt             #+#    #+#             */
-/*   Updated: 2021/10/30 21:29:14 by avogt            ###   ########.fr       */
+/*   Updated: 2021/10/31 15:42:34 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static int	init_here_doc_reading(t_cmd *cmd, int last)
 	rl_done = 0;
 	if (last && cmd)
 	{
-		cmd->fd_infile = open("here_doc_f",
+		cmd->fd_infile = open("heredoc",
 				O_TRUNC | O_WRONLY | O_CREAT, 0644);
 	}
 	return (0);
@@ -28,7 +28,7 @@ static int	init_here_doc_reading(t_cmd *cmd, int last)
 static int	end_here_doc_reading(t_cmd *cmd)
 {
 	close(cmd->fd_infile);
-	cmd->fd_infile = open("here_doc_f", O_RDONLY, 0644);
+	cmd->fd_infile = open("heredoc", O_RDONLY, 0644);
 	cmd->here_doc = 1;
 	return (1);
 }
