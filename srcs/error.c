@@ -86,7 +86,7 @@ void	print_pipe_error(int state, t_infos *infos)
 	else if (state == 3)
 		print_stderr("minishell: syntax error near unexpected token `<'");
 	else if (state == 4)
-		print_stderr("minishell: syntax error near unexpected token `newline`");	
+		print_stderr("minishell: syntax error near unexpected token `newline`");
 	infos->parse_error = 1;
 	set_error_code(2);
 }

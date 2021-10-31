@@ -355,6 +355,8 @@ void		set_signals(void);
 */
 void		print_error(int state, t_infos *infos);
 void		print_bash_error(int state, t_cmd *cmd, t_infos *infos);
+void		free_chars_bash_error(char *s, char *s1, char *s2, char *s3);
+void		close_child_fd_error(t_cmd *cmd);
 void		print_parsing_error(int state, t_infos *infos);
 void		print_pipe_error(int state, t_infos *info);
 
