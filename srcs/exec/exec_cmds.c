@@ -6,7 +6,7 @@
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 13:21:00 by avogt             #+#    #+#             */
-/*   Updated: 2021/10/30 21:24:14 by avogt            ###   ########.fr       */
+/*   Updated: 2021/10/30 17:46:02 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,17 +67,18 @@ static void	child_process(t_infos *infos, t_cmd *cmd)
 	{
 		ret = choose_builtin(infos, cmd);
 		if (ret > -1)
-			return ;
+			exit(ret);
 	}
+	if (!ft_exists(cmd->arg[0]))
+		print_bash_error(127, cmd, infos);
 	if (!cmd->builtin || ret == -1)
 	{
 		signal(SIGQUIT, SIG_DFL);
 		execve(cmd->arg[0], cmd->arg, infos->envs);
+		if (errno == EACCES)
+			print_bash_error(126, cmd, infos);
 	}
-	if (!ft_exists(cmd->arg[0]))
-		print_bash_error(127, cmd);
-	else
-		print_bash_error(126, cmd);
+	exit(1);
 }
 
 static void	parent_process(t_infos *infos, t_cmd *cmd)
