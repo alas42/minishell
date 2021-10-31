@@ -6,7 +6,7 @@
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 13:27:46 by avogt             #+#    #+#             */
-/*   Updated: 2021/10/31 12:40:25 by avogt            ###   ########.fr       */
+/*   Updated: 2021/10/31 12:48:20 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,22 +57,6 @@ void	print_parsing_error(int state, t_infos *infos)
 		print_stderr("minishell: Error in Opening the outfile");
 	infos->parse_error = 1;
 	set_error_code(1);
-}
-
-static void	free_chars_bash_error(char *s, char *s1, char *s2, char *s3)
-{
-	free(s);
-	free(s1);
-	free(s2);
-	free(s3);
-}
-
-static void	close_child_fd_error(t_cmd *cmd)
-{
-	if (cmd->fd_infile > -1)
-		close(cmd->fd_infile);
-	if (cmd->fd_outfile > -1)
-		close(cmd->fd_outfile);
 }
 
 void	print_pipe_error(int state, t_infos *infos)
