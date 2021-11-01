@@ -6,7 +6,7 @@
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 13:19:42 by avogt             #+#    #+#             */
-/*   Updated: 2021/11/01 10:55:14 by avogt            ###   ########.fr       */
+/*   Updated: 2021/11/01 15:20:49 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ static int	is_numeric(char *str)
 			return (-1);
 		i++;
 	}
-	if (numeric > 19)
+	if (numeric > 18)
 		return (-1);
 	return (0);
 }

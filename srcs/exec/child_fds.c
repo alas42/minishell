@@ -6,7 +6,7 @@
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 13:20:47 by avogt             #+#    #+#             */
-/*   Updated: 2021/10/30 15:36:39 by avogt            ###   ########.fr       */
+/*   Updated: 2021/11/01 16:33:14 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,13 +103,9 @@ int	child_fds(t_infos *infos, t_cmd *cmd)
 	int	ret;
 
 	if (infos->index_cmd == 0)
-	{
 		ret = first_cmd(infos, cmd);
-	}
 	else if (infos->index_cmd == infos->nb_pipe)
-	{
 		ret = last_cmd(infos, cmd);
-	}
 	else
 	{
 		if (infos->index_cmd % 2)

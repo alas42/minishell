@@ -6,7 +6,7 @@
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 13:23:23 by avogt             #+#    #+#             */
-/*   Updated: 2021/10/31 15:20:00 by avogt            ###   ########.fr       */
+/*   Updated: 2021/11/01 15:31:23 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,8 @@ void	print_env_tab(t_infos *infos)
 		return ;
 	while (infos->envs[i])
 	{
-		ft_putendl_fd(infos->envs[i], STDOUT_FILENO);
+		if (ft_strchr(infos->envs[i], '=') != NULL)
+			ft_putendl_fd(infos->envs[i], STDOUT_FILENO);
 		i++;
 	}
 }
