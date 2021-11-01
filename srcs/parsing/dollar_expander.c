@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   dollar_expander.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
+/*   By: yassharm <yassharm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/30 21:28:45 by avogt             #+#    #+#             */
-/*   Updated: 2021/10/30 21:28:46 by avogt            ###   ########.fr       */
+/*   Updated: 2021/11/01 03:36:27 by yassharm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,6 @@ char	*get_dollar_value(t_infos *info, char *str)
 char	*check_dollar_arg(t_infos *info, char *arg)
 {
 	char	**temp_args;
-	char	*value;
 	char	*content;
 	int		i;
 
@@ -73,13 +72,10 @@ char	*check_dollar_arg(t_infos *info, char *arg)
 	content = ft_strdup(temp_args[0]);
 	while (temp_args[i])
 	{
-		if (is_all_numdigit(temp_args[i]) == 0)
-		{
-			value = get_dollar_value(info, temp_args[i]);
-			value = check_dollar_ret_val(value);
-			content = merge_content(content, value, 0);
-			free(value);
-		}
+		if (check_if_literal(temp_args[i]))
+			content = get_dollar_literal(temp_args[i], content, info);
+		else if (is_all_numdigit(temp_args[i]) == 0)
+			content = get_dollar_numdigit(content, temp_args[i], info);
 		else if (is_all_numdigit(temp_args[i]) == 1)
 			content = check_special_char(info, content, temp_args[i]);
 		else
@@ -119,9 +115,7 @@ void	expand_dollar(t_infos *info)
 		if (!(ft_strcmp(token->type, "literal_dollar"))
 			|| !(ft_strcmp(token->type, "dollar")))
 		{
-			//printf("token->type[%s] token->content[%s]\n", token->type, token->content);
 			temp_args = ft_split(token->content, ' ');
-			//print_double_char(temp_args);
 			i = -1;
 			while (temp_args[++i])
 			{

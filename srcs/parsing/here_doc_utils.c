@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   here_doc_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
+/*   By: yassharm <yassharm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/30 21:29:09 by avogt             #+#    #+#             */
-/*   Updated: 2021/10/30 21:29:09 by avogt            ###   ########.fr       */
+/*   Updated: 2021/11/01 00:24:25 by yassharm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,9 @@ void	set_interruption(int status)
 
 int	check_for_ctrl_c(void)
 {
-	//if (*get_interruption() == 1 && rl_done == 0)
-		//rl_done = 1;
-	//else
-		//rl_done = 0;
+	if (*get_interruption() == 1 && rl_done == 0)
+		rl_done = 1;
+	else
+		rl_done = 0;
 	return (0);
 }

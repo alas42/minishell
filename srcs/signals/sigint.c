@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sigint.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
+/*   By: yassharm <yassharm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 13:22:52 by avogt             #+#    #+#             */
-/*   Updated: 2021/10/30 10:57:58 by avogt            ###   ########.fr       */
+/*   Updated: 2021/11/01 00:33:42 by yassharm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,6 @@ void	sigint_handler(int status)
 	(void)status;
 	ft_putchar_fd('\n', STDOUT_FILENO);
 	rl_on_new_line();
-	//rl_replace_line("", 0);
+	rl_replace_line("", 0);
 	rl_redisplay();
 }
