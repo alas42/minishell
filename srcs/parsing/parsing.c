@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yassharm <yassharm@student.42.fr>          +#+  +:+       +#+        */
+/*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/30 21:28:28 by avogt             #+#    #+#             */
-/*   Updated: 2021/11/01 04:39:58 by yassharm         ###   ########.fr       */
+/*   Updated: 2021/11/01 10:55:57 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,13 +93,13 @@ void	start_parsing(t_infos *info)
 	merge_same(info);
 	remove_space_tokens(info);
 	if (info->tokens == NULL)
-		return;
+		return ;
 	parse_outfile(info);
 	parse_infile(info);
 	check_pipe_error(info);
 	remove_space_tokens(info);
 	if (info->tokens == NULL)
-		return;
+		return ;
 	move_to_cmd(info);
 	handle_redirections(info);
 }

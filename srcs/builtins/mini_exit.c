@@ -6,7 +6,7 @@
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 13:19:42 by avogt             #+#    #+#             */
-/*   Updated: 2021/10/31 22:57:04 by avogt            ###   ########.fr       */
+/*   Updated: 2021/11/01 10:55:14 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 static void	ft_error_exit(t_cmd *cmd, int code)
 {
-
 	ft_putendl_fd("exit", STDERR_FILENO);
 	if (code == -1)
 	{

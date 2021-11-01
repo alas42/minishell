@@ -6,7 +6,7 @@
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 13:57:49 by avogt             #+#    #+#             */
-/*   Updated: 2021/10/31 22:55:06 by avogt            ###   ########.fr       */
+/*   Updated: 2021/11/01 10:54:34 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,13 +170,12 @@ char		*get_dollar_value(t_infos *info, char *str);
 char		*check_dollar_arg(t_infos *info, char *arg);
 void		expand_dollar(t_infos *info);
 
-
 /*
 ** dollar_helper.c
 */
-char 	*get_dollar_numdigit(char *content, char *str, t_infos *info);
-int		check_if_literal(char *str);
-char	*get_dollar_literal(char *str, char *content, t_infos *info);
+char		*get_dollar_numdigit(char *content, char *str, t_infos *info);
+int			check_if_literal(char *str);
+char		*get_dollar_literal(char *str, char *content, t_infos *info);
 
 /*
 ** dollar_handler.c
@@ -374,6 +373,5 @@ int			*get_interruption(void);
 void		set_interruption(int status);
 int			is_a_directory(char *file_path);
 void		check_errors_executable(char *fpath, t_cmd *cmd, t_infos *infos);
-
 
 #endif
