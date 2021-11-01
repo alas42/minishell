@@ -6,13 +6,13 @@
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/31 15:30:31 by avogt             #+#    #+#             */
-/*   Updated: 2021/11/01 11:13:07 by avogt            ###   ########.fr       */
+/*   Updated: 2021/11/01 12:29:27 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-static void	print_file_error(int state, t_cmd *cmd, t_infos *infos)
+static void	print_file_error(int state, t_cmd *cmd, t_infos *infos, char *s)
 {
 	char	*m;
 	char	*cmd_name;
@@ -22,10 +22,7 @@ static void	print_file_error(int state, t_cmd *cmd, t_infos *infos)
 
 	m = ft_strdup("minishell: ");
 	cmd_name = ft_strdup(cmd->arg[0]);
-	if (state == 127)
-		message = ft_strdup(" : No such file or directory");
-	else
-		message = ft_strdup(" : is a directory");
+	message = ft_strdup(s);
 	len = ft_strlen(m) + ft_strlen(cmd_name) + ft_strlen(message);
 	tmp = (char *)malloc(sizeof(char) * (len + 1));
 	tmp[0] = '\0';
@@ -64,27 +61,40 @@ int	is_a_directory(char *file_path)
 	return (0);
 }
 
+int	is_a_exec(char *file_path)
+{
+	int	ret;
+
+	ret = access(file_path, X_OK);
+	if (ret == -1)
+		return (0);
+	return (1);
+}
+
 void	check_errors_executable(char *file_path, t_cmd *cmd, t_infos *infos)
 {
 	size_t	len;
 
 	len = ft_strlen(file_path);
-	if (len == 1 && !ft_strncmp("/", file_path, 1))
-		print_file_error(126, cmd, infos);
-	if (len == 1 && !ft_strncmp(".", file_path, 1))
-		print_file_error(126, cmd, infos);
+	if (len == 1 && (!ft_strncmp("/", file_path, 1)
+			|| !ft_strncmp(".", file_path, 1)))
+		print_file_error(126, cmd, infos, " : is a directory");
 	if (len == 2 && !ft_strncmp("..", file_path, 2))
-		print_file_error(126, cmd, infos);
+		print_file_error(126, cmd, infos, " : is a directory");
 	if (len >= 2 && !ft_strncmp("./", file_path, 2))
 	{
 		if (!ft_exists(file_path))
-			print_file_error(127, cmd, infos);
+			print_file_error(127, cmd, infos, " : No such file or directory");
+		if (!is_a_exec(file_path))
+			print_file_error(126, cmd, infos, " : Permission denied");
 		if (is_a_directory(file_path))
-			print_file_error(126, cmd, infos);
+			print_file_error(126, cmd, infos, " : is a directory");
 	}
+	else if (ft_strncmp("/", file_path, 1))
+		print_bash_error(127, cmd, infos);
 	else
 	{
-		if (!ft_exists(file_path))
+		if (!ft_exists(file_path) || !is_a_exec(file_path))
 			print_bash_error(127, cmd, infos);
 	}
 }

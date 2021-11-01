@@ -6,7 +6,7 @@
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 13:21:00 by avogt             #+#    #+#             */
-/*   Updated: 2021/10/31 21:11:53 by avogt            ###   ########.fr       */
+/*   Updated: 2021/11/01 12:26:05 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ static void	child_process(t_infos *infos, t_cmd *cmd)
 		if (errno == EACCES)
 			print_bash_error(126, cmd, infos);
 	}
-	exit(1);
+	exit(0);
 }
 
 static void	parent_process(t_infos *infos, t_cmd *cmd)

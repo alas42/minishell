@@ -6,7 +6,7 @@
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 13:57:49 by avogt             #+#    #+#             */
-/*   Updated: 2021/11/01 11:14:16 by avogt            ###   ########.fr       */
+/*   Updated: 2021/11/01 12:07:36 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -372,6 +372,7 @@ void		set_error_code(int status);
 int			*get_interruption(void);
 void		set_interruption(int status);
 int			is_a_directory(char *file_path);
+int			is_a_exec(char *file_path);
 void		check_errors_executable(char *fpath, t_cmd *cmd, t_infos *infos);
 
 #endif

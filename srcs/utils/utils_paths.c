@@ -6,7 +6,7 @@
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 13:23:28 by avogt             #+#    #+#             */
-/*   Updated: 2021/11/01 11:10:37 by avogt            ###   ########.fr       */
+/*   Updated: 2021/11/01 12:23:26 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ static int	is_arg_rel_abs(t_cmd *cmd)
 	{
 		if (!ft_strcmp(".", cmd->arg[0]))
 			return (1);
-		else if (!ft_strcmp("..", cmd->arg[0]))
+		else if (!ft_strncmp("..", cmd->arg[0], 2))
 			return (1);
 		if (!ft_strncmp(cmd->arg[0], "./", 2))
 			return (1);
