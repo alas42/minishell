@@ -6,7 +6,7 @@
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 13:57:49 by avogt             #+#    #+#             */
-/*   Updated: 2021/11/01 12:07:36 by avogt            ###   ########.fr       */
+/*   Updated: 2021/11/01 18:01:20 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -204,7 +204,7 @@ int			check_dollar(char *content);
 void		update_token_type(t_infos *info, char *from, char *to);
 
 /*
-** redirections.c
+** Redirections functions
 */
 int			here_doc_exec(char *str);
 void		here_doc_ctrl_c(int status);
@@ -216,10 +216,6 @@ void		handle_infile(char *infile, t_cmd *cmd, int pos, t_infos *info);
 void		handle_outfile(char *outfile, char *type,
 				t_cmd *cmd, t_infos *info);
 void		handle_redirections(t_infos *info);
-
-/*
-** redirections_utils.c
-*/
 int			check_last_input_red(t_cmd *cmd, int pos);
 int			fd_write(int fd, char *line);
 
@@ -265,9 +261,6 @@ void		fill_red_pos(t_cmd *cmd);
 void		fill_cmd_info(t_infos *info);
 
 /*
-** UTILS FOR THE INFOS STRUCTURE
-*/
-/*
 ** Clear the structures before another loop
 */
 void		clear_infos(t_infos *infos);
@@ -279,8 +272,7 @@ void		reinit_infos(t_infos *infos);
 t_infos		*init_infos(char **envp);
 
 /*
-** Returns the command associated with infos->index_cmd
-** Returns Null if no command is found
+** Exec functions
 */
 t_cmd		*get_cmd(t_infos *infos);
 int			child_fds(t_infos *infos, t_cmd *cmd);
@@ -289,14 +281,13 @@ int			exec_cmds(t_infos *infos);
 int			loop_through_cmds(t_infos *infos);
 
 /*
-** Utils for environment variables (tab)
+** Utils for environment variables (char**)
 */
 char		**get_env_tab(char **envp);
 char		*get_value(t_infos *infos, char *key);
 char		*get_key(t_infos *infos, int index);
 char		*get_line(t_infos *infos, int index);
 char		*get_exit_code(void);
-
 int			add_layer_shlvl(t_infos *infos);
 void		print_env_tab(t_infos *infos);
 char		**add_env_tab(char **envs, char *key_value_str);
@@ -344,6 +335,13 @@ int			solo_builtin(t_infos *infos, t_cmd *cmd);
 int			print_line(t_infos *infos, int index);
 
 /*
+** Utils for export and unset builtins
+*/
+int			check_valid_identifier(char *arg);
+int			check_tab_identifier(char **key_value_tab, char *str);
+char		*join_args(t_cmd *cmd, t_infos *infos);
+
+/*
 ** SIGNALS
 */
 void		sigint_handler(int status);
@@ -362,17 +360,25 @@ void		close_child_fd_error(t_cmd *cmd);
 void		print_parsing_error(int state, t_infos *infos);
 void		print_pipe_error(int state, t_infos *info);
 
-void		minishell(t_infos *infos, int int_mode);
-int			check_valid_identifier(char *arg);
-int			check_tab_identifier(char **key_value_tab, char *str);
-char		*join_args(t_cmd *cmd, t_infos *infos);
-
+/*
+** Singleton error_code (argument of exit function)
+*/
 int			*get_error_code(void);
 void		set_error_code(int status);
+
+/*
+** Interruption of heredoc reading
+*/
 int			*get_interruption(void);
 void		set_interruption(int status);
+
+/*
+** Checking if the command is an executable file
+*/
 int			is_a_directory(char *file_path);
 int			is_a_exec(char *file_path);
 void		check_errors_executable(char *fpath, t_cmd *cmd, t_infos *infos);
+
+void		minishell(t_infos *infos, int int_mode);
 
 #endif
