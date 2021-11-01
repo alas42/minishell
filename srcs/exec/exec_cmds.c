@@ -6,7 +6,7 @@
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 13:21:00 by avogt             #+#    #+#             */
-/*   Updated: 2021/11/01 12:26:05 by avogt            ###   ########.fr       */
+/*   Updated: 2021/11/01 16:33:19 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ static void	child_process(t_infos *infos, t_cmd *cmd)
 	exit(0);
 }
 
-static void	parent_process(t_infos *infos, t_cmd *cmd)
+static void	parent_process(t_infos *infos, t_cmd *cmd, int process_id)
 {
 	int	status;
 
@@ -89,16 +89,13 @@ static void	parent_process(t_infos *infos, t_cmd *cmd)
 		print_error(E_CLOSE, infos);
 	infos->index_cmd = infos->index_cmd + 1;
 	loop_through_cmds(infos);
-	wait(&status);
+	waitpid(process_id, &status, 0);
 	if (WIFEXITED(status))
 		set_error_code(WEXITSTATUS(status));
-	else if (WIFSIGNALED(status))
-	{
-		ft_putchar_fd('\n', STDERR_FILENO);
+	else if (WIFSIGNALED(status) && status != 13)
 		set_error_code(WTERMSIG(status) + 128);
-	}
 	else
-		set_error_code(1);
+		set_error_code(0);
 }
 
 int	loop_through_cmds(t_infos *infos)
@@ -116,6 +113,6 @@ int	loop_through_cmds(t_infos *infos)
 	else if (process_id == -1)
 		print_error(E_FORK, infos);
 	else
-		parent_process(infos, cmd);
+		parent_process(infos, cmd, process_id);
 	return (1);
 }

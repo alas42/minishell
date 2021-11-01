@@ -6,7 +6,7 @@
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 13:23:16 by avogt             #+#    #+#             */
-/*   Updated: 2021/10/30 11:07:09 by avogt            ###   ########.fr       */
+/*   Updated: 2021/11/01 17:27:45 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,7 @@ char	*get_key(t_infos *infos, int index)
 	return (key);
 }
 
-/*
-** Returns the value in a char * corresponding to the key in infos->envs
-*/
-char	*get_value(t_infos *infos, char *key)
+char	*get_value(t_infos *info, char *key)
 {
 	int		index;
 	int		i;
@@ -46,19 +43,21 @@ char	*get_value(t_infos *infos, char *key)
 	char	*value;
 	size_t	len_value;
 
-	index = find_pos_key(infos, key);
-	if (index < 0 || !infos->envs)
+	index = find_pos_key(info, key);
+	if (index < 0 || !info->envs || !ft_strchr(info->envs[index], '='))
 		return (NULL);
-	len_value = ft_strlen(infos->envs[index]) - (ft_strlen(key) + 1);
+	len_value = ft_strlen(info->envs[index]) - (ft_strlen(key) + 1);
 	counter = ft_strlen(key) + 1;
+	if (len_value == 0)
+		return (ft_strdup(""));
 	if (len_value > 0)
 	{
 		value = (char *)malloc(sizeof(char) * (len_value + 1));
 		if (!value)
-			return (NULL);
+			print_error(E_MALLOC, info);
 		i = 0;
-		while (infos->envs[index][counter] != '\0')
-			value[i++] = infos->envs[index][counter++];
+		while (info->envs[index][counter] != '\0')
+			value[i++] = info->envs[index][counter++];
 		value[i] = '\0';
 		return (value);
 	}
@@ -77,10 +76,6 @@ char	*get_line(t_infos *infos, int index)
 	return (line);
 }
 
-/*
-** Makes a copy from **envp to infos->envs
-** Returns NULL if **envp is NULL
-*/
 char	**get_env_tab(char **envp)
 {
 	char	**envs;

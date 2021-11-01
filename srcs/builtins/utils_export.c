@@ -6,7 +6,7 @@
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/31 15:16:20 by avogt             #+#    #+#             */
-/*   Updated: 2021/10/31 15:18:44 by avogt            ###   ########.fr       */
+/*   Updated: 2021/11/01 17:30:44 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,15 +34,17 @@ int	print_line(t_infos *infos, int index)
 	final_str = (char *)malloc(sizeof(char)
 			* (ft_strlen(key) + ft_strlen(value) + 11));
 	if (!final_str)
-		return (0);
+		print_error(E_MALLOC, infos);
 	final_str[0] = '\0';
 	final_str = ft_strcat(final_str, "export ");
 	final_str = ft_strcat(final_str, key);
 	if (value)
+	{
 		final_str = continue_concatenation(final_str, value);
+		free(value);
+	}
 	ft_putendl_fd(final_str, STDOUT_FILENO);
 	free(key);
-	free(value);
 	free(final_str);
 	return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 13:38:06 by avogt             #+#    #+#             */
-/*   Updated: 2021/11/01 11:27:57 by avogt            ###   ########.fr       */
+/*   Updated: 2021/11/01 16:49:14 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	minishell(t_infos *infos, int int_mode)
 				ft_putendl_fd("exit", STDOUT_FILENO);
 				break ;
 			}
-			if (infos->line)
+			if (infos->line && ft_strlen(infos->line) >= 1)
 				add_history(infos->line);
 			reinit_infos(infos);
 			if (infos->tokens && infos->parse_error == 0)
