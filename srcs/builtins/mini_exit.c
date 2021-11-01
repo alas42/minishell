@@ -69,7 +69,7 @@ static int	is_numeric(char *str)
 			return (-1);
 		i++;
 	}
-	if (numeric > 19)
+	if (numeric > 18)
 		return (-1);
 	return (0);
 }

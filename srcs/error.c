@@ -53,6 +53,8 @@ void	print_parsing_error(int state, t_infos *infos)
 		print_stderr("minishell: Error in closing the file");
 	else if (state == 4)
 		print_stderr("minishell: Permission denied");
+	else if (state == 5)
+		print_stderr("minishell: No such file or directory");
 	else if (state == 9)
 		print_stderr("minishell: Error in Opening the infile");
 	else if (state == 10)

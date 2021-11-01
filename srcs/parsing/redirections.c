@@ -51,9 +51,11 @@ void	handle_infile(char *infile, t_cmd *cmd, int pos, t_infos *info)
 			print_parsing_error(3, info);
 	}
 	i = check_last_input_red(cmd, pos);
-	if (access(infile, F_OK | R_OK) < 0)
-		print_parsing_error(4, info);
+	if (access(infile, F_OK) < 0)
+		print_parsing_error(5, info);
 	cmd->fd_infile = open(infile, O_RDONLY, 0644);
+	if (access(infile, R_OK) < 0)
+		print_parsing_error(4, info);
 	if (cmd->fd_infile < 0)
 		print_parsing_error(9, info);
 	if (cmd->name_infile != NULL)
@@ -74,14 +76,14 @@ void	handle_outfile(char *outfile, char *type, t_cmd *cmd, t_infos *info)
 		if (cmd->name_outfile != NULL)
 			free(cmd->name_outfile);
 	}
-	if (access(outfile, W_OK) < 0)
-		print_parsing_error(4, info);
 	if (!(ft_strcmp(type, "output_red")))
 		cmd->fd_outfile = open(outfile, O_TRUNC | O_WRONLY | O_CREAT, 0644);
 	else
 		cmd->fd_outfile = open(outfile, O_WRONLY | O_APPEND | O_CREAT, 0644);
 	if (cmd->fd_outfile < 0)
 		print_parsing_error(10, info);
+	if (access(outfile, W_OK) < 0)
+		print_parsing_error(4, info);
 	cmd->name_outfile = ft_strdup(outfile);
 }
 
