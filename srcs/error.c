@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
+/*   By: yassharm <yassharm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 13:27:46 by avogt             #+#    #+#             */
-/*   Updated: 2021/10/31 21:09:59 by avogt            ###   ########.fr       */
+/*   Updated: 2021/11/01 04:39:06 by yassharm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,8 @@ void	print_parsing_error(int state, t_infos *infos)
 		print_stderr("minishell: Cannot find a closing quote (double\")");
 	else if (state == 3)
 		print_stderr("minishell: Error in closing the file");
+	else if (state == 4)
+		print_stderr("minishell: Permission denied");
 	else if (state == 9)
 		print_stderr("minishell: Error in Opening the infile");
 	else if (state == 10)
