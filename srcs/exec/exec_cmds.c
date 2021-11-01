@@ -6,7 +6,7 @@
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 13:21:00 by avogt             #+#    #+#             */
-/*   Updated: 2021/10/30 17:46:02 by avogt            ###   ########.fr       */
+/*   Updated: 2021/10/31 21:11:53 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,8 +69,7 @@ static void	child_process(t_infos *infos, t_cmd *cmd)
 		if (ret > -1)
 			exit(ret);
 	}
-	if (!ft_exists(cmd->arg[0]))
-		print_bash_error(127, cmd, infos);
+	check_errors_executable(cmd->arg[0], cmd, infos);
 	if (!cmd->builtin || ret == -1)
 	{
 		signal(SIGQUIT, SIG_DFL);
