@@ -159,6 +159,8 @@ int			ft_isallspace(char *line);
 void		get_dollar(t_infos *info);
 void		update_dollar_type(t_infos *info, int pos);
 void		get_dollar_prev(t_infos *info);
+void		check_only_dollar(t_infos *info);
+void		check_dollar_type(t_infos *info);
 
 /*
 ** dollar_expander.c (expand dollar above 25)
@@ -167,6 +169,14 @@ char		*get_dollar_value_help(int size, char *env, t_infos *info);
 char		*get_dollar_value(t_infos *info, char *str);
 char		*check_dollar_arg(t_infos *info, char *arg);
 void		expand_dollar(t_infos *info);
+
+
+/*
+** dollar_helper.c
+*/
+char 	*get_dollar_numdigit(char *content, char *str, t_infos *info);
+int		check_if_literal(char *str);
+char	*get_dollar_literal(char *str, char *content, t_infos *info);
 
 /*
 ** dollar_handler.c
@@ -254,14 +264,6 @@ char		*merge_content(char *str, char *content, int space);
 int			check_builtin(char *str);
 void		fill_red_pos(t_cmd *cmd);
 void		fill_cmd_info(t_infos *info);
-
-/*
-** print_temp.c Temp Function to be removed later
-*/
-void		print_info(t_infos *info);
-void		print_token_list(t_token *token);
-void		print_cmnd_single(t_cmd *cmd);
-void		print_cmnds(t_infos *info);
 
 /*
 ** UTILS FOR THE INFOS STRUCTURE
@@ -372,5 +374,6 @@ int			*get_interruption(void);
 void		set_interruption(int status);
 int			is_a_directory(char *file_path);
 void		check_errors_executable(char *fpath, t_cmd *cmd, t_infos *infos);
+
 
 #endif

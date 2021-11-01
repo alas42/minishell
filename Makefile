@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: avogt <avogt@student.42.fr>                +#+  +:+       +#+         #
+#    By: yassharm <yassharm@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/10/31 15:44:59 by avogt             #+#    #+#              #
-#    Updated: 2021/10/31 15:44:59 by avogt            ###   ########.fr        #
+#    Updated: 2021/11/01 03:35:50 by yassharm         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,6 +40,7 @@ PARSING_FILES = parsing_init.c \
 	quotes_utils.c \
 	dollar_parser.c \
 	dollar_handler.c \
+	dollar_helper.c \
 	dollar_expander.c \
 	files_parser.c \
 	commands_init.c \

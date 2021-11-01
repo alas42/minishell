@@ -3,14 +3,64 @@
 /*                                                        :::      ::::::::   */
 /*   dollar_parser.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
+/*   By: yassharm <yassharm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/30 21:28:57 by avogt             #+#    #+#             */
-/*   Updated: 2021/10/30 21:28:57 by avogt            ###   ########.fr       */
+/*   Updated: 2021/11/01 03:50:43 by yassharm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+void	check_dollar_type(t_infos *info)
+{
+	t_token	*token;
+
+	token = info->tokens;
+	while (token)
+	{
+		if (!(ft_strcmp(token->type, "literal_space")))
+		{
+			if (ft_strlen(token->content) == 0)
+			{
+				free(token->type);
+				token->type = ft_strdup("space");
+			}
+			else
+			{
+				free(token->type);
+				token->type = ft_strdup("literal");
+			}
+		}
+		token = token->next;
+	}
+}
+
+void	check_only_dollar(t_infos *info)
+{
+	t_token  *token;
+
+	token = info->tokens;
+	while(token)
+	{
+		if (!(ft_strcmp(token->type, "dollar")))
+		{
+			if (ft_strlen(token->content) <= 1)
+			{
+				free(token->type);
+				token->type = ft_strdup("literal");
+			}
+			else if (!(ft_isalpha(token->content[1])) 
+			&& !(ft_isdigit(token->content[1]))
+			&& token->content[1] != '?')
+			{
+				free(token->type);
+				token->type = ft_strdup("literal");
+			}
+		}
+		token = token->next;
+	}
+}
 
 void	get_dollar_prev(t_infos *info)
 {
