@@ -6,7 +6,7 @@
 /*   By: yassharm <yassharm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/30 21:28:28 by avogt             #+#    #+#             */
-/*   Updated: 2021/10/31 13:56:30 by yassharm         ###   ########.fr       */
+/*   Updated: 2021/11/01 03:51:26 by yassharm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,17 @@ void	remove_last_space_tokens(t_token *temp)
 	}
 }
 
+void	remove_only_space_token(t_token *temp, t_infos *info)
+{
+	if (!(ft_strncmp(temp->type, "space", 5)))
+	{
+		free(temp->content);
+		free(temp->type);
+		free(temp);
+		info->tokens = NULL;
+	}
+}
+
 void	remove_space_tokens(t_infos *info)
 {
 	t_token	*temp;
@@ -33,13 +44,7 @@ void	remove_space_tokens(t_infos *info)
 	i = 0;
 	if (temp != NULL && temp->next == NULL)
 	{
-		if (!(ft_strncmp(temp->type, "space", 5)))
-		{
-			free(temp->content);
-			free(temp->type);
-			free(temp);
-			info->tokens = NULL;
-		}
+		remove_only_space_token(temp, info);
 		return ;
 	}
 	while (temp && temp->next)
@@ -63,14 +68,6 @@ void	check_pipe_error(t_infos *info)
 	token = info->tokens;
 	while (token)
 	{
-		if (!(ft_strcmp(token->type, "literal")))
-		{
-			if (ft_strlen(token->content) == 0)
-			{
-				free(token->type);
-				token->type = ft_strdup("space");
-			}
-		}
 		if (!(ft_strcmp(token->type, "pipe")))
 		{
 			if (ft_strlen(token->content) > 1 || token->pos == 0
@@ -80,7 +77,7 @@ void	check_pipe_error(t_infos *info)
 				print_pipe_error(1, info);
 		}
 		token = token->next;
-	}		
+	}
 }
 
 void	start_parsing(t_infos *info)
@@ -89,8 +86,10 @@ void	start_parsing(t_infos *info)
 	if (info->tokens == NULL)
 		return ;
 	get_dollar(info);
-	check_quotes(info);	
+	check_quotes(info);
+	check_only_dollar(info);
 	expand_dollar(info);
+	check_dollar_type(info);
 	merge_same(info);
 	remove_space_tokens(info);
 	if (info->tokens == NULL)
