@@ -6,7 +6,7 @@
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/31 15:30:31 by avogt             #+#    #+#             */
-/*   Updated: 2021/11/01 10:54:53 by avogt            ###   ########.fr       */
+/*   Updated: 2021/11/01 11:13:07 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,8 @@ void	check_errors_executable(char *file_path, t_cmd *cmd, t_infos *infos)
 	size_t	len;
 
 	len = ft_strlen(file_path);
+	if (len == 1 && !ft_strncmp("/", file_path, 1))
+		print_file_error(126, cmd, infos);
 	if (len == 1 && !ft_strncmp(".", file_path, 1))
 		print_file_error(126, cmd, infos);
 	if (len == 2 && !ft_strncmp("..", file_path, 2))
